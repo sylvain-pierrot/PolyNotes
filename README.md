@@ -80,7 +80,7 @@ and more, to enhance your productivity and workflow.
     </a>
 </p>
 
-### Run in localy
+## Run in localy
 
 ```sh
 docker compose up
