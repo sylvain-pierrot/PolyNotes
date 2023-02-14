@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: CI
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
+    name: Build and publish Frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,3 +31,14 @@ jobs:
           target: dev
           push: true
           tags: sylvainpierrot/polynotes-frontend:latest
+
+  deploy-k8s:
+    name: Deploy on cluster Polytech
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade polynotes ./helm --install --wait --atomic --namespace=sylvain --values=./helm/values.yaml
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
