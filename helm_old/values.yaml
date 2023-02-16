@@ -1,0 +1,10 @@
+frontend:
+  replica: 2
+  image:
+    repository: docker.io/sylvainpierrot
+    name: polynotes
+    tag: latest
+  domain: cluster-2022-9.dopolytech.fr
+  
+
+    
