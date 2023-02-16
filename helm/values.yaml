@@ -3,5 +3,5 @@ frontend:
   image:
     repository: docker.io/sylvainpierrot
     name: polynotes
-    tag: latest
+    tag: main
   domain: cluster-2022-9.dopolytech.fr
