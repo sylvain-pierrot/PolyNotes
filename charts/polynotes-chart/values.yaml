@@ -36,9 +36,13 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+deployment:
+  create: false
+
 service:
   type: ClusterIP
   port: 80
+  create: false
 
 ingress:
   enabled: false
