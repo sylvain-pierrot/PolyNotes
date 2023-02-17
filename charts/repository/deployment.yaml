@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend-polynotes
+  name: frontend-polynotes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-polynotes
+  template:
+    metadata:
+      labels:
+        app: frontend-polynotes
+    spec:
+      containers:
+      - name: frontend-polynotes
+        image: sylvainpierrot/frontend-polynotes:latest
+        ports:
+        - containerPort: 80
