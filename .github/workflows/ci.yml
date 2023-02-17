@@ -9,10 +9,9 @@ jobs:
     name: Build and publish Frontend
     runs-on: ubuntu-latest
     steps:
-      - name: get version
-        id: get-version
-        run: |
-          echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -35,7 +34,7 @@ jobs:
           context: frontend
           target: dev
           push: true
-          tags: sylvainpierrot/polynotes-frontend:${{ steps.get-version.outputs.VERSION }}
+          tags: sylvainpierrot/polynotes-frontend:${{ steps.vars.outputs.sha_short }}
 
       - name: install yq
         uses: mikefarah/yq@v4.15.1 
@@ -43,7 +42,7 @@ jobs:
       - name: update infra yaml file
         run: |
           cd helm
-          yq e -i '.frontend.image.tag="${{ steps.get-version.outputs.VERSION }}"' values.yaml
+          yq e -i '.frontend.image.tag="${{ steps.vars.outputs.sha_short }}"' values.yaml
 
       - name: Push change
         uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
@@ -56,7 +55,7 @@ jobs:
           destination_folder: helm
           user_email: sylvain.pierrot@etu.umontpellier
           user_name: sylvain-pierrot
-          commit_message: update image tag version ${{ steps.get_version.outputs.VERSION }} in yml file
+          commit_message: update image tag version ${{ steps.vars.outputs.sha_short }} in yml file
 
 
   # deploy-k8s:

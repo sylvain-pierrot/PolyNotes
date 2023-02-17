@@ -3,8 +3,7 @@ FROM node as builder
 COPY . /app
 WORKDIR /app
 
-RUN npm install --save \
-    && npm ci \
+RUN npm ci \
     && npm run build
 
 
