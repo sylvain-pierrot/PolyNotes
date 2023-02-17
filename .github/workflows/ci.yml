@@ -42,14 +42,14 @@ jobs:
       - name: update infra yaml file
         run: |
           cd charts/polynotes-chart/templates
-          yq e -i '.spec.template.spec.containers[0].image="sylvainpierrot/polynotes-frontend:${{ steps.commit.outputs.short }}"' polynotes-frontend.yaml
+          yq e -i '.spec.template.spec.containers[0].image="sylvainpierrot/polynotes-frontend:${{ steps.commit.outputs.short }}"' polynotes-frontend-deploy.yaml
 
       - name: Push change
         uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: charts/polynotes-chart/templates/polynotes-frontend.yaml
+          source_file: charts/polynotes-chart/templates/polynotes-frontend-deploy.yaml
           destination_repo: sylvain-pierrot/PolyNotes
           destination_branch: main
           destination_folder: charts/polynotes-chart/templates
