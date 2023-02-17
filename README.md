@@ -1,20 +1,10 @@
-<br/>
 <p align="center">
   <a href="https://github.com/sylvain-pierrot/PolyNotes/ReadME-Generator">
-    <img src="images/PolyBunny_Type4_v1.png" alt="PolyBunny" width="150" height="150">
+    <img src="images/PolyBunny.svg" alt="PolyBunny" height="400">
   </a>
-
-  <h1 align="center">PolyNotes</h1>
-
-  <p align="center">
-    A productivity and organization tool Platform
-    <br/>
-    <br/>
-  </p>
 </p>
 
-
-## PolyNotes - Features
+## Features
 
 1. **Notes and Wikis**: Allows you to create and organize notes, documentation, and wikis in a flexible,
 customizable format.
