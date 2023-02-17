@@ -7,10 +7,15 @@ RUN npm ci \
     && npm run build
 
 
-FROM builder as dev
+FROM node as dev
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install
 
 EXPOSE 3000
-CMD ["serve", "."]
+CMD ["npm", "start"]
 
 
 FROM nginx:stable-alpine as runner

@@ -4,3 +4,4 @@ Dockerfile
 .env
 .dockerignore
 README.md
+node_modules
