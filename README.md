@@ -51,6 +51,17 @@ work even more efficient.
     </a>
 </p>
 
+### CI/CD stack
+
+<p align="left">
+    <a href="https://argoproj.github.io/cd/" target="_blank" rel="noreferrer">
+        <img src="https://www.vectorlogo.zone/logos/argoprojio/argoprojio-icon.svg" alt="argoprojio" width="50" height="50"/>
+    </a>
+    <a href="https://github.com/actions" target="_blank" rel="noreferrer">
+        <img src="https://avatars.githubusercontent.com/u/44036562?s=200&v=4" alt="actions" width="50" height="50"/>
+    </a>
+</p>
+
 ## Run locally
 
 ```sh
