@@ -42,9 +42,9 @@ jobs:
           sed -i "s|$version|sylvainpierrot/polynotes-frontend:${git_hash}|" charts/polynotes-chart/templates/polynotes-frontend.yaml
           
       - name: Commit and push changes
-        uses: devops-infra/action-commit-push@v0.9.2
+        uses: devops-infra/action-commit-push@master
         with:
-          github_token: ${{ secrets.API_TOKEN_GITHUB }}
+          github_token: ${{ secrets.ARGO_GITHUB_TOKEN }}
           commit_message: Update image chart helm"
 
   # deploy-k8s:
