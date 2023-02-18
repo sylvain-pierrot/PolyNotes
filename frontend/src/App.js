@@ -6,7 +6,7 @@ import WindowSize from './components/WindowSize'
 function App() {
   return (
     <div>
-      <h1>TodoList</h1>
+      <h1>TodoList - test</h1>
       <TaskList name="Todo" />
       <TaskList name="WIP" />
       <WindowSize />
