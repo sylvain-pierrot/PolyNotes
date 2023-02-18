@@ -44,7 +44,7 @@ jobs:
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@master
         with:
-          github_token: ${{ secrets.ARGO_GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: Update image chart helm"
 
   # deploy-k8s:
