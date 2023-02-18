@@ -39,7 +39,7 @@ jobs:
         run: |
           git_hash=${{ steps.commit.outputs.short }}
           version=$(cat charts/polynotes-chart/templates/polynotes-frontend.yaml | grep image: | awk '{print $2}')
-          sed -i "s/$version/sylvainpierrot\/polynotes-frontend:$git_hash/" charts/polynotes-chart/templates/polynotes-frontend.yaml
+          sed -i "s|$version|sylvainpierrot/polynotes-frontend:${git_hash}|" charts/polynotes-chart/templates/polynotes-frontend.yaml
           
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@v0.9.2
