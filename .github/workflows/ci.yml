@@ -2,12 +2,11 @@ name: CI
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [ main ]
 
 jobs:
   build-and-push-images:
-    name: Build and publish Frontend
+    name: Build and publish image Frontend
     runs-on: ubuntu-latest
     steps:
       - id: commit
@@ -36,27 +35,17 @@ jobs:
           push: true
           tags: sylvainpierrot/polynotes-frontend:${{ steps.commit.outputs.short }}
 
-      - name: install yq
-        uses: mikefarah/yq@v4.15.1 
-
-      - name: update infra yaml file
+      - name: Update Version
         run: |
-          cd charts/polynotes-chart/templates
-          yq e -i '.spec.template.spec.containers[0].image="sylvainpierrot/polynotes-frontend:${{ steps.commit.outputs.short }}"' polynotes-frontend-deploy.yaml
-
-      - name: Push change
-        uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+          git_hash=${{ steps.commit.outputs.short }}
+          version=$(cat charts/polynotes-chart/templates/polynotes-frontend.yaml | grep image: | awk '{print $2}')
+          sed -i "s/$version/sylvainpierrot\/polynotes-frontend:$git_hash/" charts/polynotes-chart/templates/polynotes-frontend.yaml
+          
+      - name: Commit and push changes
+        uses: devops-infra/action-commit-push@v0.3
         with:
-          source_file: charts/polynotes-chart/templates/polynotes-frontend-deploy.yaml
-          destination_repo: sylvain-pierrot/PolyNotes
-          destination_branch: main
-          destination_folder: charts/polynotes-chart/templates
-          user_email: sylvain.pierrot@etu.umontpellier
-          user_name: sylvain-pierrot
-          commit_message: update image tag version ${{ steps.commit.outputs.short }} in yml file
-
+          github_token: ${{ secrets.API_TOKEN_GITHUB }}
+          commit_message: Update image chart helm"
 
   # deploy-k8s:
   #   name: Deploy on cluster Polytech
