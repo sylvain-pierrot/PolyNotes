@@ -45,4 +45,4 @@ jobs:
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_message: Update image chart helm"
+          commit_message: Update image chart helm
