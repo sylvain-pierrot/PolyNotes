@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: app-polynotes-ingress
+  namespace: sylvain
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cluster-2022-9.dopolytech.fr
+    http:
+      paths:
+      - backend:
+          service:
+            name: app-polynotes
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - cluster-2022-9.dopolytech.fr
+    secretName: cluster-2022-9.dopolytech.fr
+status:
+  loadBalancer:
+    ingress:
+    - ip: 162.38.112.155
+    - ip: 162.38.112.159
+
