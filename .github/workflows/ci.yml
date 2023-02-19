@@ -38,38 +38,11 @@ jobs:
       - name: Update Version
         run: |
           git_hash=${{ steps.commit.outputs.short }}
-          version=$(cat charts/polynotes-chart/templates/polynotes-frontend.yaml | grep image: | awk '{print $2}')
-          sed -i "s|$version|sylvainpierrot/polynotes-frontend:${git_hash}|" charts/polynotes-chart/templates/polynotes-frontend.yaml
+          version=$(cat charts/polynotes-chart/templates/polynotes.yaml | grep image: | awk '{print $2}')
+          sed -i "s|$version|sylvainpierrot/polynotes-frontend:${git_hash}|" charts/polynotes-chart/templates/polynotes.yaml
           
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: Update image chart helm"
-
-  # deploy-k8s:
-  #   name: Deploy on cluster Polytech
-  #   runs-on: ubuntu-latest
-  #   needs: build-and-push-images
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Set up WireGuard
-  #       uses: egor-tensin/setup-wireguard@v1.2.0
-  #       with:
-  #         endpoint: '${{ secrets.ENDPOINT }}'
-  #         endpoint_public_key: '${{ secrets.ENDPOINT_PUBLIC }}'
-  #         ips: '${{ secrets.IPS }}'
-  #         allowed_ips: '${{ secrets.ALLOWED_IPS }}'
-  #         private_key: '${{ secrets.PRIVATE }}'
-  #         keepalive: '${{ secrets.KEEPALIVE }}'
-
-  #     - name: Deploy
-  #       uses: WyriHaximus/github-action-helm3@v2
-  #       with:
-  #         exec: helm install -n argocd --repo https://argoproj.github.io/argo-helm argo-cd argo-cd
-  #         kubeconfig: '${{ secrets.KUBECONFIG }}'
