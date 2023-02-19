@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: polynotes
-        image: sylvainpierrot/polynotes-frontend:4daf6e6
+        image: sylvainpierrot/polynotes-frontend:3bc2cb2
         ports:
         - containerPort: 80
 ---
