@@ -10,6 +10,6 @@ ingress:
 
 image:
   name: sylvainpierrot/polynotes-frontend
-  tag: 084c9d7
+  tag: d9861cb
 
 host: polynotes.cluster-2022-9.dopolytech.fr
