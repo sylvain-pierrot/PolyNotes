@@ -1,0 +1,13 @@
+appName: polynotes-app
+
+namespace: sylvain
+
+replicas: 3
+
+ingress:
+- ip: 162.38.112.155
+- ip: 162.38.112.159
+
+image:
+  name: sylvainpierrot/polynotes-frontend
+  tag: 3bc2cb2

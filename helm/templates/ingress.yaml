@@ -4,7 +4,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
   name: app-polynotes-ingress
-  namespace: sylvain
+  namespace: {{ .Values.namespace }}
 spec:
   ingressClassName: nginx
   rules:
@@ -13,7 +13,7 @@ spec:
       paths:
       - backend:
           service:
-            name: app-polynotes
+            name: {{ .Values.appName }}
             port:
               number: 80
         path: /
@@ -25,6 +25,5 @@ spec:
 status:
   loadBalancer:
     ingress:
-    - ip: 162.38.112.155
-    - ip: 162.38.112.159
+    {{ toYaml .Values.ingress | indent 4 }}
 
