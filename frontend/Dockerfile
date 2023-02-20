@@ -1,24 +1,36 @@
-FROM node as builder
+# Build stage
+
+FROM node:19-alpine AS build
+
+WORKDIR /app
 
 COPY . /app
-WORKDIR /app
 
 RUN npm ci \
     && npm run build
 
 
-FROM node as dev
+
+# Dev stage
+
+FROM node:19-alpine AS dev
+
+WORKDIR /app
 
 COPY . /app
-WORKDIR /app
 
 RUN npm install
 
 EXPOSE 3000
+
 CMD ["npm", "start"]
 
 
-FROM nginx:stable-alpine as runner
 
-COPY --from=builder /app/build /usr/share/nginx/html
+# Run stage
+
+FROM nginx:stable-alpine AS runner
+
+COPY --from=build /app/build /usr/share/nginx/html
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
