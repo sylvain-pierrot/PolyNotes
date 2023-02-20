@@ -3,12 +3,12 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-  name: app-polynotes-ingress
+  name: {{ .Values.appName }}-ingress
   namespace: {{ .Values.namespace }}
 spec:
   ingressClassName: nginx
   rules:
-  - host: cluster-2022-9.dopolytech.fr
+  - host: {{ .Values.host }}
     http:
       paths:
       - backend:
@@ -20,10 +20,12 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - {{ .Values.tls.host }}
-    secretName: {{ .Values.tls.host }}
+    - {{ .Values.host }}
+    secretName: {{ .Values.host }}
 status:
   loadBalancer:
     ingress:
-    {{ toYaml .Values.ingress | indent 4 }}
+    {{- range .Values.ingress }}
+    - ip: {{ .ip }}
+    {{- end }}
 
