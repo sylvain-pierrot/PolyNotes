@@ -10,4 +10,4 @@ ingress:
 
 image:
   name: sylvainpierrot/polynotes-frontend
-  tag: 3f9e00d
+  tag: 084c9d7
