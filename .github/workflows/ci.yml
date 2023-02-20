@@ -38,11 +38,11 @@ jobs:
       - name: Update Version
         run: |
           git_hash=${{ steps.commit.outputs.short }}
-          version=$(cat charts/polynotes-chart/templates/polynotes.yaml | grep image: | awk '{print $2}')
-          sed -i "s|$version|sylvainpierrot/polynotes-frontend:${git_hash}|" charts/polynotes-chart/templates/polynotes.yaml
+          version=$(cat helm/values.yaml | grep tag: | awk '{print $2}')
+          sed -i "s|$version|${git_hash}|" helm/values.yaml 
           
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_message: Update image chart helm
+          commit_message: Update image chart helm -> ${git_hash} 
