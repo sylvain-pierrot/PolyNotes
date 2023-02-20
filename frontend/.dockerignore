@@ -1,7 +1,5 @@
-Dockerfile
 .gitignore
 .git
 .env
-.dockerignore
-README.md
+*.md
 node_modules
