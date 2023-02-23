@@ -1,0 +1,12 @@
+.float-right {
+  float: right;
+}
+.float-left {
+  float: left;
+}
+.text-left {
+  text-align: left;
+}
+.login-form-button {
+  width: 100%;
+}
