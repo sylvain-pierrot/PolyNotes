@@ -1,0 +1,11 @@
+.bottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.button {
+  width: 11em;
+  margin: 8px;
+}

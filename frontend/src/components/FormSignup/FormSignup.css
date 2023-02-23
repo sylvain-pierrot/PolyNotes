@@ -1,0 +1,12 @@
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.left > * {
+  margin: 0 !important;
+}
+.mg-bottom {
+  margin-bottom: 5px !important;
+}

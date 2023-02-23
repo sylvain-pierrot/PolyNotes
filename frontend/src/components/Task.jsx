@@ -1,3 +1,3 @@
-const Task = (props) => <li>{props.title}</li>
+const Task = ({ title }) => <li>{title}</li>;
 
-export default Task
+export default Task;
