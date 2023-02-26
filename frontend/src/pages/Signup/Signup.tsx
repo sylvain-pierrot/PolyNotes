@@ -1,13 +1,16 @@
 import "./Signup.css";
 import Title from "antd/es/typography/Title";
 import FormSignup from "../../components/FormSignup/FormSignup";
+import { Row } from "antd";
 
 function Signup() {
   return (
-    <>
-      <Title>Create an Account</Title>
-      <FormSignup />
-    </>
+    <Row justify={"center"}>
+      <div className="card">
+        <Title>Create an Account</Title>
+        <FormSignup />
+      </div>
+    </Row>
   );
 }
 

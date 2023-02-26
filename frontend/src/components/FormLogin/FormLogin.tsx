@@ -1,15 +1,10 @@
 import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import "./FormLogin.css";
-import { useNavigate } from "react-router";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const FormLogin: React.FC = () => {
-  const navigate = useNavigate();
-
-  const navigateToSignup = () => navigate("/signup");
-
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
   };
