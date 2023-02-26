@@ -1,0 +1,17 @@
+namespace: sylvain
+
+# External access to the service in a cluster
+ingress:
+  enabled: true
+  name: "polynotes"
+  serviceName: "polynotes-frontend"
+  tls: true
+  className: "nginx"
+  host: "polynotes.cluster-2022-9.dopolytech.fr"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+
+
+# status:
+#   loadBalancer:
+#     ingress: {{ toYaml .Values.ingress | nindent 4 }}
