@@ -1,68 +1,108 @@
-import React from "react";
-import { Button, Form, Input, Checkbox, Row, Col } from "antd";
-import { Rule } from "antd/es/form";
+import { Button, Form, Input } from "antd";
 import "./FormSignup.css";
 import { useNavigate } from "react-router";
 
 const FormSignup: React.FC = () => {
   const [form] = Form.useForm();
+
   const navigate = useNavigate();
 
-  const onClick = () => navigate("/");
+  const navigateToLogin = () => navigate("/login");
 
-  const ruleEmail: Rule = {
-    type: "email" as const,
-    required: true,
-    message: "Please select time!",
-  };
-
-  const ruleString: Rule = {
-    type: "string" as const,
-    required: true,
-    message: "Please select time!",
+  const onFinish = (values: any) => {
+    console.log("Received values of form: ", values);
   };
 
   return (
-    <Form layout={"vertical"} form={form}>
-      <Form.Item label="Nickname" rules={[{ required: true }]} required>
-        <Input placeholder="Enter a nickname of your choice." />
-      </Form.Item>
-      <Form.Item label="Email" rules={[ruleString]} required>
-        <Input placeholder="Enter a valid email address." />
-      </Form.Item>
-      <Form.Item label="Password" required>
-        <Input placeholder="Enter a password with at least 8 characters." />
-      </Form.Item>
-      <Form.Item label="Password confirmation" required>
-        <Input placeholder="Confirm your password by entering it again." />
-      </Form.Item>
-      <Form.Item required>
-        <Checkbox.Group className="left">
-          <Checkbox value="A" className="mg-bottom">
-            Check this box if you are 13 years or older.
-          </Checkbox>
-          <Checkbox value="B">
-            Accept CGU checkbox: Check this box to indicate that you agree to
-            the terms and conditions of use.
-          </Checkbox>
-        </Checkbox.Group>
+    <Form
+      form={form}
+      name="register"
+      onFinish={onFinish}
+      layout={"vertical"}
+      scrollToFirstError
+    >
+      <Form.Item
+        name="email"
+        label="E-mail"
+        rules={[
+          {
+            type: "email",
+            message: "The input is not valid E-mail!",
+          },
+          {
+            required: true,
+            message: "Please input your E-mail!",
+          },
+        ]}
+      >
+        <Input />
       </Form.Item>
 
       <Form.Item
-        wrapperCol={{
-          xs: { span: 24, offset: 0 },
-        }}
+        name="password"
+        label="Password"
+        rules={[
+          {
+            required: true,
+            message: "Please input your password!",
+          },
+        ]}
+        hasFeedback
       >
-        <Row gutter={[8, 0]}>
-          <Col>
-            <Button type="primary">Submit</Button>
-          </Col>
-          <Col>
-            <Button htmlType="button" onClick={onClick}>
-              Go back
-            </Button>
-          </Col>
-        </Row>
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item
+        name="confirm"
+        label="Confirm Password"
+        dependencies={["password"]}
+        hasFeedback
+        rules={[
+          {
+            required: true,
+            message: "Please confirm your password!",
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue("password") === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(
+                new Error("The two passwords that you entered do not match!")
+              );
+            },
+          }),
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item
+        name="nickname"
+        label="Nickname"
+        tooltip="What do you want others to call you?"
+        rules={[
+          {
+            required: true,
+            message: "Please input your nickname!",
+            whitespace: true,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item className="text-left">
+        <Button type="primary" htmlType="submit">
+          Register
+        </Button>
+        <Button
+          type="default"
+          className="margin-left"
+          onClick={navigateToLogin}
+        >
+          Log in
+        </Button>
       </Form.Item>
     </Form>
   );

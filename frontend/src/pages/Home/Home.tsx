@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Col, Row } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./Home.css";
@@ -20,36 +20,45 @@ function Home() {
   };
 
   return (
-    <>
-      {current === 0 && (
-        <>
-          <p>Manifesto!</p>
-          <Button type="primary" size="large" className="bottom" onClick={next}>
-            START
-          </Button>
-        </>
-      )}
-      {current === 1 && (
-        <>
-          <Button
-            type="primary"
-            size="large"
-            className="button"
-            onClick={naviagteToSignup}
-          >
-            Create an Account
-          </Button>
-          <Button
-            type="primary"
-            size="large"
-            className="button"
-            onClick={naviagteToLogin}
-          >
-            Login
-          </Button>
-        </>
-      )}
-    </>
+    <Row justify={"center"}>
+      <div className="card">
+        {current === 0 && (
+          <>
+            <h1 style={{ fontSize: "2em" }}>
+              Organize, Collaborate and Succeed
+            </h1>
+            <Button
+              type="primary"
+              size="large"
+              className="bottom"
+              onClick={next}
+            >
+              START
+            </Button>
+          </>
+        )}
+        {current === 1 && (
+          <>
+            <Button
+              type="primary"
+              size="large"
+              className="button"
+              onClick={naviagteToSignup}
+            >
+              Create an Account
+            </Button>
+            <Button
+              type="primary"
+              size="large"
+              className="button"
+              onClick={naviagteToLogin}
+            >
+              Login
+            </Button>
+          </>
+        )}
+      </div>
+    </Row>
   );
 }
 

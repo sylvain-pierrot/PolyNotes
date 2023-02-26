@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import LoggedOutLayout from "../layouts/LoggedOutLayout/LoggedOutLayout";
+import MainLayout from "../layouts/MainLayout/MainLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Signup from "../pages/Signup/Signup";
@@ -7,7 +7,7 @@ import Signup from "../pages/Signup/Signup";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LoggedOutLayout />,
+    element: <MainLayout />,
     // loader: rootLoader,
     children: [
       {
