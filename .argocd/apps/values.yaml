@@ -1,0 +1,15 @@
+#
+ProjectName: polynotes-sylvain
+
+#
+applications:
+- name: polynotes
+  namespace: sylvain
+  repoURL: https://github.com/sylvain-pierrot/PolyNotes.git
+  chart: .helm/polynotes
+  server: https://kubernetes.default.svc
+- name: polynotes-frontend
+  namespace: sylvain
+  repoURL: https://github.com/sylvain-pierrot/PolyNotes.git
+  chart: frontend/.helm/polynotes-frontend
+  server: https://kubernetes.default.svc
