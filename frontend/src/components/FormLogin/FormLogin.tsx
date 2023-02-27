@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import "./FormLogin.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import withAuth from "../../hocs/withAuth";
 
 const FormLogin: React.FC = () => {
   const onFinish = (values: any) => {
@@ -39,7 +40,7 @@ const FormLogin: React.FC = () => {
           <Checkbox className="float-left">Remember me</Checkbox>
         </Form.Item>
 
-        <a className="float-right" href="">
+        <a className="float-right" href="/">
           Forgot password
         </a>
       </Form.Item>
@@ -54,4 +55,4 @@ const FormLogin: React.FC = () => {
   );
 };
 
-export default FormLogin;
+export default withAuth(FormLogin);

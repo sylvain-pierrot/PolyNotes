@@ -5,11 +5,12 @@ import Logo from "../../assets/images/PolyBunny.png";
 import Logo2 from "../../assets/images/polynotes-logo.svg";
 import "./LayoutHeader.css";
 
-const LayoutHeader: React.FC = () => {
+const LayoutHeader: React.FC<{ isAuthenticated: boolean }> = ({
+  isAuthenticated,
+}) => {
   const { Search } = Input;
 
   const onSearch = (value: string) => console.log(value);
-  const isAuthenticated: boolean = true;
 
   return (
     <Header

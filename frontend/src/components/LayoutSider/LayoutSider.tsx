@@ -37,9 +37,9 @@ const items: MenuItem[] = [
   ]),
 ];
 
-const LayoutSider: React.FC = () => {
-  const isAuthenticated: boolean = true;
-
+const LayoutSider: React.FC<{ isAuthenticated: boolean }> = ({
+  isAuthenticated,
+}) => {
   return (
     <>
       {isAuthenticated && (
