@@ -11,7 +11,7 @@ const MainLayout: React.FC = () => {
   const isAuthenticated: boolean = true;
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <LayoutHeader isAuthenticated={isAuthenticated} />
 
       <Layout>
