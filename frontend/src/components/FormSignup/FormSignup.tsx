@@ -1,6 +1,7 @@
 import { Button, Form, Input } from "antd";
 import "./FormSignup.css";
 import { useNavigate } from "react-router";
+import withAuth from "../../hocs/withAuth";
 
 const FormSignup: React.FC = () => {
   const [form] = Form.useForm();
@@ -108,4 +109,4 @@ const FormSignup: React.FC = () => {
   );
 };
 
-export default FormSignup;
+export default withAuth(FormSignup);
