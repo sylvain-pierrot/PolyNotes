@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "antd/es/layout";
 import { Button, Menu, MenuProps } from "antd";
-import { FolderOutlined, ShareAltOutlined } from "@ant-design/icons";
+import {
+  FolderOutlined,
+  ShareAltOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import "./LayoutSider.css";
 
 const { Sider } = Layout;
 
@@ -37,27 +42,39 @@ const items: MenuItem[] = [
   ]),
 ];
 
-const LayoutSider: React.FC = () => {
-  const isAuthenticated: boolean = true;
+const LayoutSider: React.FC<{ isAuthenticated: boolean }> = ({
+  isAuthenticated,
+}) => {
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <>
       {isAuthenticated && (
         <Sider
-          width={210}
-          style={{ backgroundColor: "#ffffff", padding: "0.8em" }}
+          width={250}
+          style={{ backgroundColor: "#fafafa" }}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
         >
-          <Button type="primary" style={{ width: "100%", margin: "0.6em 0" }}>
-            + create
-          </Button>
+          <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
+            <Button
+              type="primary"
+              style={{ width: "100%" }}
+              icon={<PlusOutlined />}
+            >
+              New note
+            </Button>
+          </div>
+
           <Menu
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             style={{
-              height: "100%",
               borderRight: 0,
-              backgroundColor: "#ffffff",
+              backgroundColor: "#fafafa",
+              padding: "0.8em",
             }}
             items={items}
           />

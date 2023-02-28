@@ -1,12 +1,12 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-
-const isAuthenticated: boolean = true;
+import { Navigate, useOutletContext } from "react-router-dom";
 
 const withAuth =
   <P extends object>(Component: React.ComponentType<P>) =>
   (props: P) => {
-    if (isAuthenticated) {
+    const isAuth = useOutletContext();
+
+    if (isAuth) {
       return <Component {...props} />;
     }
 

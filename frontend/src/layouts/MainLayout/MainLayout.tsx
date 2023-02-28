@@ -8,12 +8,14 @@ import LayoutSider from "../../components/LayoutSider/LayoutSider";
 const { Content } = Layout;
 
 const MainLayout: React.FC = () => {
+  const isAuthenticated: boolean = true;
+
   return (
-    <Layout>
-      <LayoutHeader />
+    <Layout style={{ minHeight: "100vh" }}>
+      <LayoutHeader isAuthenticated={isAuthenticated} />
 
       <Layout>
-        <LayoutSider />
+        <LayoutSider isAuthenticated={isAuthenticated} />
 
         <Content
           style={{
@@ -23,7 +25,7 @@ const MainLayout: React.FC = () => {
             background: "#ffffff",
           }}
         >
-          <Outlet />
+          <Outlet context={isAuthenticated} />
         </Content>
       </Layout>
     </Layout>
