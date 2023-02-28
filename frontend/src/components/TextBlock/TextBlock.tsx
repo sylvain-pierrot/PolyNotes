@@ -1,25 +1,31 @@
 import React from "react";
-import "./Block.css";
+import "./TextBlock.css";
 
 interface IPropsBlock {
-  size: number;
   placeholder: string;
   content: string;
+  className: string | undefined;
 }
 
-const Block: React.FC<IPropsBlock> = ({ size, placeholder, content }) => {
+const TextBlock: React.FC<IPropsBlock> = ({
+  placeholder,
+  content,
+  className,
+}) => {
+  const handleInput = (e: any) => {
+    console.log(e.target.innerText);
+  };
+
   return (
-    <div className="block">
+    <div className={className}>
       <span
-        style={{ fontSize: size }}
         spellCheck={true}
         placeholder={placeholder}
         contentEditable={true}
-      >
-        {content}
-      </span>
+        onInput={handleInput}
+      ></span>
     </div>
   );
 };
 
-export default Block;
+export default TextBlock;
