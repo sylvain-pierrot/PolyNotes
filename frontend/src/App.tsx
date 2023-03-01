@@ -2,6 +2,7 @@ import "./assets/styles/App.css";
 import { RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import router from "./routes/index";
+import "./App.css";
 
 const App: React.FC = () => {
   return (
