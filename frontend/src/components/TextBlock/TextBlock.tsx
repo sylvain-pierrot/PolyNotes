@@ -1,26 +1,24 @@
 import React from "react";
 import "./TextBlock.css";
 
-interface IPropsBlock {
-  placeholder: string;
-  content: string;
-  className: string | undefined;
+interface IPropsTextBlock {
+  dragOverlay?: boolean;
 }
 
-const TextBlock: React.FC<IPropsBlock> = ({
-  placeholder,
-  content,
-  className,
-}) => {
+const TextBlock: React.FC<IPropsTextBlock> = ({ dragOverlay }) => {
   const handleInput = (e: any) => {
     console.log(e.target.innerText);
   };
 
+  // const style = {
+  //   cursor: dragOverlay ? "grabbing" : "grab",
+  // };
+
   return (
-    <div className={className}>
+    <div className={"block text-block"}>
       <span
         spellCheck={true}
-        placeholder={placeholder}
+        placeholder={"Press 'space' for AI, '/' for commands..."}
         contentEditable={true}
         onInput={handleInput}
       ></span>
