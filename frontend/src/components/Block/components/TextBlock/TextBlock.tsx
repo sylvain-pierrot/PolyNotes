@@ -15,7 +15,7 @@ const TextBlock: React.FC<IPropsTextBlock> = ({ dragOverlay }) => {
   // };
 
   return (
-    <div className={"block text-block"}>
+    <div className={"text-block"}>
       <span
         spellCheck={true}
         placeholder={"Press 'space' for AI, '/' for commands..."}

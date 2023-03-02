@@ -19,42 +19,7 @@
   margin-bottom: 1px;
 } */
 
-.droppable-top {
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: calc(100% + 6px);
-  height: 4px;
-}
-
-.droppable-bottom {
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: calc(100% + 6px);
-  height: 4px;
-}
-
-.droppable-left {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: calc(100% + 6px);
-  width: 4px;
-}
-
-.droppable-right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(100% + 6px);
-  width: 4px;
-}
-
 .Block {
   position: relative;
-  width: 200px;
-  height: 75px;
   margin: 1em;
-  border: solid #000 4px;
 }
