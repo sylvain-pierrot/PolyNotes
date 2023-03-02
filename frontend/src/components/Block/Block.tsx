@@ -1,39 +1,13 @@
-import { UniqueIdentifier, useDraggable, useDroppable } from "@dnd-kit/core";
+import { UniqueIdentifier, useDraggable } from "@dnd-kit/core";
 import React from "react";
 import "./Block.css";
-
-interface IPropsDroppable {
-  id: UniqueIdentifier;
-  position: "top" | "bottom" | "right" | "left";
-  blockId: UniqueIdentifier;
-}
+import Droppable from "./components/Droppable/Droppable";
+import TextBlock from "./components/TextBlock/TextBlock";
 
 interface IPropsBlock {
   id: UniqueIdentifier;
   dragOverlay?: boolean;
 }
-
-const Droppable: React.FC<IPropsDroppable> = ({ id, position, blockId }) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id: id,
-    data: {
-      position: position,
-      blockId: blockId,
-    },
-  });
-
-  const style: React.CSSProperties = {
-    background: isOver ? "green" : "transparent",
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`droppable-${position}`}
-    ></div>
-  );
-};
 
 const Block: React.FC<IPropsBlock> = ({ id, dragOverlay }) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
@@ -45,19 +19,14 @@ const Block: React.FC<IPropsBlock> = ({ id, dragOverlay }) => {
   };
 
   return (
-    <div
-      className="Block"
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      style={style}
-    >
-      <span>{id}</span>
+    <div className="Block" ref={setNodeRef} {...attributes} style={style}>
+      <button {...listeners}>DRAG</button>
+      <TextBlock />
 
-      {/* <Droppable id={`${id + "top"}`} position={"top"} blockId={id} /> */}
-      <Droppable id={`${id + "bottom"}`} position={"bottom"} blockId={id} />
+      <Droppable id={`${id + "top"}`} position={"top"} blockId={id} />
+      {/* <Droppable id={`${id + "bottom"}`} position={"bottom"} blockId={id} /> */}
       <Droppable id={`${id + "right"}`} position={"right"} blockId={id} />
-      <Droppable id={`${id + "left"}`} position={"left"} blockId={id} />
+      {/* <Droppable id={`${id + "left"}`} position={"left"} blockId={id} /> */}
     </div>
   );
 };
