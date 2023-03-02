@@ -1,18 +1,17 @@
-import React from "react";
+import { UniqueIdentifier } from "@dnd-kit/core";
+import React, { useState } from "react";
 import "./TextBlock.css";
 
 interface IPropsTextBlock {
-  dragOverlay?: boolean;
+  id: UniqueIdentifier;
 }
 
-const TextBlock: React.FC<IPropsTextBlock> = ({ dragOverlay }) => {
-  const handleInput = (e: any) => {
-    console.log(e.target.innerText);
-  };
+const TextBlock: React.FC<IPropsTextBlock> = ({ id }) => {
+  const [content, setContent] = useState();
 
-  // const style = {
-  //   cursor: dragOverlay ? "grabbing" : "grab",
-  // };
+  const handleInput = (e: any) => {
+    setContent(e.target.innerText);
+  };
 
   return (
     <div className={"text-block"}>
@@ -21,7 +20,9 @@ const TextBlock: React.FC<IPropsTextBlock> = ({ dragOverlay }) => {
         placeholder={"Press 'space' for AI, '/' for commands..."}
         contentEditable={true}
         onInput={handleInput}
-      ></span>
+      >
+        {content}
+      </span>
     </div>
   );
 };
