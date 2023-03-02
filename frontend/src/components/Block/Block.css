@@ -23,3 +23,9 @@
   position: relative;
   margin: 1em;
 }
+
+.DragHandle {
+  position: absolute;
+  right: calc(100% + 6px);
+  top: 0;
+}

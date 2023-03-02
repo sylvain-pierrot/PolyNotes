@@ -1,5 +1,7 @@
 import { UniqueIdentifier, useDraggable } from "@dnd-kit/core";
-import React from "react";
+import { HolderOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import React, { useEffect } from "react";
 import "./Block.css";
 import Droppable from "./components/Droppable/Droppable";
 import TextBlock from "./components/TextBlock/TextBlock";
@@ -15,13 +17,19 @@ const Block: React.FC<IPropsBlock> = ({ id, dragOverlay }) => {
   });
 
   const style = {
-    opacity: dragOverlay ? 0.15 : 1,
+    opacity: dragOverlay ? 0.5 : 1,
   };
 
   return (
     <div className="Block" ref={setNodeRef} {...attributes} style={style}>
-      <button {...listeners}>DRAG</button>
-      <TextBlock />
+      <Button
+        className="DragHandle"
+        {...listeners}
+        type="text"
+        icon={<HolderOutlined />}
+      />
+
+      <TextBlock id={id} />
 
       <Droppable id={`${id + "top"}`} position={"top"} blockId={id} />
       {/* <Droppable id={`${id + "bottom"}`} position={"bottom"} blockId={id} /> */}

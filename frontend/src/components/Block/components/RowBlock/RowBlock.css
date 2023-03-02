@@ -1,9 +1,5 @@
 .RowBlock {
   display: flex;
-  flex-direction: row;
+  position: relative;
   width: 100%;
-}
-
-.RowBlock > * {
-  flex-grow: 1;
 }
