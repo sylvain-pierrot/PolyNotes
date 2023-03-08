@@ -24,8 +24,8 @@
   margin: 1em;
 }
 
-.DragHandle {
+.add-block {
   position: absolute;
-  right: calc(100% + 6px);
   top: 0;
+  right: calc(100% + 10px);
 }

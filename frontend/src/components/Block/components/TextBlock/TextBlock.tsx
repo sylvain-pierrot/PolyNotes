@@ -1,28 +1,33 @@
-import { UniqueIdentifier } from "@dnd-kit/core";
-import React, { useState } from "react";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import React from "react";
 import "./TextBlock.css";
 
 interface IPropsTextBlock {
-  id: UniqueIdentifier;
+  onChange: () => void;
 }
 
-const TextBlock: React.FC<IPropsTextBlock> = ({ id }) => {
-  const [content, setContent] = useState();
+const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "<p>Hello World!</p>",
+  });
 
-  const handleInput = (e: any) => {
-    setContent(e.target.innerText);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      onChange();
+    }
   };
 
   return (
     <div className={"text-block"}>
-      <span
+      {/* <span
         spellCheck={true}
         placeholder={"Press 'space' for AI, '/' for commands..."}
         contentEditable={true}
-        onInput={handleInput}
-      >
-        {content}
-      </span>
+        // onInput={handleInput}
+      ></span> */}
+      <EditorContent editor={editor} onKeyDown={handleKeyDown} />
     </div>
   );
 };
