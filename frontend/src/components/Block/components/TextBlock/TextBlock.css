@@ -1,4 +1,4 @@
-.text-block > span {
+/* .text-block > span {
   max-width: 100%;
   width: 100%;
   white-space: pre-wrap;
@@ -10,16 +10,9 @@
   cursor: text;
   display: block;
   outline: 0;
-}
-
-/*
-.block {
-  width: 100%;
-  max-width: 1447px;
-  margin-top: 2px;
-  margin-bottom: 1px;
 } */
-.text-block::after {
+
+/* .text-block::after {
   white-space: pre;
   word-break: break-word;
 }
@@ -35,4 +28,4 @@
   outline: 0;
   font-size: 16px;
   line-height: 1.5;
-}
+} */
