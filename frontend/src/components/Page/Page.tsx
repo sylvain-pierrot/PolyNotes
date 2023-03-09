@@ -15,9 +15,9 @@ const Page: React.FC = () => {
 
   return (
     <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
-      {/* {blocks.map((block) => (
-        <h1></h1>
-      ))} */}
+      {blocks.map((block) => (
+        <h1 key={block.id}></h1>
+      ))}
       <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
     </div>
   );

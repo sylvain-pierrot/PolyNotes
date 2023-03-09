@@ -29,3 +29,98 @@
   font-size: 16px;
   line-height: 1.5;
 } */
+.text-action-menu {
+  border-radius: 5px;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+}
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+.ProseMirror *::selection {
+  background: rgba(35, 131, 226, 0.28);
+}
+
+.ProseMirror pre {
+  font-family: "JetBrainsMono", monospace;
+  padding: 0.75rem 1rem;
+  flex-grow: 1;
+  border-radius: 3px;
+  background: #f7f6f3;
+}
+.ProseMirror code {
+  background: none;
+  color: inherit;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+/* --- FONT --- */
+.ProseMirror p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.ProseMirror h1 {
+  font-weight: 600;
+  font-size: 1.875em;
+  line-height: 1.3;
+}
+.ProseMirror h2 {
+  font-weight: 600;
+  font-size: 1.5em;
+  line-height: 1.3;
+}
+.ProseMirror h3 {
+  font-weight: 600;
+  font-size: 1.25em;
+  line-height: 1.3;
+}
+
+/* --- PLACEHOLDER --- */
+.ProseMirror p.is-empty::before,
+.ProseMirror h1.is-empty::before,
+.ProseMirror h2.is-empty::before,
+.ProseMirror h3.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* --- FLOATING MENU --- */
+.tippy-box {
+  border-radius: 4px;
+  background: white;
+  max-width: calc(-24px + 100vw);
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  overflow: hidden;
+  width: 324px;
+}
+.floating-menu-list .ant-list-item {
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  margin-left: 4px;
+  margin-right: 4px;
+  border-radius: 3px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.floating-menu-list .ant-list-item * {
+  margin: 0;
+}
+.floating-menu-list .ant-list-item:hover {
+  background: rgba(55, 53, 47, 0.08);
+}
+.floating-menu-list .ant-avatar {
+  border-radius: 3px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;
+  margin-left: 10px;
+  margin-right: 4px;
+  margin-top: 1px;
+}

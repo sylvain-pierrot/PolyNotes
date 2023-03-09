@@ -14,7 +14,8 @@ const Block: React.FC<IPropsBlock> = ({ children }) => {
         className="add-block"
         type="text"
         icon={<PlusOutlined />}
-        size="middle"
+        size="small"
+        style={{ color: "#adb5bd" }}
       />
       {children}
     </div>
