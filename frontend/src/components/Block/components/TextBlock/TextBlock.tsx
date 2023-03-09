@@ -29,6 +29,8 @@ interface IPropsTextBlock {
 }
 
 const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
+
+  // Editor
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -51,7 +53,6 @@ const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
   });
 
   // Handles
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       // onChange();
@@ -110,7 +111,10 @@ const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
       {editor && (
         <FloatingMenu
           editor={editor}
-          tippyOptions={{ duration: 100 }}
+          tippyOptions={{
+            duration: 100,
+            placement: "bottom-start",
+          }}
           shouldShow={({ editor }) => {
             return (
               editor.getText() === "/"
