@@ -19,6 +19,8 @@ const Page: React.FC = () => {
         <h1 key={block.id}></h1>
       ))}
       <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
+      <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
+      <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
     </div>
   );
 };
