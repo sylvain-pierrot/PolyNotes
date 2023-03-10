@@ -1,26 +1,37 @@
 import "./Page.css";
 import React from "react";
-import Block from "../Block/Block";
+import BaseBlock from "../Block/Block";
 import TextBlock from "../Block/components/TextBlock/TextBlock";
-import { useImmer } from "use-immer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { Block } from "../../store/slices/blocksSlice";
 
 const Page: React.FC = () => {
-  const [blocks, setBlocks] = useImmer([
-    { id: "1", content: "", type: "p", focus: true },
-  ]);
+  // Store
+  const blocks: Block[] = useSelector(
+    (state: RootState) => state.blocksReducer.blocks
+  );
 
+  // Handles
   const handleCreateNewBlock = () => {
-    console.log("caca");
+    console.log("Hello");
   };
 
   return (
     <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
       {blocks.map((block) => (
-        <h1 key={block.id}></h1>
+        <BaseBlock
+          key={block.id}
+          children={
+            <TextBlock
+              id={block.id}
+              content={block.content}
+              type={block.type}
+              onChange={handleCreateNewBlock}
+            />
+          }
+        />
       ))}
-      <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
-      <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
-      <Block children={<TextBlock onChange={handleCreateNewBlock} />} />
     </div>
   );
 };

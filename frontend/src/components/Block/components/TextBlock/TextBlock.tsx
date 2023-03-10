@@ -23,16 +23,44 @@ import TextImage from "../../../../assets/images/text.png";
 import Heading1Image from "../../../../assets/images/heading-1.png";
 import Heading2Image from "../../../../assets/images/heading-2.png";
 import Heading3Image from "../../../../assets/images/heading-3.png";
+import { Extension } from "@tiptap/core";
+import { useDispatch } from "react-redux";
+import { destroyBlock, newBlock } from "../../../../store/slices/blocksSlice";
 
 interface IPropsTextBlock {
+  id: string;
+  content: string;
+  type: string;
   onChange: () => void;
 }
 
-const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
+const TextBlock: React.FC<IPropsTextBlock> = ({
+  id,
+  content,
+  type,
+  onChange,
+}) => {
+  const ShortcutsExtension = Extension.create({
+    addKeyboardShortcuts() {
+      return {
+        Enter: () => {
+          handleEnter();
+          return true;
+        },
+        Backspace: ({ editor }) => {
+          if (editor.isEmpty) {
+            handleDestroyOnEmpty(id);
+          }
+          return false;
+        },
+      };
+    },
+  });
 
   // Editor
   const editor = useEditor({
     extensions: [
+      ShortcutsExtension,
       StarterKit.configure({
         history: false,
       }),
@@ -52,11 +80,20 @@ const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
     ],
   });
 
+  // Store
+  const dispatch = useDispatch();
+
   // Handles
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       // onChange();
     }
+  };
+  const handleEnter = () => {
+    dispatch(newBlock());
+  };
+  const handleDestroyOnEmpty = (id: string) => {
+    dispatch(destroyBlock({ id }));
   };
 
   return (
@@ -185,7 +222,11 @@ const TextBlock: React.FC<IPropsTextBlock> = ({ onChange }) => {
           </List>
         </FloatingMenu>
       )}
-      <EditorContent editor={editor} onKeyDown={handleKeyDown} />
+      <EditorContent
+        content={content}
+        editor={editor}
+        onKeyDown={handleKeyDown}
+      />
     </div>
   );
 };
