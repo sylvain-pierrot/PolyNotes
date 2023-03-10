@@ -3,10 +3,12 @@ import { RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import router from "./routes/index";
 import "./App.css";
+import { Provider } from "react-redux";
+import store from "./store/index";
 
 const App: React.FC = () => {
   return (
-    <>
+    <Provider store={store}>
       <ConfigProvider
         theme={{
           token: {
@@ -16,7 +18,7 @@ const App: React.FC = () => {
       >
         <RouterProvider router={router} />
       </ConfigProvider>
-    </>
+    </Provider>
   );
 };
 
