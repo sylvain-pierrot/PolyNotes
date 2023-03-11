@@ -2,9 +2,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import React, { useState } from "react";
 import "./BaseBlock.css";
-import { Block } from "../../store/slices/blocksSlice";
+import { Block, newBlock } from "../../store/slices/blocksSlice";
 import TextBlock from "./components/TextBlock/TextBlock";
 import { Editor } from "@tiptap/react";
+import { useDispatch } from "react-redux";
 
 interface IPropsBlock {
   block: Block;
@@ -14,6 +15,9 @@ interface IPropsBlock {
 
 const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
   const [ref, setRef] = useState<Editor | null>(null);
+
+  // Store
+  const dispatch = useDispatch();
 
   return (
     <div className="Block">
@@ -27,6 +31,7 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
           if (ref?.isEmpty) {
             ref?.chain().setContent("/").run();
           } else {
+            dispatch(newBlock({ id: block.id, content: "/" }));
           }
         }}
       />
@@ -34,7 +39,6 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
         <TextBlock
           id={block.id}
           content={block.content}
-          type={block.type}
           ref={(ref) => {
             goRef(ref);
             setRef(ref);
