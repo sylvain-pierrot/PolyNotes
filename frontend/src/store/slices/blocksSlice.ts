@@ -1,11 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-enum BlockType {
-  PARAGRAPH = "p",
-  HEADING_1 = "h1",
-  HEADING_2 = "h2",
-  HEADING_3 = "h3",
+export enum BlockType {
+  BASIC = "text",
   IMAGE = "img",
 }
 
@@ -16,7 +13,7 @@ export interface Block {
 }
 
 const initialState: Block[] = [
-  { id: uuidv4(), content: "", type: BlockType.PARAGRAPH },
+  { id: uuidv4(), content: "", type: BlockType.BASIC },
 ];
 
 const blocksSlice = createSlice({
@@ -29,7 +26,7 @@ const blocksSlice = createSlice({
       const newBlock: Block = {
         id: uuidv4(),
         content: "",
-        type: BlockType.PARAGRAPH,
+        type: BlockType.BASIC,
       };
       state.blocks.push(newBlock);
     },
