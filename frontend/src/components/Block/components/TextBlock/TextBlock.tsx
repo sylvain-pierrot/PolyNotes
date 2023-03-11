@@ -3,6 +3,7 @@ import {
   EditorContent,
   useEditor,
   FloatingMenu,
+  ReactNodeViewRenderer,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -18,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+// import Focus from "@tiptap/extension-focus";
 import Heading from "@tiptap/extension-heading";
 import TextImage from "../../../../assets/images/text.png";
 import Heading1Image from "../../../../assets/images/heading-1.png";
@@ -78,6 +80,7 @@ const TextBlock: React.FC<IPropsTextBlock> = ({
         levels: [1, 2, 3],
       }),
     ],
+    autofocus: true,
   });
 
   // Store

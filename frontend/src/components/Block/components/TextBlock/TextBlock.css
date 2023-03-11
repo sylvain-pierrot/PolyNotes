@@ -93,7 +93,7 @@
 }
 
 /* --- FLOATING MENU --- */
-.tippy-box {
+.floating-menu-list {
   border-radius: 4px;
   background: white;
   max-width: calc(-24px + 100vw);
