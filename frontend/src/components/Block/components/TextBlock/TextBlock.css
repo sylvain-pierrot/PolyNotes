@@ -1,0 +1,89 @@
+/* .text-block > span {
+  max-width: 100%;
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+  caret-color: rgb(55, 53, 47);
+  padding: 3px 2px;
+  min-height: 1em;
+  color: rgb(55, 53, 47);
+  cursor: text;
+  display: block;
+  outline: 0;
+} */
+
+/* .text-block::after {
+  white-space: pre;
+  word-break: break-word;
+}
+[contenteditable]:empty::after {
+  content: attr(placeholder);
+  -webkit-text-fill-color: rgba(55, 53, 47, 0.3);
+}
+[contenteditable] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.text-block > span {
+  outline: 0;
+  font-size: 16px;
+  line-height: 1.5;
+} */
+
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+.ProseMirror *::selection {
+  background: rgba(35, 131, 226, 0.28);
+}
+
+.ProseMirror pre {
+  font-family: "JetBrainsMono", monospace;
+  padding: 0.75rem 1rem;
+  flex-grow: 1;
+  border-radius: 3px;
+  background: #f7f6f3;
+}
+.ProseMirror code {
+  background: none;
+  color: inherit;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+/* --- FONT --- */
+.ProseMirror p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.ProseMirror h1 {
+  font-weight: 600;
+  font-size: 1.875em;
+  line-height: 1.3;
+}
+.ProseMirror h2 {
+  font-weight: 600;
+  font-size: 1.5em;
+  line-height: 1.3;
+}
+.ProseMirror h3 {
+  font-weight: 600;
+  font-size: 1.25em;
+  line-height: 1.3;
+}
+
+/* --- PLACEHOLDER --- */
+.ProseMirror p.is-empty::before,
+.ProseMirror h1.is-empty::before,
+.ProseMirror h2.is-empty::before,
+.ProseMirror h3.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
