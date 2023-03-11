@@ -18,12 +18,12 @@ interface IPropsTextBlock {
   content: string;
   type?: string;
   onDestroy: () => void;
-  onArrowPressed?: (event: any) => void;
+  handleArrows?: (event: any) => void;
 }
 
 const TextBlock = forwardRef(
   (
-    { id, content, onDestroy, onArrowPressed }: IPropsTextBlock,
+    { id, content, onDestroy, handleArrows }: IPropsTextBlock,
     ref: Ref<Editor | null>
   ) => {
     // Extension
@@ -72,14 +72,10 @@ const TextBlock = forwardRef(
     const dispatch = useDispatch();
 
     // Handles
-    // const handleKeyDown = (e: React.KeyboardEvent) => {
-    //   if (e.key === "Enter") {
-    //     // onChange();
-    //   }
-    // };
     const handleEnter = () => {
-      dispatch(newBlock());
+      dispatch(newBlock({ id }));
     };
+
     const handleDestroyOnEmpty = (id: string) => {
       onDestroy();
       dispatch(destroyBlock({ id }));
@@ -95,8 +91,7 @@ const TextBlock = forwardRef(
           content={content}
           editor={editor}
           onKeyDown={(event) => {
-            // handleKeyDown();
-            onArrowPressed?.(event);
+            handleArrows?.(event);
           }}
         />
       </div>
