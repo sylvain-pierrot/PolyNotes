@@ -23,11 +23,11 @@ const blocksSlice = createSlice({
   },
   reducers: {
     newBlock(state, action) {
-      const { id } = action.payload;
+      const { id, content } = action.payload;
       const index = state.blocks.findIndex((block) => block.id === id);
       const newBlock: Block = {
         id: uuidv4(),
-        content: "",
+        content: content,
         type: BlockType.BASIC,
       };
       state.blocks.splice(index + 1, 0, newBlock);

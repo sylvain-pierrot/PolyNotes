@@ -1,7 +1,7 @@
 import { EditorContent, useEditor, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
-import React, { forwardRef, Ref, useImperativeHandle } from "react";
+import { forwardRef, Ref, useImperativeHandle } from "react";
 import "./TextBlock.css";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -16,7 +16,6 @@ import BlocksMenu from "../BlocksMenu/BlocksMenu";
 interface IPropsTextBlock {
   id: string;
   content: string;
-  type?: string;
   onDestroy: () => void;
   handleArrows?: (event: any) => void;
 }
@@ -46,6 +45,7 @@ const TextBlock = forwardRef(
 
     // Editor
     const editor = useEditor({
+      content: content,
       extensions: [
         ShortcutsExtension,
         StarterKit.configure({
@@ -88,7 +88,6 @@ const TextBlock = forwardRef(
         {editor && <RichEditor editor={editor} />}
         {editor && <BlocksMenu editor={editor} />}
         <EditorContent
-          content={content}
           editor={editor}
           onKeyDown={(event) => {
             handleArrows?.(event);
