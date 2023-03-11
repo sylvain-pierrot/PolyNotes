@@ -1,8 +1,8 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import "./BaseBlock.css";
-import { Block, BlockType } from "../../store/slices/blocksSlice";
+import { Block } from "../../store/slices/blocksSlice";
 import TextBlock from "./components/TextBlock/TextBlock";
 import { Editor } from "@tiptap/react";
 
@@ -13,6 +13,8 @@ interface IPropsBlock {
 }
 
 const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
+  const [ref, setRef] = useState<Editor | null>(null);
+
   return (
     <div className="Block">
       <Button
@@ -21,6 +23,12 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
         icon={<PlusOutlined />}
         size="small"
         style={{ color: "#adb5bd" }}
+        onClick={() => {
+          if (ref?.isEmpty) {
+            ref?.chain().setContent("/").run();
+          } else {
+          }
+        }}
       />
       {block.type === "text" && (
         <TextBlock
@@ -29,8 +37,9 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
           type={block.type}
           ref={(ref) => {
             goRef(ref);
+            setRef(ref);
           }}
-          onArrowPressed={(event) => {
+          handleArrows={(event) => {
             const direction: Record<string, number> = {
               ArrowUp: -1,
               ArrowDown: 1,

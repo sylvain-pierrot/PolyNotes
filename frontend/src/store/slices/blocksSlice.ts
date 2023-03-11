@@ -22,13 +22,15 @@ const blocksSlice = createSlice({
     blocks: initialState,
   },
   reducers: {
-    newBlock(state) {
+    newBlock(state, action) {
+      const { id } = action.payload;
+      const index = state.blocks.findIndex((block) => block.id === id);
       const newBlock: Block = {
         id: uuidv4(),
         content: "",
         type: BlockType.BASIC,
       };
-      state.blocks.push(newBlock);
+      state.blocks.splice(index + 1, 0, newBlock);
     },
     destroyBlock(state, action) {
       const { id } = action.payload;
