@@ -66,6 +66,12 @@ const TextBlock = forwardRef(
         }),
       ],
       autofocus: true,
+      // onBlur({ editor }) {
+      //   // The editor isn’t focused anymore.
+      //   if (editor.getText() === "/") {
+      //     editor.chain().clearContent().run();
+      //   }
+      // },
     });
 
     // Store
@@ -75,12 +81,10 @@ const TextBlock = forwardRef(
     const handleEnter = () => {
       dispatch(newBlock({ id }));
     };
-
     const handleDestroyOnEmpty = (id: string) => {
       onDestroy();
       dispatch(destroyBlock({ id }));
     };
-
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
