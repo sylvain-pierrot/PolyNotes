@@ -16,8 +16,13 @@ const Page: React.FC = () => {
   );
 
   // Handles
-  const handleFocus = (index: number) => {
-    refs.current[index]?.chain().focus().run();
+  const handleFocus = (index: number, shift: number) => {
+    let newIndex = index + shift;
+    if (!refs.current[newIndex]?.isEditable) {
+      refs.current[newIndex + shift]?.chain().focus().run();
+    } else {
+      refs.current[newIndex]?.chain().focus().run();
+    }
   };
 
   return (
@@ -27,7 +32,7 @@ const Page: React.FC = () => {
           key={block.id}
           block={block}
           goRef={(ref) => (refs.current[index] = ref)}
-          handleFocus={(shift) => handleFocus(index + shift)}
+          handleFocus={(shift) => handleFocus(index, shift)}
         />
       ))}
     </div>

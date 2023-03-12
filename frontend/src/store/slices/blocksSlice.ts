@@ -14,6 +14,7 @@ export interface Block {
 
 const initialState: Block[] = [
   { id: uuidv4(), content: "", type: BlockType.BASIC },
+  { id: uuidv4(), content: "", type: BlockType.IMAGE },
 ];
 
 const blocksSlice = createSlice({
