@@ -80,7 +80,6 @@ const ImageBlock = forwardRef(
           <Button
             onClick={addImage}
             className="btn-image-block"
-            style={{ background: "#f2f1ee", color: "rgba(55, 53, 47, 0.65)" }}
             icon={<FileImageOutlined />}
             size="large"
           >

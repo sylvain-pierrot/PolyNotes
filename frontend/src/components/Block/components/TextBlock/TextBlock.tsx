@@ -9,7 +9,11 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { Extension } from "@tiptap/core";
 import { useDispatch } from "react-redux";
-import { destroyBlock, newBlock } from "../../../../store/slices/blocksSlice";
+import {
+  changeToImageBlock,
+  destroyBlock,
+  newBlock,
+} from "../../../../store/slices/blocksSlice";
 import RichEditor from "../RichEditor/RichEditor";
 import BlocksMenu from "../BlocksMenu/BlocksMenu";
 
@@ -78,6 +82,9 @@ const TextBlock = forwardRef(
     const dispatch = useDispatch();
 
     // Handles
+    const goImg = () => {
+      dispatch(changeToImageBlock({ id }));
+    };
     const handleEnter = () => {
       dispatch(newBlock({ id }));
     };
@@ -90,7 +97,7 @@ const TextBlock = forwardRef(
     return (
       <div className={"text-block"}>
         {editor && <RichEditor editor={editor} />}
-        {editor && <BlocksMenu editor={editor} />}
+        {editor && <BlocksMenu editor={editor} goImg={goImg} />}
         <EditorContent
           editor={editor}
           onKeyDown={(event) => {
