@@ -8,12 +8,12 @@ export enum BlockType {
 
 export interface Block {
   id: string;
-  content: string;
+  content: string | null;
   type: BlockType;
 }
 
 const initialState: Block[] = [
-  { id: uuidv4(), content: "", type: BlockType.BASIC },
+  { id: uuidv4(), content: null, type: BlockType.BASIC },
 ];
 
 const blocksSlice = createSlice({
@@ -24,22 +24,38 @@ const blocksSlice = createSlice({
   reducers: {
     newBlock(state, action) {
       const { id, content } = action.payload;
-      const index = state.blocks.findIndex((block) => block.id === id);
+      let index = 0;
+      if (id) {
+        index = state.blocks.findIndex((block) => block.id === id) + 1;
+      }
       const newBlock: Block = {
         id: uuidv4(),
-        content: content,
+        content: content ? content : null,
         type: BlockType.BASIC,
       };
-      state.blocks.splice(index + 1, 0, newBlock);
+      state.blocks.splice(index, 0, newBlock);
     },
     destroyBlock(state, action) {
       const { id } = action.payload;
-
       state.blocks = state.blocks.filter((block) => block.id !== id);
+    },
+    changeToImageBlock(state, action) {
+      const { id } = action.payload;
+      const index = state.blocks.findIndex((block) => block.id === id);
+      state.blocks[index].type = BlockType.IMAGE;
+    },
+    updateContent(state, action) {
+      const { id, content } = action.payload;
+      const index = state.blocks.findIndex((block) => block.id === id);
+      if (index !== -1) {
+        state.blocks[index].content = content;
+      }
+      console.log(JSON.parse(JSON.stringify(state.blocks)));
     },
   },
 });
 
-export const { newBlock, destroyBlock } = blocksSlice.actions;
+export const { newBlock, destroyBlock, changeToImageBlock, updateContent } =
+  blocksSlice.actions;
 
 export default blocksSlice.reducer;

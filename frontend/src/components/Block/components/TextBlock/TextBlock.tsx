@@ -9,13 +9,18 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { Extension } from "@tiptap/core";
 import { useDispatch } from "react-redux";
-import { destroyBlock, newBlock } from "../../../../store/slices/blocksSlice";
+import {
+  changeToImageBlock,
+  destroyBlock,
+  newBlock,
+  updateContent,
+} from "../../../../store/slices/blocksSlice";
 import RichEditor from "../RichEditor/RichEditor";
 import BlocksMenu from "../BlocksMenu/BlocksMenu";
 
 interface IPropsTextBlock {
   id: string;
-  content: string;
+  content: string | null;
   onDestroy: () => void;
   handleArrows?: (event: any) => void;
 }
@@ -25,17 +30,21 @@ const TextBlock = forwardRef(
     { id, content, onDestroy, handleArrows }: IPropsTextBlock,
     ref: Ref<Editor | null>
   ) => {
+    // Store
+    const dispatch = useDispatch();
+
     // Extension
-    const ShortcutsExtension = Extension.create({
+    const TextBlockExtension = Extension.create({
       addKeyboardShortcuts() {
         return {
           Enter: () => {
-            handleEnter();
+            dispatch(newBlock({ id }));
             return true;
           },
           Backspace: ({ editor }) => {
             if (editor.isEmpty) {
-              handleDestroyOnEmpty(id);
+              onDestroy();
+              dispatch(destroyBlock({ id }));
             }
             return false;
           },
@@ -47,7 +56,7 @@ const TextBlock = forwardRef(
     const editor = useEditor({
       content: content,
       extensions: [
-        ShortcutsExtension,
+        TextBlockExtension,
         StarterKit.configure({
           history: false,
         }),
@@ -66,27 +75,23 @@ const TextBlock = forwardRef(
         }),
       ],
       autofocus: true,
+      onUpdate({ editor }) {
+        const content = editor.isEmpty ? "" : editor.getHTML();
+        dispatch(updateContent({ id: id, content: content }));
+      },
     });
 
-    // Store
-    const dispatch = useDispatch();
-
     // Handles
-    const handleEnter = () => {
-      dispatch(newBlock({ id }));
+    const goImg = () => {
+      dispatch(updateContent({ id: id, content: null }));
+      dispatch(changeToImageBlock({ id }));
     };
-
-    const handleDestroyOnEmpty = (id: string) => {
-      onDestroy();
-      dispatch(destroyBlock({ id }));
-    };
-
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
       <div className={"text-block"}>
         {editor && <RichEditor editor={editor} />}
-        {editor && <BlocksMenu editor={editor} />}
+        {editor && <BlocksMenu editor={editor} goImg={goImg} />}
         <EditorContent
           editor={editor}
           onKeyDown={(event) => {
