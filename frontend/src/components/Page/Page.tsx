@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Block } from "../../store/slices/blocksSlice";
 import { Editor } from "@tiptap/react";
+import TitlePage from "../TitlePage/TitlePage";
 
 const Page: React.FC = () => {
   // Refs
@@ -26,15 +27,18 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
-      {blocks.map((block, index) => (
-        <BaseBlock
-          key={block.id}
-          block={block}
-          goRef={(ref) => (refs.current[index] = ref)}
-          handleFocus={(shift) => handleFocus(index, shift)}
-        />
-      ))}
+    <div className="page">
+      <TitlePage content={"title"} />
+      <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
+        {blocks.map((block, index) => (
+          <BaseBlock
+            key={block.id}
+            block={block}
+            goRef={(ref) => (refs.current[index] = ref)}
+            handleFocus={(shift) => handleFocus(index, shift)}
+          />
+        ))}
+      </div>
     </div>
   );
 };

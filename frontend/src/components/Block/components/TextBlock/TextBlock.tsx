@@ -13,13 +13,14 @@ import {
   changeToImageBlock,
   destroyBlock,
   newBlock,
+  updateContent,
 } from "../../../../store/slices/blocksSlice";
 import RichEditor from "../RichEditor/RichEditor";
 import BlocksMenu from "../BlocksMenu/BlocksMenu";
 
 interface IPropsTextBlock {
   id: string;
-  content: string;
+  content: string | null;
   onDestroy: () => void;
   handleArrows?: (event: any) => void;
 }
@@ -29,17 +30,21 @@ const TextBlock = forwardRef(
     { id, content, onDestroy, handleArrows }: IPropsTextBlock,
     ref: Ref<Editor | null>
   ) => {
+    // Store
+    const dispatch = useDispatch();
+
     // Extension
-    const ShortcutsExtension = Extension.create({
+    const TextBlockExtension = Extension.create({
       addKeyboardShortcuts() {
         return {
           Enter: () => {
-            handleEnter();
+            dispatch(newBlock({ id }));
             return true;
           },
           Backspace: ({ editor }) => {
             if (editor.isEmpty) {
-              handleDestroyOnEmpty(id);
+              onDestroy();
+              dispatch(destroyBlock({ id }));
             }
             return false;
           },
@@ -51,7 +56,7 @@ const TextBlock = forwardRef(
     const editor = useEditor({
       content: content,
       extensions: [
-        ShortcutsExtension,
+        TextBlockExtension,
         StarterKit.configure({
           history: false,
         }),
@@ -70,27 +75,16 @@ const TextBlock = forwardRef(
         }),
       ],
       autofocus: true,
-      // onBlur({ editor }) {
-      //   // The editor isn’t focused anymore.
-      //   if (editor.getText() === "/") {
-      //     editor.chain().clearContent().run();
-      //   }
-      // },
+      onUpdate({ editor }) {
+        const content = editor.isEmpty ? "" : editor.getHTML();
+        dispatch(updateContent({ id: id, content: content }));
+      },
     });
-
-    // Store
-    const dispatch = useDispatch();
 
     // Handles
     const goImg = () => {
+      dispatch(updateContent({ id: id, content: null }));
       dispatch(changeToImageBlock({ id }));
-    };
-    const handleEnter = () => {
-      dispatch(newBlock({ id }));
-    };
-    const handleDestroyOnEmpty = (id: string) => {
-      onDestroy();
-      dispatch(destroyBlock({ id }));
     };
     useImperativeHandle(ref, () => editor, [editor]);
 

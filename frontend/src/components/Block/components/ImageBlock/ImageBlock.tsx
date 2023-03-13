@@ -11,14 +11,14 @@ import React, {
   useCallback,
   useImperativeHandle,
 } from "react";
-import { newBlock } from "../../../../store/slices/blocksSlice";
+import { newBlock, updateContent } from "../../../../store/slices/blocksSlice";
 import { useDispatch } from "react-redux";
 import { Button } from "antd";
 import { FileImageOutlined } from "@ant-design/icons";
 
 interface IPropsImageBlock {
   id: string;
-  content: string;
+  content: string | null;
   handleArrows?: (event: any) => void;
 }
 
@@ -27,12 +27,15 @@ const ImageBlock = forwardRef(
     { id, content, handleArrows }: IPropsImageBlock,
     ref: Ref<Editor | null>
   ) => {
+    // Store
+    const dispatch = useDispatch();
+
     // Extension
     const ShortcutExtension = Extension.create({
       addKeyboardShortcuts() {
         return {
           Enter: () => {
-            handleEnter();
+            dispatch(newBlock({ id }));
             return true;
           },
         };
@@ -49,17 +52,15 @@ const ImageBlock = forwardRef(
         Image,
         Dropcursor,
       ],
-      content: null,
+      content: content,
       editable: false,
+      onUpdate({ editor }) {
+        if (!editor.isEmpty)
+          dispatch(updateContent({ id: id, content: editor.getHTML() }));
+      },
     });
 
-    // Store
-    const dispatch = useDispatch();
-
     // Handles
-    const handleEnter = () => {
-      dispatch(newBlock({ id }));
-    };
     useImperativeHandle(ref, () => editor, [editor]);
 
     const addImage = useCallback(() => {

@@ -3,11 +3,7 @@ import withAuth from "../../hocs/withAuth";
 import Page from "../../components/Page/Page";
 
 function Workspace() {
-  return (
-    <div className="page">
-      <Page />
-    </div>
-  );
+  return <Page />;
 }
 
 export default withAuth(Workspace);

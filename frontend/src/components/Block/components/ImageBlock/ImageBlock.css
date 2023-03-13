@@ -1,6 +1,9 @@
 .image-block p {
   display: none;
 }
+.image-block img {
+  width: 100%;
+}
 .btn-image-block {
   width: 100%;
   text-align: left;
