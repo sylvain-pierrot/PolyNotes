@@ -1,6 +1,15 @@
 .page {
   margin: 0 auto;
   max-width: 900px;
+  padding-top: 6em;
+}
+.title {
+  position: absolute;
+  left: 2em;
+  top: 0;
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 /* --- FONT --- */

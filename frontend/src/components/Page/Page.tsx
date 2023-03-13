@@ -1,20 +1,18 @@
 import "./Page.css";
 import React, { useRef } from "react";
 import BaseBlock from "../Block/BaseBlock";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import { Block } from "../../store/slices/blocksSlice";
 import { Editor } from "@tiptap/react";
 import TitlePage from "../TitlePage/TitlePage";
 
-const Page: React.FC = () => {
+interface IPropsPage {
+  title: string | null;
+  blocks: Block[];
+}
+
+const Page: React.FC<IPropsPage> = ({ title, blocks }) => {
   // Refs
   const refs = useRef<(Editor | null)[]>([]);
-
-  // Store
-  const blocks: Block[] = useSelector(
-    (state: RootState) => state.blocksReducer.blocks
-  );
 
   // Handles
   const handleFocus = (index: number, shift: number) => {
@@ -27,19 +25,23 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="page">
-      <TitlePage content={"title"} />
-      <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
-        {blocks.map((block, index) => (
-          <BaseBlock
-            key={block.id}
-            block={block}
-            goRef={(ref) => (refs.current[index] = ref)}
-            handleFocus={(shift) => handleFocus(index, shift)}
-          />
-        ))}
+    <>
+      <p className="title">{title ? title : "Untitled"}</p>
+
+      <div className="page">
+        <TitlePage content={title} />
+        <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
+          {blocks.map((block, index) => (
+            <BaseBlock
+              key={block.id}
+              block={block}
+              goRef={(ref) => (refs.current[index] = ref)}
+              handleFocus={(shift) => handleFocus(index, shift)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

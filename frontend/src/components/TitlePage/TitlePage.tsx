@@ -6,14 +6,18 @@ import { useDispatch } from "react-redux";
 import { newBlock } from "../../store/slices/blocksSlice";
 import "./TitlePage.css";
 import Document from "@tiptap/extension-document";
+import { updateContent } from "../../store/slices/titleSlice";
 
 interface IPropsTitlePage {
-  content: string;
+  content: string | null;
 }
 
 const TitlePage: React.FC<IPropsTitlePage> = ({ content }) => {
+  // Store
+  const dispatch = useDispatch();
+
   // Extension
-  const ShortcutsExtension = Extension.create({
+  const TitlePageExtension = Extension.create({
     addKeyboardShortcuts() {
       return {
         Enter: () => {
@@ -32,7 +36,7 @@ const TitlePage: React.FC<IPropsTitlePage> = ({ content }) => {
   const editor = useEditor({
     content: content,
     extensions: [
-      ShortcutsExtension,
+      TitlePageExtension,
       CustomDocument,
       StarterKit.configure({
         document: false,
@@ -49,12 +53,9 @@ const TitlePage: React.FC<IPropsTitlePage> = ({ content }) => {
     enablePasteRules: false,
     autofocus: true,
     onUpdate({ editor }) {
-      console.log(editor.getText());
+      dispatch(updateContent({ content: editor.getText() }));
     },
   });
-
-  // Store
-  const dispatch = useDispatch();
 
   // Handles
   const handleEnter = () => {
