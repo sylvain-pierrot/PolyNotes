@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import blocksSlice from "./slices/blocksSlice";
+import titleSlice from "./slices/titleSlice";
 
 const store = configureStore({
   reducer: {
     blocksReducer: blocksSlice,
+    titleReducer: titleSlice,
   },
 });
 

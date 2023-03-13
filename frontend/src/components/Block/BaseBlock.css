@@ -24,8 +24,12 @@
   margin: 1em;
 }
 
-.add-block {
+.actions-block {
   position: absolute;
   top: 0;
   right: calc(100% + 10px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }

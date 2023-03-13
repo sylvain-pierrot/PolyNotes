@@ -23,6 +23,7 @@ const MainLayout: React.FC = () => {
             margin: 0,
             minHeight: 280,
             background: "#ffffff",
+            position: "relative",
           }}
         >
           <Outlet context={isAuthenticated} />

@@ -4,13 +4,15 @@ import TextImage from "../../../../assets/images/text.png";
 import Heading1Image from "../../../../assets/images/heading-1.png";
 import Heading2Image from "../../../../assets/images/heading-2.png";
 import Heading3Image from "../../../../assets/images/heading-3.png";
+import Image from "../../../../assets/images/image.png";
 import "./BlocksMenu.css";
 
 interface IPropsBlocksMenu {
   editor: Editor;
+  goImg: () => void;
 }
 
-const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor }) => {
+const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor, goImg }) => {
   return (
     <FloatingMenu
       editor={editor}
@@ -83,6 +85,13 @@ const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor }) => {
             avatar={<Avatar shape="square" size={46} src={Heading3Image} />}
             title={"Heading 3"}
             description={"Small section heading."}
+          />
+        </List.Item>
+        <List.Item onClick={() => goImg()}>
+          <List.Item.Meta
+            avatar={<Avatar shape="square" size={46} src={Image} />}
+            title={"Image"}
+            description={"Embeded with a link."}
           />
         </List.Item>
       </List>
