@@ -9,9 +9,10 @@ import "./BlocksMenu.css";
 
 interface IPropsBlocksMenu {
   editor: Editor;
+  goImg: () => void;
 }
 
-const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor }) => {
+const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor, goImg }) => {
   return (
     <FloatingMenu
       editor={editor}
@@ -86,16 +87,7 @@ const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor }) => {
             description={"Small section heading."}
           />
         </List.Item>
-        <List.Item
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .clearContent()
-              .toggleHeading({ level: 3 })
-              .run()
-          }
-        >
+        <List.Item onClick={() => goImg()}>
           <List.Item.Meta
             avatar={<Avatar shape="square" size={46} src={Image} />}
             title={"Image"}
