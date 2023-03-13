@@ -19,14 +19,10 @@ import { FileImageOutlined } from "@ant-design/icons";
 interface IPropsImageBlock {
   id: string;
   content: string | null;
-  handleArrows?: (event: any) => void;
 }
 
 const ImageBlock = forwardRef(
-  (
-    { id, content, handleArrows }: IPropsImageBlock,
-    ref: Ref<Editor | null>
-  ) => {
+  ({ id, content }: IPropsImageBlock, ref: Ref<Editor | null>) => {
     // Store
     const dispatch = useDispatch();
 
@@ -88,12 +84,7 @@ const ImageBlock = forwardRef(
           </Button>
         )}
 
-        <EditorContent
-          editor={editor}
-          onKeyDown={(event) => {
-            handleArrows?.(event);
-          }}
-        />
+        <EditorContent editor={editor} />
       </div>
     );
   }
