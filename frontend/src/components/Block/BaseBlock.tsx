@@ -78,7 +78,6 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
             goRef(ref);
             setRef(ref);
           }}
-          handleArrows={handleArrows}
         />
       )}
     </div>
