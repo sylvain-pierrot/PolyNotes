@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export enum BlockType {
   BASIC = "text",
   IMAGE = "img",
+  TABLE = "table",
 }
 
 export interface Block {
@@ -13,7 +14,7 @@ export interface Block {
 }
 
 const initialState: Block[] = [
-  { id: uuidv4(), content: null, type: BlockType.BASIC },
+  { id: uuidv4(), content: null, type: BlockType.TABLE },
 ];
 
 const blocksSlice = createSlice({

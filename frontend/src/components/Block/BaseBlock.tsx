@@ -7,6 +7,7 @@ import TextBlock from "./components/TextBlock/TextBlock";
 import { Editor } from "@tiptap/react";
 import { useDispatch } from "react-redux";
 import ImageBlock from "./components/ImageBlock/ImageBlock";
+import BaseDatabase from "./components/Database/BaseDatabase";
 
 interface IPropsBlock {
   block: Block;
@@ -80,6 +81,7 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
           }}
         />
       )}
+      {block.type === "table" && <BaseDatabase />}
     </div>
   );
 };
