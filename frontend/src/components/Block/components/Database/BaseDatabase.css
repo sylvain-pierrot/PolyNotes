@@ -12,3 +12,12 @@
   border: 1px solid #d9d9d9;
   border-radius: 2px;
 }
+
+.menu-database {
+  width: 100%;
+  box-shadow: rgb(233, 233, 231) 0px -1px 0px inset;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
