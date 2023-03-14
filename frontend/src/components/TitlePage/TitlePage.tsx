@@ -24,7 +24,7 @@ const TitlePage = forwardRef(
       addKeyboardShortcuts() {
         return {
           Enter: () => {
-            handleEnter();
+            dispatch(newBlock({}));
             return true;
           },
         };
@@ -61,9 +61,6 @@ const TitlePage = forwardRef(
     });
 
     // Handles
-    const handleEnter = () => {
-      dispatch(newBlock({}));
-    };
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
