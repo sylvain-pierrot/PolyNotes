@@ -26,3 +26,20 @@
   right: 0;
   overflow: scroll;
 }
+
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-value-wrap {
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.editable-row .editable-cell-value-wrap:hover {
+  background-color: #eb2f9680;
+  border-radius: 3px;
+}
+.ant-table-tbody .ant-table-cell {
+  padding: 0 !important;
+}

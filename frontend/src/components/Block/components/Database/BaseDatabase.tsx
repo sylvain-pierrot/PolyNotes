@@ -1,45 +1,94 @@
-import { Button, Dropdown, Table } from "antd";
+import { Button, Dropdown, Popconfirm, Table } from "antd";
 import { useState } from "react";
 import TableView from "./views/TableView/TableView";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./BaseDatabase.css";
+import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
+
+export enum Property {
+  NUMBER = "number",
+  SINGLE_SELECT = "single-select",
+  DATE = "date",
+  TIME = "time",
+  TEXT = "text",
+  CHECKBOX = "checkbox",
+}
+
+export function getDefaultColumnValue(property: Property): any {
+  switch (property) {
+    case Property.NUMBER:
+      return 0;
+    case Property.SINGLE_SELECT:
+      return null;
+    case Property.DATE:
+      return new Date();
+    case Property.TIME:
+      return dayjs("00:00:00", "HH:mm:ss");
+    case Property.TEXT:
+      return "";
+    case Property.CHECKBOX:
+      return false;
+    default:
+      throw new Error(`Unknown column type: ${property}`);
+  }
+}
+
+// Views selectable
+const views = [
+  {
+    key: "1",
+    label: "Table",
+  },
+  {
+    key: "2",
+    label: "Kanban",
+  },
+];
 
 export interface DataType {
   key: React.Key;
   [key: string]: any;
 }
 
-type EditableTableProps = Parameters<typeof Table>[0];
-export type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
-
 const BaseDatabase: React.FC = () => {
-  // Views selectable
-  const views = [
-    {
-      key: "1",
-      label: "Table",
-    },
-    {
-      key: "2",
-      label: "Kanban",
-    },
-  ];
-
   // States
   const [viewSelected, setViewSelected] = useState(views[0]);
 
+  // Rows
   const [rows, setRows] = useState<DataType[]>([
     {
-      key: "0",
+      key: uuidv4(),
       name: "Edward King 0",
+      bool: true,
+      time: dayjs("00:00:00", "HH:mm:ss"),
     },
     {
-      key: "1",
+      key: uuidv4(),
       name: "Edward King 1",
+      bool: false,
+      time: dayjs("00:00:00", "HH:mm:ss"),
     },
   ]);
 
-  const [columns, setColumns] = useState<string[]>(["name", "age", "address"]);
+  // Columns
+  const [columns, setColumns] = useState<
+    { name: string; property: Property }[]
+  >([
+    { name: "name", property: Property.TEXT },
+    { name: "bool", property: Property.CHECKBOX },
+    { name: "time", property: Property.TIME },
+  ]);
+
+  // Handles
+  const newColumn = (column: { name: string; property: Property }) => {
+    setColumns([...columns, column]);
+    const newRows = rows;
+    newRows.forEach((row) => {
+      row[column.name] = getDefaultColumnValue(column.property);
+    });
+    setRows(newRows);
+  };
 
   return (
     <>
@@ -61,7 +110,12 @@ const BaseDatabase: React.FC = () => {
         </Dropdown>
       </div>
 
-      <TableView rows={rows} columns={columns} />
+      <TableView
+        rows={rows}
+        columns={columns}
+        newColumn={newColumn}
+        updateRows={setRows}
+      />
     </>
   );
 };
