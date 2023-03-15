@@ -42,10 +42,24 @@ const SiderForm: React.FC<IPropsSiderForm> = ({ newColumn, closeSider }) => {
             autoComplete="off"
             onFinish={onFinish}
           >
-            <Form.Item name="name" required={true}>
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
               <Input placeholder="Colomn name" />
             </Form.Item>
-            <Form.Item name="type" required={true}>
+            <Form.Item
+              name="property"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
               <Select
                 placeholder={"Type"}
                 style={{ width: "100%" }}

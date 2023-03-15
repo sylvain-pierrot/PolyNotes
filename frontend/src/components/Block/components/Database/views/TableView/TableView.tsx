@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, Col, Popconfirm, Row, Table } from "antd";
+import { Button, Col, Row, Table } from "antd";
 import { Property, DataType, getDefaultColumnValue } from "../../BaseDatabase";
 import "./TableView.css";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import SiderForm from "./SiderForm";
 import { EditableCell, EditableRow } from "./EditableTable";
 import { v4 as uuidv4 } from "uuid";
+import { ColumnType } from "antd/es/table";
 
 type EditableTableProps = Parameters<typeof Table>[0];
 export type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
@@ -15,6 +16,7 @@ interface IPropsTableView {
   columns: { name: string; property: Property }[];
   newColumn: (column: { name: string; property: Property }) => void;
   updateRows: (rows: DataType[]) => void;
+  updateCols: (cols: { name: string; property: Property }[]) => void;
 }
 
 const TableView: React.FC<IPropsTableView> = ({
@@ -22,38 +24,58 @@ const TableView: React.FC<IPropsTableView> = ({
   columns,
   newColumn,
   updateRows,
+  updateCols,
 }) => {
   // States
   const [showSider, setShowSider] = useState(false);
 
   // tableViewColumns
   const tableViewColumns = columns.map((col) => {
-    const tableViewColumn: ColumnTypes[number] & {
-      editable?: boolean;
-      dataIndex: string;
-    } = {
-      title: col.name,
+    const tableViewColumn: ColumnType<DataType> = {
+      title: () => {
+        return (
+          <Row
+            justify={"space-between"}
+            align={"middle"}
+            className="header-cell"
+          >
+            {col.name}
+            <Button
+              type="text"
+              shape={"circle"}
+              icon={<DeleteOutlined />}
+              onClick={() => handleDeleteCol(col.name)}
+            />
+          </Row>
+        );
+      },
       dataIndex: col.name,
-      editable: true,
     };
 
     return {
       ...tableViewColumn,
       onCell: (record: DataType) => ({
         record,
-        editable: tableViewColumn.editable,
+        editable: true,
         dataIndex: tableViewColumn.dataIndex,
         title: tableViewColumn.title,
         property: col.property,
-        render: record[tableViewColumn.dataIndex],
-        handleDelete,
+        render: record[tableViewColumn.dataIndex as string],
+        handleDeleteRow,
         handleSave,
       }),
     };
   }) as ColumnTypes;
 
   // Handles
-  const handleDelete = (key: React.Key) => {
+  const handleDeleteCol = (dataIndex: React.Key) => {
+    const newCols = columns.filter((col) => col.name !== dataIndex);
+    const newRows = rows;
+    newRows.forEach((row) => delete row[dataIndex]);
+    updateRows(newRows);
+    updateCols(newCols);
+  };
+  const handleDeleteRow = (key: React.Key) => {
     const newRows = rows.filter((row) => row.key !== key);
     updateRows(newRows);
   };
