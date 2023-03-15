@@ -26,7 +26,7 @@ interface EditableCellProps {
   property: Property;
   render: any;
   handleSave: (record: DataType) => void;
-  handleDelete: (key: React.Key) => void;
+  handleDeleteRow: (key: React.Key) => void;
 }
 
 interface EditableRowProps {
@@ -63,7 +63,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   property,
   render,
   handleSave,
-  handleDelete,
+  handleDeleteRow,
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
@@ -140,7 +140,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
                 min={1}
                 max={10000}
                 onBlur={save}
-                onChange={() => console.log("changed")}
+                onPressEnter={save}
               />
             );
           // case ColumnType.SINGLE_SELECT:
@@ -183,7 +183,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   ) : (
     <>
       {property === Property.CHECKBOX ? (
-        <Checkbox ref={inputRef as any} defaultChecked={record[dataIndex]} />
+        <Checkbox ref={inputRef as any} />
       ) : (
         <div
           className="editable-cell-value-wrap"
@@ -200,7 +200,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
     {
       label: "Delete",
       key: "3",
-      onClick: () => handleDelete(record.key),
+      onClick: () => handleDeleteRow(record.key),
       icon: <DeleteOutlined />,
     },
   ];

@@ -1,5 +1,5 @@
 import { Button, Dropdown, Popconfirm, Table } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TableView from "./views/TableView/TableView";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./BaseDatabase.css";
@@ -52,21 +52,20 @@ export interface DataType {
 }
 
 const BaseDatabase: React.FC = () => {
-  // States
-  const [viewSelected, setViewSelected] = useState(views[0]);
-
   // Rows
   const [rows, setRows] = useState<DataType[]>([
     {
       key: uuidv4(),
       name: "Edward King 0",
       bool: true,
+      number: 1,
       time: dayjs("00:00:00", "HH:mm:ss"),
     },
     {
       key: uuidv4(),
       name: "Edward King 1",
       bool: false,
+      number: 1,
       time: dayjs("00:00:00", "HH:mm:ss"),
     },
   ]);
@@ -77,8 +76,17 @@ const BaseDatabase: React.FC = () => {
   >([
     { name: "name", property: Property.TEXT },
     { name: "bool", property: Property.CHECKBOX },
+    { name: "number", property: Property.NUMBER },
     { name: "time", property: Property.TIME },
   ]);
+
+  // States
+  const [viewSelected, setViewSelected] = useState(views[0]);
+
+  // useEffect
+  useEffect(() => {
+    console.log(rows);
+  }, [rows, columns]);
 
   // Handles
   const newColumn = (column: { name: string; property: Property }) => {
@@ -115,6 +123,7 @@ const BaseDatabase: React.FC = () => {
         columns={columns}
         newColumn={newColumn}
         updateRows={setRows}
+        updateCols={setColumns}
       />
     </>
   );

@@ -40,6 +40,17 @@
   background-color: #eb2f9680;
   border-radius: 3px;
 }
-.ant-table-tbody .ant-table-cell {
+.ant-table-tbody .ant-table-cell,
+.ant-table-thead .ant-table-cell {
   padding: 0 !important;
+}
+
+.header-cell {
+  padding: 16px;
+}
+.header-cell button {
+  opacity: 0;
+}
+.header-cell:hover button {
+  opacity: 1;
 }
