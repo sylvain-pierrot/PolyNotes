@@ -1,4 +1,4 @@
-import { Button, Dropdown, Popconfirm, Table } from "antd";
+import { Button, Dropdown } from "antd";
 import { useEffect, useState } from "react";
 import TableView from "./views/TableView/TableView";
 import { EllipsisOutlined } from "@ant-design/icons";
