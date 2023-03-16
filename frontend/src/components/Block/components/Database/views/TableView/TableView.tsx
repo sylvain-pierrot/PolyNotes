@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, FormInstance, Row, Table } from "antd";
 import { Property, DataType, getDefaultColumnValue } from "../../BaseDatabase";
 import "./TableView.css";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import SiderForm from "./SiderForm";
-import { EditableCell, EditableRow } from "./EditableTable";
 import { v4 as uuidv4 } from "uuid";
 import { ColumnType } from "antd/es/table";
+import EditableCell from "./EditableCell";
+import EditableRow from "./EditableTable";
+
+export const EditableContext = React.createContext<FormInstance<any> | null>(
+  null
+);
 
 type EditableTableProps = Parameters<typeof Table>[0];
 export type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
@@ -111,7 +116,7 @@ const TableView: React.FC<IPropsTableView> = ({
               cell: EditableCell,
             },
           }}
-          rowClassName={"editable-row"}
+          rowClassName={() => "editable-row"}
           bordered
           dataSource={rows}
           columns={tableViewColumns}
