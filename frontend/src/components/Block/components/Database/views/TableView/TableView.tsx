@@ -107,8 +107,13 @@ const TableView: React.FC<IPropsTableView> = ({
   };
 
   return (
-    <Row style={{ position: "relative" }}>
-      <Col span={23}>
+    <Row style={{ position: "relative" }} wrap={false}>
+      <Col
+        style={{
+          overflow: "scroll",
+          width: "calc(100% - 2em)",
+        }}
+      >
         <Table
           components={{
             body: {
@@ -133,7 +138,7 @@ const TableView: React.FC<IPropsTableView> = ({
           New
         </Button>
       </Col>
-      <Col span={1}>
+      <Col style={{ width: "2em" }}>
         <Button
           type="text"
           icon={<PlusOutlined />}
@@ -144,6 +149,7 @@ const TableView: React.FC<IPropsTableView> = ({
         {showSider && (
           <SiderForm
             newColumn={newColumn}
+            columns={columns}
             closeSider={() => setShowSider(false)}
           />
         )}

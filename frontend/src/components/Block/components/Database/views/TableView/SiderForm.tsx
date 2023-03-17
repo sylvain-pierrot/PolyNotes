@@ -4,11 +4,16 @@ import { Property } from "../../BaseDatabase";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
 interface IPropsSiderForm {
+  columns: { name: string; property: Property }[];
   newColumn: (column: { name: string; property: Property }) => void;
   closeSider: () => void;
 }
 
-const SiderForm: React.FC<IPropsSiderForm> = ({ newColumn, closeSider }) => {
+const SiderForm: React.FC<IPropsSiderForm> = ({
+  columns,
+  newColumn,
+  closeSider,
+}) => {
   const [form] = Form.useForm<{ name: string; property: Property }>();
 
   // Handles
@@ -47,6 +52,16 @@ const SiderForm: React.FC<IPropsSiderForm> = ({ newColumn, closeSider }) => {
               rules={[
                 {
                   required: true,
+                  validator(rule, value, callback) {
+                    for (let i = 0; i < columns.length; i++) {
+                      if (columns[i].name === value) {
+                        return Promise.reject(
+                          new Error("Name already exists!")
+                        );
+                      }
+                    }
+                    return Promise.resolve();
+                  },
                 },
               ]}
             >
@@ -64,7 +79,7 @@ const SiderForm: React.FC<IPropsSiderForm> = ({ newColumn, closeSider }) => {
                 placeholder={"Type"}
                 style={{ width: "100%" }}
                 options={[
-                  { value: Property.TEXT, label: "Rich/plain Text" },
+                  { value: Property.TEXT, label: "Text" },
                   { value: Property.CHECKBOX, label: "Checkbox" },
                   { value: Property.DATE, label: "Date" },
                   { value: Property.TIME, label: "Time" },
