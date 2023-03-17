@@ -1,11 +1,16 @@
 import {
+  Button,
   Checkbox,
+  DatePicker,
+  Divider,
   Dropdown,
   Form,
   Input,
   InputNumber,
   InputRef,
   MenuProps,
+  Select,
+  Space,
   TimePicker,
 } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -13,7 +18,7 @@ import { Property, DataType } from "../../BaseDatabase";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { EditableContext } from "./TableView";
 
 dayjs.extend(customParseFormat);
@@ -46,6 +51,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<InputRef>(null);
   const form = useContext(EditableContext)!;
+  const [formSingleSelect] = Form.useForm<{ name: string }>();
 
   useEffect(() => {
     if (editing) {
@@ -71,28 +77,25 @@ const EditableCell: React.FC<EditableCellProps> = ({
   };
 
   const handleRender = (render: any) => {
-    if (render instanceof dayjs) {
-      render = (render as Dayjs).format("HH-mm-ss");
+    switch (property) {
+      case Property.TIME:
+        return (render as Dayjs).format("HH:mm:ss");
+      case Property.DATE:
+        return (render as Dayjs).format("DD/MM/YYYY");
+      default:
+        return render;
     }
-    return render;
   };
-  // const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setName(event.target.value);
-  // };
 
-  // const [items, setItems] = useState(["jack", "lucy"]);
-  // const [name, setName] = useState("");
+  const [selectItems, setSelectItems] = useState(["jack", "lucy"]);
 
-  // const addItem = (
-  //   e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
-  // ) => {
-  //   e.preventDefault();
-  //   setItems([...items, name]);
-  //   setName("");
-  //   setTimeout(() => {
-  //     inputRef.current?.focus();
-  //   }, 0);
-  // };
+  const addItem = (value: { name: string }) => {
+    setSelectItems([...selectItems, value.name]);
+    formSingleSelect.resetFields();
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
 
   const childNode = editing ? (
     <Form.Item
@@ -121,37 +124,71 @@ const EditableCell: React.FC<EditableCellProps> = ({
               />
             );
           case Property.DATE:
-            break;
-          // case ColumnType.SINGLE_SELECT:
-          //   return (
-          //     <Select
-          //       ref={inputRef as any}
-          //       onChange={save}
-          //       style={{ width: 300 }}
-          //       placeholder="custom dropdown render"
-          //       dropdownRender={(menu) => (
-          //         <>
-          //           {menu}
-          //           <Divider style={{ margin: "8px 0" }} />
-          //           <Space style={{ padding: "0 8px 4px" }}>
-          //             <Input
-          //               placeholder="Please enter item"
-          //               value={name}
-          //               onChange={onNameChange}
-          //             />
-          //             <Button
-          //               type="text"
-          //               icon={<PlusOutlined />}
-          //               onClick={addItem}
-          //             >
-          //               Add item
-          //             </Button>
-          //           </Space>
-          //         </>
-          //       )}
-          //       options={items.map((item) => ({ label: item, value: item }))}
-          //     />
-          //   );
+            return (
+              <DatePicker
+                ref={inputRef as any}
+                onChange={save}
+                onBlur={save}
+                format={"DD/MM/YYYY "}
+              />
+            );
+          case Property.SINGLE_SELECT:
+            return (
+              <Select
+                ref={inputRef as any}
+                onChange={save}
+                placeholder="custom dropdown render"
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    <Divider style={{ margin: "8px 0" }} />
+                    <Space style={{ padding: "0 8px 4px" }}>
+                      <Form
+                        form={formSingleSelect}
+                        autoComplete="off"
+                        layout={"inline"}
+                        onFinish={addItem}
+                        style={{ flexWrap: "nowrap" }}
+                      >
+                        <Form.Item
+                          style={{ width: "7em" }}
+                          name="name"
+                          rules={[
+                            {
+                              required: true,
+                              validator(rule, value, callback) {
+                                if (!selectItems.includes(value)) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                  new Error("Name already exists!")
+                                );
+                              },
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Name" />
+                        </Form.Item>
+                        <Form.Item>
+                          <Button
+                            type="text"
+                            icon={<PlusOutlined />}
+                            htmlType="submit"
+                            size={"small"}
+                          >
+                            Add item
+                          </Button>
+                        </Form.Item>
+                      </Form>
+                    </Space>
+                  </>
+                )}
+                options={selectItems.map((item) => ({
+                  label: item,
+                  value: item,
+                }))}
+              />
+            );
           case Property.TIME:
             return (
               <TimePicker ref={inputRef as any} onChange={save} onBlur={save} />
@@ -175,10 +212,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
     </>
   );
 
-  const items: MenuProps["items"] = [
+  const itemsDropdown: MenuProps["items"] = [
     {
       label: "Delete",
-      key: "3",
+      key: 0,
       onClick: () => handleDeleteRow(record.key),
       icon: <DeleteOutlined />,
     },
@@ -187,7 +224,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   return (
     <td {...restProps}>
       {dataIndex ? (
-        <Dropdown menu={{ items }} trigger={["contextMenu"]}>
+        <Dropdown menu={{ items: itemsDropdown }} trigger={["contextMenu"]}>
           <div style={{ padding: "16px" }}>{childNode}</div>
         </Dropdown>
       ) : (

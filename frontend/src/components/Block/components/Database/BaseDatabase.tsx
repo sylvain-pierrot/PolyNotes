@@ -22,7 +22,7 @@ export function getDefaultColumnValue(property: Property): any {
     case Property.SINGLE_SELECT:
       return null;
     case Property.DATE:
-      return new Date();
+      return dayjs("01/01/2023", "DD/MM/YYYY");
     case Property.TIME:
       return dayjs("00:00:00", "HH:mm:ss");
     case Property.TEXT:
