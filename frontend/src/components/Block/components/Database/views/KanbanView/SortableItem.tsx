@@ -1,16 +1,16 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { UniqueIdentifier } from "@dnd-kit/core";
 import Item from "./Item";
+import { DataType } from "../../BaseDatabase";
 
 interface IPropsSortableItem {
-  id: UniqueIdentifier;
+  item: DataType;
 }
 
-const SortableItem: React.FC<IPropsSortableItem> = ({ id }) => {
+const SortableItem: React.FC<IPropsSortableItem> = ({ item }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+    useSortable({ id: item.key });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -19,7 +19,7 @@ const SortableItem: React.FC<IPropsSortableItem> = ({ id }) => {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Item id={id} />
+      <Item item={item} />
     </div>
   );
 };

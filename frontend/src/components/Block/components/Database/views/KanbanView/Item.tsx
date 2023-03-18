@@ -1,22 +1,23 @@
-import { UniqueIdentifier } from "@dnd-kit/core";
+import { Card } from "antd";
+import { DataType } from "../../BaseDatabase";
 
 interface IPropsItem {
-  id: UniqueIdentifier;
+  item: DataType;
 }
 
-const Item: React.FC<IPropsItem> = ({ id }) => {
+const Item: React.FC<IPropsItem> = ({ item }) => {
   const style = {
     width: "100%",
-    height: 50,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "1px solid black",
     margin: "10px 0",
-    background: "white",
   };
 
-  return <div style={style}>{id}</div>;
+  return (
+    <Card style={style}>
+      {Object.keys(item).map((key) => {
+        return <p>{`${key} : ${item[key].toString()}`}</p>;
+      })}
+    </Card>
+  );
 };
 
 export default Item;
