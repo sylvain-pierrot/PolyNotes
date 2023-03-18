@@ -86,6 +86,16 @@ const KanbanView: React.FC<IPropsKanbanView> = ({ items }) => {
     });
   };
 
+  const getItemById = (id: UniqueIdentifier) => {
+    for (let i = 0; i < containers.length; i++) {
+      for (let j = 0; j < containers[i].items.length; j++) {
+        if (containers[i].items[j].key === id) {
+          return containers[i].items[j];
+        }
+      }
+    }
+  };
+
   const findContainer = (id: UniqueIdentifier) => {
     // Find a container either by id or by containing an item with the given id
     let container = findContainerById(id, containers);
@@ -248,7 +258,9 @@ const KanbanView: React.FC<IPropsKanbanView> = ({ items }) => {
           />
         ))}
 
-        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+        <DragOverlay>
+          {activeId ? <Item item={getItemById(activeId)!} /> : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );

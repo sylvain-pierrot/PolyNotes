@@ -32,7 +32,7 @@ const Container: React.FC<IPropsContainer> = ({ id, items }) => {
     >
       <div ref={setNodeRef} style={containerStyle}>
         {items.map((item) => (
-          <SortableItem key={item.key} id={item.key} />
+          <SortableItem key={item.key} item={item} />
         ))}
       </div>
     </SortableContext>
