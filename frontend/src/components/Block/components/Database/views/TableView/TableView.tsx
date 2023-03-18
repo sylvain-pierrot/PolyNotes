@@ -43,6 +43,7 @@ const TableView: React.FC<IPropsTableView> = ({
             justify={"space-between"}
             align={"middle"}
             className="header-cell"
+            wrap={false}
           >
             {col.name}
             <Button

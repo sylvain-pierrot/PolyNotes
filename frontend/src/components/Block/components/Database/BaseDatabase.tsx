@@ -5,6 +5,7 @@ import { EllipsisOutlined } from "@ant-design/icons";
 import "./BaseDatabase.css";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import KanbanView from "./views/KanbanView/KanbanView";
 
 export enum Property {
   NUMBER = "number",
@@ -117,14 +118,16 @@ const BaseDatabase: React.FC = () => {
           <Button type="text" icon={<EllipsisOutlined />} />
         </Dropdown>
       </div>
-
-      <TableView
-        rows={rows}
-        columns={columns}
-        newColumn={newColumn}
-        updateRows={setRows}
-        updateCols={setColumns}
-      />
+      {viewSelected.key === "1" && (
+        <TableView
+          rows={rows}
+          columns={columns}
+          newColumn={newColumn}
+          updateRows={setRows}
+          updateCols={setColumns}
+        />
+      )}
+      {viewSelected.key === "2" && <KanbanView items={rows} />}
     </>
   );
 };
