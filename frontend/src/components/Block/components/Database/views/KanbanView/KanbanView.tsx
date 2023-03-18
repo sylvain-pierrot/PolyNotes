@@ -55,30 +55,44 @@ const KanbanView: React.FC<IPropsKanbanView> = ({ items }) => {
     })
   );
 
-  const findContainer = (id: UniqueIdentifier) => {
-    // if (id in items) {
-    //   return id;
-    // }
-    let containerFound = containers.find(
-      (container) =>
-        //   container.items.includes(id as string)
-        container.id === id
-    );
-    if (containerFound === undefined) {
-      containerFound = containers.find((container) =>
-        //   container.items.includes(id as string)
-        {
-          for (let i = 0; i < container.items.length; i++) {
-            if (container.items[i].key === id) {
-              return true;
-            }
-          }
-          return false;
-        }
-      );
-    }
+  const findContainerById = (
+    id: UniqueIdentifier,
+    containers: {
+      id: string;
+      title: string;
+      items: DataType[];
+    }[]
+  ) => {
+    // Find a container with the given id
+    return containers.find((container) => container.id === id);
+  };
 
-    return containerFound;
+  const findContainerByItemId = (
+    id: UniqueIdentifier,
+    containers: {
+      id: string;
+      title: string;
+      items: DataType[];
+    }[]
+  ) => {
+    // Find a container that contains an item with the given id
+    return containers.find((container) => {
+      for (let i = 0; i < container.items.length; i++) {
+        if (container.items[i].key === id) {
+          return true;
+        }
+      }
+      return false;
+    });
+  };
+
+  const findContainer = (id: UniqueIdentifier) => {
+    // Find a container either by id or by containing an item with the given id
+    let container = findContainerById(id, containers);
+    if (!container) {
+      container = findContainerByItemId(id, containers);
+    }
+    return container;
   };
 
   const findIndexById = (items: DataType[], id: UniqueIdentifier) => {
