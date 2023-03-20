@@ -34,6 +34,26 @@ export function getDefaultColumnValue(property: Property): any {
       throw new Error(`Unknown column type: ${property}`);
   }
 }
+// react:
+// rows are represent by items in containers. In the useEffect, on data rows change , please update items in containers, if the "row" as "item" in containers doesn't exist create and put him in the default container
+
+// export interface DataType {
+
+//   key: React.Key;
+//   [key: string]: any;
+// }
+
+// const [rows, setRows] = useState<DataType[]>([]);
+
+// const [containers, setContainers] = useState<
+//     {
+//       id: string;
+//       title: string;
+//       items: DataType[];
+//     }[]
+//   >([{ id: uuidv4(), title: "Default", items: rows }]);
+
+//  useEffect(() => {}, [rows, containers]);
 
 // Views selectable
 const views = [
@@ -54,40 +74,38 @@ export interface DataType {
 
 const BaseDatabase: React.FC = () => {
   // Rows
-  const [rows, setRows] = useState<DataType[]>([
-    {
-      key: uuidv4(),
-      name: "Edward King 0",
-      bool: true,
-      number: 1,
-      time: dayjs("00:00:00", "HH:mm:ss"),
-    },
-    {
-      key: uuidv4(),
-      name: "Edward King 1",
-      bool: false,
-      number: 1,
-      time: dayjs("00:00:00", "HH:mm:ss"),
-    },
-  ]);
+  const [rows, setRows] = useState<DataType[]>([]);
 
   // Columns
   const [columns, setColumns] = useState<
     { name: string; property: Property }[]
-  >([
-    { name: "name", property: Property.TEXT },
-    { name: "bool", property: Property.CHECKBOX },
-    { name: "number", property: Property.NUMBER },
-    { name: "time", property: Property.TIME },
-  ]);
+  >([{ name: "name", property: Property.TEXT }]);
+
+  // Containers
+  const [containers, setContainers] = useState<
+    {
+      id: string;
+      title: string;
+      items: DataType[];
+    }[]
+  >([{ id: uuidv4(), title: "Default", items: rows }]);
 
   // States
   const [viewSelected, setViewSelected] = useState(views[0]);
 
   // useEffect
   useEffect(() => {
-    console.log(rows);
-  }, [rows, columns]);
+    let newContainers = containers;
+    for (const row of rows) {
+      const e = getContainerIndexAndItemIndex(row);
+      if (e != -1) {
+        newContainers[e.indexC].items[e.indexI] = row;
+      } else {
+        newContainers[0].items.push(row);
+      }
+    }
+    setContainers(newContainers);
+  }, [rows, containers]);
 
   // Handles
   const newColumn = (column: { name: string; property: Property }) => {
@@ -97,6 +115,23 @@ const BaseDatabase: React.FC = () => {
       row[column.name] = getDefaultColumnValue(column.property);
     });
     setRows(newRows);
+  };
+  const newContainer = (container: {
+    id: string;
+    title: string;
+    items: DataType[];
+  }) => {
+    setContainers([...containers, container]);
+  };
+  const getContainerIndexAndItemIndex = (row: DataType) => {
+    for (const i in containers) {
+      for (const j in containers[i].items) {
+        if (row.key === containers[i].items[j].key) {
+          return { indexC: parseInt(i), indexI: parseInt(j) };
+        }
+      }
+    }
+    return -1;
   };
 
   return (
@@ -127,7 +162,13 @@ const BaseDatabase: React.FC = () => {
           updateCols={setColumns}
         />
       )}
-      {viewSelected.key === "2" && <KanbanView items={rows} />}
+      {viewSelected.key === "2" && (
+        <KanbanView
+          containers={containers}
+          setContainers={setContainers}
+          newContainer={newContainer}
+        />
+      )}
     </>
   );
 };

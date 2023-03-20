@@ -18,35 +18,40 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import Container from "./Container";
 import Item from "./Item";
 import { DataType } from "../../BaseDatabase";
-import { v4 as uuidv4 } from "uuid";
+import "./KanbanView.css";
+import { Button, Col, Row } from "antd";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import SiderFormContainer from "./SiderFormContainer";
 
 interface IPropsKanbanView {
-  items: DataType[];
+  containers: {
+    id: string;
+    title: string;
+    items: DataType[];
+  }[];
+  setContainers: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: string;
+        title: string;
+        items: DataType[];
+      }[]
+    >
+  >;
+  newContainer: (container: {
+    id: string;
+    title: string;
+    items: DataType[];
+  }) => void;
 }
 
-const KanbanView: React.FC<IPropsKanbanView> = ({ items }) => {
-  //   const [containers, setContainers] = useState<
-  //     {
-  //       id: string;
-  //       title: string;
-  //       items: string[];
-  //     }[]
-  //   >([
-  //     { id: "1", title: "", items: ["1", "2", "3"] },
-  //     { id: "2", title: "", items: ["4", "5", "6"] },
-  //     { id: "3", title: "", items: ["7", "8", "9"] },
-  //   ]);
-  const [containers, setContainers] = useState<
-    {
-      id: string;
-      title: string;
-      items: DataType[];
-    }[]
-  >([
-    { id: uuidv4(), title: "", items: items },
-    { id: uuidv4(), title: "", items: [] },
-  ]);
+const KanbanView: React.FC<IPropsKanbanView> = ({
+  containers,
+  setContainers,
+  newContainer,
+}) => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [showSider, setShowSider] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -242,27 +247,46 @@ const KanbanView: React.FC<IPropsKanbanView> = ({ items }) => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
+    <>
+      <Button
+        type="text"
+        icon={<PlusOutlined />}
+        size={"large"}
+        className="btn-new-col"
+        onClick={() => setShowSider(true)}
+      />
+      <div
+        style={{ display: "flex", flexDirection: "row", position: "relative" }}
       >
-        {containers.map((container) => (
-          <Container
-            key={container.id}
-            id={container.id}
-            items={container.items}
-          />
-        ))}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          {containers.map((container) => (
+            <Container
+              key={container.id}
+              id={container.id}
+              title={container.title}
+              items={container.items}
+            />
+          ))}
 
-        <DragOverlay>
-          {activeId ? <Item item={getItemById(activeId)!} /> : null}
-        </DragOverlay>
-      </DndContext>
-    </div>
+          <DragOverlay>
+            {activeId ? <Item item={getItemById(activeId)!} /> : null}
+          </DragOverlay>
+        </DndContext>
+        {showSider && (
+          <SiderFormContainer
+            newContainer={newContainer}
+            containers={containers}
+            closeSider={() => setShowSider(false)}
+          />
+        )}
+      </div>
+    </>
   );
 };
 
