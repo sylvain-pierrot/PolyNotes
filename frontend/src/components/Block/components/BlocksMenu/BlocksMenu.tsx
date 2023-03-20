@@ -5,14 +5,20 @@ import Heading1Image from "../../../../assets/images/heading-1.png";
 import Heading2Image from "../../../../assets/images/heading-2.png";
 import Heading3Image from "../../../../assets/images/heading-3.png";
 import Image from "../../../../assets/images/image.png";
+import Database from "../../../../assets/images/database.png";
 import "./BlocksMenu.css";
 
 interface IPropsBlocksMenu {
   editor: Editor;
   goImg: () => void;
+  goDatabase: () => void;
 }
 
-const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor, goImg }) => {
+const BlocksMenu: React.FC<IPropsBlocksMenu> = ({
+  editor,
+  goImg,
+  goDatabase,
+}) => {
   return (
     <FloatingMenu
       editor={editor}
@@ -92,6 +98,13 @@ const BlocksMenu: React.FC<IPropsBlocksMenu> = ({ editor, goImg }) => {
             avatar={<Avatar shape="square" size={46} src={Image} />}
             title={"Image"}
             description={"Embeded with a link."}
+          />
+        </List.Item>
+        <List.Item onClick={() => goDatabase()}>
+          <List.Item.Meta
+            avatar={<Avatar shape="square" size={46} src={Database} />}
+            title={"Database"}
+            description={"Database with Kanban/Table views."}
           />
         </List.Item>
       </List>

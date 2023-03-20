@@ -19,8 +19,8 @@ import Container from "./Container";
 import Item from "./Item";
 import { DataType } from "../../BaseDatabase";
 import "./KanbanView.css";
-import { Button, Col, Row } from "antd";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import SiderFormContainer from "./SiderFormContainer";
 
 interface IPropsKanbanView {

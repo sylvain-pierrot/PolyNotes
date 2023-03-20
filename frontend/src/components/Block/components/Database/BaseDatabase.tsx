@@ -98,7 +98,7 @@ const BaseDatabase: React.FC = () => {
     let newContainers = containers;
     for (const row of rows) {
       const e = getContainerIndexAndItemIndex(row);
-      if (e != -1) {
+      if (e !== -1) {
         newContainers[e.indexC].items[e.indexI] = row;
       } else {
         newContainers[0].items.push(row);
