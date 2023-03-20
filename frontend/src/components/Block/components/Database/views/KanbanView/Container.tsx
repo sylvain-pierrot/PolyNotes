@@ -9,17 +9,17 @@ import { DataType } from "../../BaseDatabase";
 
 const containerStyle = {
   background: "#dadada",
-  padding: 10,
   margin: 10,
   flex: 1,
 };
 
 interface IPropsContainer {
   id: string;
+  title: string;
   items: DataType[];
 }
 
-const Container: React.FC<IPropsContainer> = ({ id, items }) => {
+const Container: React.FC<IPropsContainer> = ({ id, title, items }) => {
   const { setNodeRef } = useDroppable({
     id,
   });
@@ -31,6 +31,8 @@ const Container: React.FC<IPropsContainer> = ({ id, items }) => {
       strategy={verticalListSortingStrategy}
     >
       <div ref={setNodeRef} style={containerStyle}>
+        <h1 className="container-title">{title}</h1>
+
         {items.map((item) => (
           <SortableItem key={item.key} item={item} />
         ))}
