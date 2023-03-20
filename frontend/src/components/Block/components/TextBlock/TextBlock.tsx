@@ -10,7 +10,8 @@ import Heading from "@tiptap/extension-heading";
 import { Extension } from "@tiptap/core";
 import { useDispatch } from "react-redux";
 import {
-  changeToImageBlock,
+  BlockType,
+  changeToTypeBlock,
   destroyBlock,
   newBlock,
   updateContent,
@@ -84,14 +85,20 @@ const TextBlock = forwardRef(
     // Handles
     const goImg = () => {
       dispatch(updateContent({ id: id, content: null }));
-      dispatch(changeToImageBlock({ id }));
+      dispatch(changeToTypeBlock({ id, type: BlockType.IMAGE }));
+    };
+    const goDatabase = () => {
+      dispatch(updateContent({ id: id, content: null }));
+      dispatch(changeToTypeBlock({ id, type: BlockType.TABLE }));
     };
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
       <div className={"text-block"}>
         {editor && <RichEditor editor={editor} />}
-        {editor && <BlocksMenu editor={editor} goImg={goImg} />}
+        {editor && (
+          <BlocksMenu editor={editor} goImg={goImg} goDatabase={goDatabase} />
+        )}
         <EditorContent
           editor={editor}
           onKeyDown={(event) => {

@@ -13,9 +13,7 @@ export interface Block {
   type: BlockType;
 }
 
-const initialState: Block[] = [
-  { id: uuidv4(), content: null, type: BlockType.TABLE },
-];
+const initialState: Block[] = [];
 
 const blocksSlice = createSlice({
   name: "blocksSlice",
@@ -40,10 +38,10 @@ const blocksSlice = createSlice({
       const { id } = action.payload;
       state.blocks = state.blocks.filter((block) => block.id !== id);
     },
-    changeToImageBlock(state, action) {
-      const { id } = action.payload;
+    changeToTypeBlock(state, action) {
+      const { id, type } = action.payload;
       const index = state.blocks.findIndex((block) => block.id === id);
-      state.blocks[index].type = BlockType.IMAGE;
+      state.blocks[index].type = type;
     },
     updateContent(state, action) {
       const { id, content } = action.payload;
@@ -56,7 +54,7 @@ const blocksSlice = createSlice({
   },
 });
 
-export const { newBlock, destroyBlock, changeToImageBlock, updateContent } =
+export const { newBlock, destroyBlock, changeToTypeBlock, updateContent } =
   blocksSlice.actions;
 
 export default blocksSlice.reducer;
