@@ -60,6 +60,9 @@ const TextBlock = forwardRef(
         TextBlockExtension,
         StarterKit.configure({
           history: false,
+          bulletList: false,
+          listItem: false,
+          orderedList: false,
         }),
         Highlight,
         Underline,
@@ -91,13 +94,27 @@ const TextBlock = forwardRef(
       dispatch(updateContent({ id: id, content: null }));
       dispatch(changeToTypeBlock({ id, type: BlockType.TABLE }));
     };
+    const goBulletList = () => {
+      dispatch(updateContent({ id: id, content: null }));
+      dispatch(changeToTypeBlock({ id, type: BlockType.BULLET_LIST }));
+    };
+    const goOrderedList = () => {
+      dispatch(updateContent({ id: id, content: null }));
+      dispatch(changeToTypeBlock({ id, type: BlockType.ORDERED_LIST }));
+    };
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
       <div className={"text-block"}>
         {editor && <RichEditor editor={editor} />}
         {editor && (
-          <BlocksMenu editor={editor} goImg={goImg} goDatabase={goDatabase} />
+          <BlocksMenu
+            editor={editor}
+            goImg={goImg}
+            goDatabase={goDatabase}
+            goBulletList={goBulletList}
+            goOrderedList={goOrderedList}
+          />
         )}
         <EditorContent
           editor={editor}
