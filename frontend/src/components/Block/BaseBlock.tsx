@@ -2,12 +2,19 @@ import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import React, { useState } from "react";
 import "./BaseBlock.css";
-import { Block, destroyBlock, newBlock } from "../../store/slices/blocksSlice";
+import {
+  Block,
+  BlockType,
+  destroyBlock,
+  newBlock,
+} from "../../store/slices/blocksSlice";
 import TextBlock from "./components/TextBlock/TextBlock";
 import { Editor } from "@tiptap/react";
 import { useDispatch } from "react-redux";
 import ImageBlock from "./components/ImageBlock/ImageBlock";
 import BaseDatabase from "./components/Database/BaseDatabase";
+import BulletListBlock from "./components/BulletListBlock/BulletListBlock";
+import OrderedListBlock from "./components/OrderedListBlock/OrderedListBlock";
 
 interface IPropsBlock {
   block: Block;
@@ -59,7 +66,7 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
         />
       </div>
 
-      {block.type === "text" && (
+      {block.type === BlockType.BASIC && (
         <TextBlock
           id={block.id}
           content={block.content}
@@ -71,7 +78,7 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
           onDestroy={() => handleFocus(-1)}
         />
       )}
-      {block.type === "img" && (
+      {block.type === BlockType.IMAGE && (
         <ImageBlock
           id={block.id}
           content={block.content}
@@ -81,7 +88,31 @@ const BaseBlock: React.FC<IPropsBlock> = ({ block, goRef, handleFocus }) => {
           }}
         />
       )}
-      {block.type === "table" && <BaseDatabase />}
+      {block.type === BlockType.TABLE && <BaseDatabase />}
+      {block.type === BlockType.BULLET_LIST && (
+        <BulletListBlock
+          id={block.id}
+          content={block.content}
+          ref={(ref) => {
+            goRef(ref);
+            setRef(ref);
+          }}
+          handleArrows={handleArrows}
+          onDestroy={() => handleFocus(-1)}
+        />
+      )}
+      {block.type === BlockType.ORDERED_LIST && (
+        <OrderedListBlock
+          id={block.id}
+          content={block.content}
+          ref={(ref) => {
+            goRef(ref);
+            setRef(ref);
+          }}
+          handleArrows={handleArrows}
+          onDestroy={() => handleFocus(-1)}
+        />
+      )}
     </div>
   );
 };

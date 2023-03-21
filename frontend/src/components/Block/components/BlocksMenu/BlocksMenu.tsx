@@ -6,18 +6,24 @@ import Heading2Image from "../../../../assets/images/heading-2.png";
 import Heading3Image from "../../../../assets/images/heading-3.png";
 import Image from "../../../../assets/images/image.png";
 import Database from "../../../../assets/images/database.png";
+import BulletList from "../../../../assets/images/bullet-list.png";
+import OrderedList from "../../../../assets/images/ordered-list.png";
 import "./BlocksMenu.css";
 
 interface IPropsBlocksMenu {
   editor: Editor;
   goImg: () => void;
   goDatabase: () => void;
+  goBulletList: () => void;
+  goOrderedList: () => void;
 }
 
 const BlocksMenu: React.FC<IPropsBlocksMenu> = ({
   editor,
   goImg,
   goDatabase,
+  goBulletList,
+  goOrderedList,
 }) => {
   return (
     <FloatingMenu
@@ -91,6 +97,20 @@ const BlocksMenu: React.FC<IPropsBlocksMenu> = ({
             avatar={<Avatar shape="square" size={46} src={Heading3Image} />}
             title={"Heading 3"}
             description={"Small section heading."}
+          />
+        </List.Item>
+        <List.Item onClick={() => goBulletList()}>
+          <List.Item.Meta
+            avatar={<Avatar shape="square" size={46} src={BulletList} />}
+            title={"Bulleted list"}
+            description={"Create a simple bulleted list."}
+          />
+        </List.Item>
+        <List.Item onClick={() => goOrderedList()}>
+          <List.Item.Meta
+            avatar={<Avatar shape="square" size={46} src={OrderedList} />}
+            title={"Numbered list"}
+            description={"Create a list with numbering."}
           />
         </List.Item>
         <List.Item onClick={() => goImg()}>
