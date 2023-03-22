@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "antd/es/layout";
-import { Button, Menu, MenuProps } from "antd";
+import { Button, Divider, List, Menu, MenuProps } from "antd";
 import {
   FolderOutlined,
   ShareAltOutlined,
@@ -36,16 +36,15 @@ const items: MenuItem[] = [
     getItem("Option 8", "8"),
   ]),
 
-  getItem("Shared with Me", "sub2", <ShareAltOutlined />, [
-    getItem("Option 9", "9"),
-    getItem("Option 10", "10"),
-  ]),
+  getItem("Shared with Me", "sub2", <ShareAltOutlined />, []),
 ];
 
 const LayoutSider: React.FC<{ isAuthenticated: boolean }> = ({
   isAuthenticated,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
+
+  const data = ["Recent", "Started", "Trash"];
 
   return (
     <>
@@ -77,6 +76,18 @@ const LayoutSider: React.FC<{ isAuthenticated: boolean }> = ({
               padding: "0.8em",
             }}
             items={items}
+          />
+          <Divider style={{ margin: "12px 0" }} />
+
+          <List
+            size="small"
+            split={false}
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item style={{ justifyContent: "center" }}>
+                <Button type="text">{item}</Button>
+              </List.Item>
+            )}
           />
         </Sider>
       )}
