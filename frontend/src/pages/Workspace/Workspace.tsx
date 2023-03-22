@@ -78,6 +78,7 @@ function Workspace() {
   return (
     <>
       <h1>Recent</h1>
+
       <List
         className="slider"
         split={false}
@@ -88,6 +89,7 @@ function Workspace() {
           </List.Item>
         )}
       />
+
       <FileExplorer treeData={treeData} />
     </>
   );

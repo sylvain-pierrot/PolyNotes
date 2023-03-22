@@ -1,7 +1,5 @@
-import { Avatar, Breadcrumb, Button, List, Row } from "antd";
+import { Avatar, Breadcrumb, List } from "antd";
 import {
-  RightOutlined,
-  LeftOutlined,
   FolderOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
