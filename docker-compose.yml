@@ -1,81 +1,45 @@
 services:
-
-  mongo1:
-    hostname: mongo1
+  mongo:
     image: mongo
-    expose:
-      - 27017
-    ports:
-      - 30001:27017 
     restart: always
-    command: mongod --replSet my-mongo-set
-
-  mongo2:
-    hostname: mongo2
-    image: mongo
-    expose:
-      - 27017
+    environment:
+      MONGO_INITDB_DATABASE: polynote
     ports:
-      - 30002:27017
-    restart: always
-    command: mongod --replSet my-mongo-set
-
-  mongo3:
-    hostname: mongo3
-    image: mongo
-    expose:
-      - 27017
-    ports:
-      - 30003:27017
-    restart: always
-    command: mongod --replSet my-mongo-set
-
-  mongoinit:
-    image: mongo
-    restart: "no"
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    command: >
-      mongo --host mongo1:27017 --eval 
-      '
-      db = (new Mongo("localhost:27017")).getDB("test");
-      config = {
-      "_id" : "my-mongo-set",
-      "members" : [
-        {
-          "_id" : 0,
-          "host" : "mongo1:27017"
-        },
-        {
-          "_id" : 1,
-          "host" : "mongo2:27017"
-        },
-        {
-          "_id" : 2,
-          "host" : "mongo3:27017"
-        }
-      ]
-      };
-      rs.initiate(config);
-      '    
+      - 27017:27017
+    volumes:
+      - data:/data/db
+    networks:
+      - private
 
   backend:
     build:
       context: backend
-    restart: always
-    ports:
-      - 5000:5000
-
-  frontend:
-    build:
-      context: frontend
       target: dev
     restart: always
-    ports:
-      - 3000:3000
     volumes:
-      - ./frontend/src:/app/src:ro
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - ./backend/src:/app/src:ro
+    ports:
+      - 5000:5000
+    networks:
+      - private
+    depends_on:
+      - mongo
+
+networks:
+  private:
+    driver: bridge
+
+volumes:
+  data:
+
+  # frontend:
+  #   build:
+  #     context: frontend
+  #     target: dev
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./frontend/src:/app/src:ro
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
