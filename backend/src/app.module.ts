@@ -23,23 +23,6 @@ import { UsersModule } from './users/users.module';
       }),
       inject: [ConfigService], // Inject the ConfigService.
     }),
-    // MailerModule.forRootAsync({
-    //   useFactory: (configService: ConfigService) => ({
-    //     transport: {
-    //       host: configService.get<string>('MAILER_HOST'),
-    //       port: configService.get<number>('MAILER_PORT'),
-    //       secure: false,
-    //       auth: {
-    //         user: configService.get<string>('MAILER_USER'),
-    //         pass: configService.get<string>('MAILER_PASSWORD'),
-    //       },
-    //     },
-    //     defaults: {
-    //       from: '"No Reply" <noreply@polynotes.dopolytech.fr>',
-    //     },
-    //   }),
-    //   inject: [ConfigService], // Inject the ConfigService.
-    // }),
     UsersModule,
     PagesModule,
     AuthModule,

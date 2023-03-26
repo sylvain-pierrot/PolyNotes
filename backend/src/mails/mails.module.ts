@@ -18,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
           },
         },
         defaults: {
-          from: '"No Reply" <noreply@polynotes.net>',
+          from: '"PolyNotes 📝" <noreply@polynotes.fr>',
         },
       }),
       inject: [ConfigService], // Inject the ConfigService.
