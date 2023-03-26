@@ -10,18 +10,17 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Workspace from "./pages/Workspace/Workspace";
 import Page from "./pages/Page/Page";
-import { useCookies } from "react-cookie";
 import NotFound from "./pages/NotFound/NotFound";
 
 const App: React.FC = () => {
-  const [cookies, setCookie] = useCookies();
+  console.log();
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout />,
-      loader: async () => {
-        return cookies.user;
+      loader: () => {
+        return { user: document.cookie };
       },
       children: [
         {

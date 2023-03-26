@@ -1,16 +1,41 @@
 import React from "react";
 import { Header } from "antd/es/layout/layout";
-import { Input, Avatar } from "antd";
+import { Input, Avatar, Popover, Button } from "antd";
 import Logo from "../../assets/images/PolyBunny.png";
 import Logo2 from "../../assets/images/polynotes-logo.svg";
 import "./LayoutHeader.css";
+import { api } from "../../boot/axios";
+import { useNavigate } from "react-router";
 
-const LayoutHeader: React.FC<{ isAuthenticated: boolean }> = ({
+interface IPropsLayoutHeader {
+  isAuthenticated: boolean;
+  user: any;
+}
+
+const LayoutHeader: React.FC<IPropsLayoutHeader> = ({
   isAuthenticated,
+  user,
 }) => {
-  const { Search } = Input;
+  const navigate = useNavigate();
+  const logoutUser = async () => {
+    try {
+      const response = await api.post("/api/auth/logout");
+      navigate("/");
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const { Search } = Input;
   const onSearch = (value: string) => console.log(value);
+  const content = (
+    <div>
+      <Button type={"default"} onClick={logoutUser}>
+        Logout
+      </Button>
+    </div>
+  );
 
   return (
     <Header
@@ -22,13 +47,19 @@ const LayoutHeader: React.FC<{ isAuthenticated: boolean }> = ({
 
           <Search placeholder="Search" onSearch={onSearch} className="search" />
 
-          <Avatar
-            style={{ backgroundColor: "#eb2f96", verticalAlign: "middle" }}
-            size="large"
-            alt={"User"}
-          >
-            AC
-          </Avatar>
+          <Popover content={content} trigger="click">
+            <Avatar
+              style={{
+                backgroundColor: "#eb2f96",
+                verticalAlign: "middle",
+                cursor: "pointer",
+              }}
+              size={"large"}
+              alt={"User"}
+            >
+              {user}
+            </Avatar>
+          </Popover>
         </>
       ) : (
         <img

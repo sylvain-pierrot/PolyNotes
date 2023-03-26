@@ -49,11 +49,12 @@ export class AuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
+    response.clearCookie('token');
+    response.clearCookie('user');
+
     if (!req.cookies['token']) {
       throw new HttpException('No cookies present', HttpStatus.BAD_REQUEST);
     }
-
-    response.clearCookie('token');
     return {
       message: 'Successfully logged out 😊 👌',
     };
