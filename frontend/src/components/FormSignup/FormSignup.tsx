@@ -15,14 +15,13 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
   const navigateToLogin = () => navigate("/login");
 
   const onFinish = (values: any) => {
+    form.resetFields();
     const user: IUser = {
       email: values.email,
       username: values.nickname,
       password: values.password,
     };
     signup(user);
-    form.resetFields();
-    navigate("/workspace");
   };
 
   return (

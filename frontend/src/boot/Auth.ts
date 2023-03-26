@@ -29,11 +29,11 @@ export interface ICredentials {
 //   }
 // };
 
-export const logoutUser = async () => {
-  try {
-    const response = await api.post("/api/auth/logout");
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-};
+// export const logoutUser = async () => {
+//   try {
+//     const response = await api.post("/api/auth/logout");
+//     return response;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };

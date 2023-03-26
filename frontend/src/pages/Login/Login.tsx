@@ -6,10 +6,13 @@ import { ICredentials } from "../../boot/Auth";
 import { api } from "../../boot/axios";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import withAuth from "../../hocs/withAuth";
+import { useNavigate } from "react-router-dom";
+import { setTimeout } from "timers/promises";
 
 function Login() {
   const placement: NotificationPlacement = "topRight";
   const [notify, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
   const loginUser = async (credentials: ICredentials) => {
     try {
@@ -19,6 +22,7 @@ function Login() {
         duration: 3,
         placement,
       });
+      navigate("/workspace");
       return response;
     } catch (error) {
       notify.info({
@@ -30,8 +34,8 @@ function Login() {
     }
   };
 
-  const handleLogin = (credentials: ICredentials) => {
-    const response = loginUser(credentials);
+  const handleLogin = async (credentials: ICredentials) => {
+    const response = await loginUser(credentials);
     console.log(response);
   };
 

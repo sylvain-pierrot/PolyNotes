@@ -8,14 +8,16 @@ import LayoutSider from "../../components/LayoutSider/LayoutSider";
 const { Content } = Layout;
 
 const MainLayout: React.FC = () => {
-  const isAuthenticated = useLoaderData();
+  const loader: any = useLoaderData();
+
+  const isAuthenticated = !!loader.user;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <LayoutHeader isAuthenticated={!!isAuthenticated} />
+      <LayoutHeader isAuthenticated={isAuthenticated} user={loader.user} />
 
       <Layout>
-        <LayoutSider isAuthenticated={!!isAuthenticated} />
+        <LayoutSider isAuthenticated={isAuthenticated} />
 
         <Content
           style={{
