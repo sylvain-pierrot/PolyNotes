@@ -1,21 +1,21 @@
 import React from "react";
 import { Layout } from "antd";
 import "./MainLayout.css";
-import { Outlet } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import LayoutHeader from "../../components/LayoutHeader/LayoutHeader";
 import LayoutSider from "../../components/LayoutSider/LayoutSider";
 
 const { Content } = Layout;
 
 const MainLayout: React.FC = () => {
-  const isAuthenticated: boolean = true;
+  const isAuthenticated = useLoaderData();
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <LayoutHeader isAuthenticated={isAuthenticated} />
+      <LayoutHeader isAuthenticated={!!isAuthenticated} />
 
       <Layout>
-        <LayoutSider isAuthenticated={isAuthenticated} />
+        <LayoutSider isAuthenticated={!!isAuthenticated} />
 
         <Content
           style={{

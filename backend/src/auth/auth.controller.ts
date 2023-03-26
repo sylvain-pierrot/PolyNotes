@@ -20,20 +20,24 @@ export class AuthController {
   async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     try {
       const user = await this.authService.login(req['user']);
-      res
-        .cookie('token', user.access_token, {
-          httpOnly: true,
-          secure: false,
-          sameSite: 'strict',
-        })
-        .send({
-          message: 'Successfully logged in 😊 👌',
-          user: {
-            userId: user._id,
-            email: user.email,
-            username: user.username,
-          },
-        });
+      res.cookie('token', user.access_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      });
+      res.cookie('user', user.username, {
+        httpOnly: false,
+        secure: true,
+        sameSite: 'strict',
+      });
+      res.send({
+        message: 'Successfully logged in 😊 👌',
+        user: {
+          userId: user._id,
+          email: user.email,
+          username: user.username,
+        },
+      });
     } catch (error) {
       console.log(error);
       throw new HttpException('Connection failure', HttpStatus.CONFLICT);

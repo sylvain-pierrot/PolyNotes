@@ -1,9 +1,13 @@
 import { Button, Form, Input } from "antd";
 import "./FormSignup.css";
 import { useNavigate } from "react-router";
-import withAuth from "../../hocs/withAuth";
+import { IUser } from "../../boot/Auth";
 
-const FormSignup: React.FC = () => {
+interface IpropsFormLogin {
+  signup: (user: IUser) => void;
+}
+
+const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
@@ -11,7 +15,14 @@ const FormSignup: React.FC = () => {
   const navigateToLogin = () => navigate("/login");
 
   const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+    const user: IUser = {
+      email: values.email,
+      username: values.nickname,
+      password: values.password,
+    };
+    signup(user);
+    form.resetFields();
+    navigate("/workspace");
   };
 
   return (
@@ -46,6 +57,10 @@ const FormSignup: React.FC = () => {
           {
             required: true,
             message: "Please input your password!",
+          },
+          {
+            pattern: new RegExp(/^(?=.{8,50}$).*$/),
+            message: "Value should be more than 8 character",
           },
         ]}
         hasFeedback
@@ -109,4 +124,4 @@ const FormSignup: React.FC = () => {
   );
 };
 
-export default withAuth(FormSignup);
+export default FormSignup;
