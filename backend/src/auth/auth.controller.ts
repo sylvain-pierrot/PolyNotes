@@ -31,11 +31,11 @@ export class AuthController {
         })
         .send({
           message: 'Logged in successfully 😊 👌',
-          // user: {
-          //   userId: user.userId,
-          //   email: user.email,
-          //   username: user.username,
-          // },
+          user: {
+            userId: user._id,
+            email: user.email,
+            username: user.username,
+          },
         });
     } catch (error) {
       console.log(error);
