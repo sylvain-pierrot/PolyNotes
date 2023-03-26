@@ -1,28 +1,37 @@
 import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import "./FormLogin.css";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import withAuth from "../../hocs/withAuth";
+import { ICredentials } from "../../boot/Auth";
 
-const FormLogin: React.FC = () => {
+interface IPropsFormLogin {
+  login: (credentials: ICredentials) => void;
+}
+
+const FormLogin: React.FC<IPropsFormLogin> = ({ login }) => {
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
+    const credentials: ICredentials = {
+      email: values.email,
+      password: values.password,
+    };
+    login(credentials);
   };
 
   return (
     <Form
       name="normal_login"
-      initialValues={{ remember: true }}
+      initialValues={{ remember: false }}
       onFinish={onFinish}
     >
       <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Please input your Username!" }]}
+        name="email"
+        rules={[{ required: true, message: "Please input your email!" }]}
       >
         <Input
-          prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Username"
+          prefix={<MailOutlined className="site-form-item-icon" />}
+          placeholder="Email"
         />
       </Form.Item>
       <Form.Item
@@ -55,4 +64,4 @@ const FormLogin: React.FC = () => {
   );
 };
 
-export default withAuth(FormLogin);
+export default FormLogin;
