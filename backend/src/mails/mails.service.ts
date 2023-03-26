@@ -12,19 +12,30 @@ export class MailsService {
   async sendEmailVerificationLink(email: string, nonce: string) {
     const baseUrl = this.configService.get<string>('BASE_URL');
 
-    const verificationLink = `${baseUrl}/api/users/${email}/${nonce}`;
+    const verificationLink = `${baseUrl}/api/users/verify/${email}/${nonce}`;
 
     const mailOptions = {
       to: email,
-      subject: '📝 Polynote mail verification',
+      subject: 'Verify Your PolyNotes Email Address',
       html: `
-      <div align="center"> 
-        <h1>Welcome 👋</h1>
-        <p>Please click the following link to verify your email address:</p><p><a href="${verificationLink}">${verificationLink}</a></p>
-      </div>
+        <div style="background-color: #f5f5f5; padding: 20px; text-align: center;">
+          <h1 style="color: #2f2e41; font-size: 32px;">Email Address Verification</h1>
+          <img style="display: inline-block; width: 250px; margin-top: 20px;" src="cid:logo" />
+          <p style="color: #2f2e41; font-size: 18px; margin-top: 20px;">
+            <a href="${verificationLink}" style="background-color: #f44336; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Verify Email</a>
+          </p>
+          <p style="color: #2f2e41; font-size: 18px; margin-top: 20px; text-align: center;">Secure your PolyNotes account by verifying your email address.</p>
+       </div>
       `,
+      attachments: [
+        {
+          filename: 'PolyBunny.png',
+          path: `/app/src/assets/PolyBunny.png`,
+          cid: 'logo',
+        },
+      ],
     };
 
-    return this.mailerService.sendMail(mailOptions);
+    return await this.mailerService.sendMail(mailOptions);
   }
 }

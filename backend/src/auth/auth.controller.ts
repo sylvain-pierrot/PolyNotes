@@ -17,20 +17,17 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(
-    @Req() req: Request,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     try {
       const user = await this.authService.login(req['user']);
-      response
+      res
         .cookie('token', user.access_token, {
           httpOnly: true,
           secure: false,
           sameSite: 'strict',
         })
         .send({
-          message: 'Logged in successfully 😊 👌',
+          message: 'Successfully logged in 😊 👌',
           user: {
             userId: user._id,
             email: user.email,
@@ -39,23 +36,22 @@ export class AuthController {
         });
     } catch (error) {
       console.log(error);
-      throw new HttpException(
-        'Email address already exists. Please try again.',
-        HttpStatus.CONFLICT,
-      );
+      throw new HttpException('Connection failure', HttpStatus.CONFLICT);
     }
   }
 
   @Post('logout')
-  async logout(@Res({ passthrough: true }) response: Response) {
-    const cookie = response.clearCookie('polynote');
-    if (!cookie)
-      throw new HttpException(
-        'Aucun cookie Polynote présent !!',
-        HttpStatus.BAD_REQUEST,
-      );
+  async logout(
+    @Req() req: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    if (!req.cookies['token']) {
+      throw new HttpException('No cookies present', HttpStatus.BAD_REQUEST);
+    }
+
+    response.clearCookie('token');
     return {
-      message: 'Logged out successfully 😊 👌',
+      message: 'Successfully logged out 😊 👌',
     };
   }
 }
