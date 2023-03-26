@@ -1,36 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from 'src/users/schemas/user.schema';
-import { Model } from 'mongoose';
 
 @Injectable()
 export class MailsService {
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async valide(email: string, nonce: string) {
-    const user = await this.userModel.findOne({ email: email });
-
-    // Check if user exists
-    if (user && user.nonce === nonce) {
-      await this.userModel.updateOne({ email: user.email }, { nonce: null });
-    } else {
-      throw new NotFoundException('The email could not be verified');
-    }
-  }
-
-  async sendEmailVerificationLink(to: string, token: string) {
+  async sendEmailVerificationLink(email: string, nonce: string) {
     const baseUrl = this.configService.get<string>('BASE_URL');
 
-    const verificationLink = `${baseUrl}/users/verify-email/${token}`;
+    const verificationLink = `${baseUrl}/api/users/${email}/${nonce}`;
 
     const mailOptions = {
-      to,
+      to: email,
       subject: '📝 Polynote mail verification',
       html: `
       <div align="center"> 

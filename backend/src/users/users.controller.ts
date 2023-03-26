@@ -21,6 +21,11 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
+  @Get(':email/:nonce')
+  async verify(@Param('email') email: string, @Param('nonce') nonce: string) {
+    return await this.usersService.valide(email, nonce);
+  }
+
   @Get()
   async findAll(): Promise<UserDocument[]> {
     return await this.usersService.findAll();
