@@ -31,6 +31,7 @@ const LayoutHeader: React.FC<IPropsLayoutHeader> = ({
   const onSearch = (value: string) => console.log(value);
   const content = (
     <div>
+      <p style={{ marginTop: 0 }}>{user}</p>
       <Button type={"default"} onClick={logoutUser}>
         Logout
       </Button>
@@ -57,7 +58,7 @@ const LayoutHeader: React.FC<IPropsLayoutHeader> = ({
               size={"large"}
               alt={"User"}
             >
-              {user}
+              {user.charAt(0).toUpperCase()}
             </Avatar>
           </Popover>
         </>
