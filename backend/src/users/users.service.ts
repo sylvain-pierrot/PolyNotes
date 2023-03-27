@@ -4,13 +4,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import { hash } from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { MailsService } from 'src/mails/mails.service';
+import { FileSystem } from '../file-system/schemas/file-system.schema';
+import { UpdateFileSystemDto } from 'src/file-system/dto/update-file-system.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,7 +21,10 @@ export class UsersService {
     private readonly mailsService: MailsService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserDocument> {
+  async create(
+    createUserDto: CreateUserDto,
+    fileSystem: FileSystem,
+  ): Promise<UserDocument> {
     const { email, password } = createUserDto;
     const user = await this.userModel.findOne({ email: email });
 
@@ -28,16 +33,18 @@ export class UsersService {
     }
 
     const nonce = uuid();
+    console.log('Create User :', fileSystem);
 
-    const newUser = await new this.userModel({
+    const newUser = new this.userModel({
       ...createUserDto,
       password: await hash(password, 10),
       nonce: nonce,
+      fileSystem: fileSystem,
     });
 
     await this.mailsService.sendEmailVerificationLink(email, nonce);
 
-    return newUser.save();
+    return await newUser.save();
   }
 
   async findAll() {
@@ -48,12 +55,29 @@ export class UsersService {
     return await this.userModel.findOne({ email });
   }
 
+  async findOneByFileSystemId(fileSystemId: string) {
+    return (await this.userModel.findOne({ 'fileSystem._id': fileSystemId }))
+      .fileSystem;
+  }
+
   async findOne(id: string) {
     return await this.userModel.findById(id).exec();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
+  }
+
+  async updateFileSystemById(
+    fileSystemId: string,
+    updateFileSystemDto: UpdateFileSystemDto,
+  ) {
+    return await this.userModel
+      .findOneAndUpdate(
+        { 'fileSystem._id': fileSystemId },
+        { $set: { 'fileSystem.children': updateFileSystemDto.children } },
+      )
+      .exec();
   }
 
   async remove(id: string) {

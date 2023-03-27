@@ -1,12 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Transform, Type } from 'class-transformer';
+import mongoose, { Document, ObjectId } from 'mongoose';
+import {
+  FileSystem,
+  FileSystemSchema,
+} from 'src/file-system/schemas/file-system.schema';
 
-export type UserDocument = HydratedDocument<User>;
+export type UserDocument = User & Document;
 
-@Schema({
-  timestamps: { createdAt: 'created', updatedAt: 'updated' },
-})
+@Schema()
 export class User {
+  @Transform(({ value }) => value.toString())
+  _id: ObjectId;
+
   @Prop({ required: true })
   username: string;
 
@@ -21,6 +27,10 @@ export class User {
 
   @Prop({ required: true })
   nonce: string;
+
+  @Prop({ type: FileSystemSchema })
+  @Type(() => FileSystem)
+  fileSystem: FileSystem;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

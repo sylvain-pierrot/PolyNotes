@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Document } from 'mongoose';
 import { Block } from '../types/interfaces';
 
-export type PageDocument = HydratedDocument<Page>;
+export type PageDocument = Page & Document;
 
 @Schema({
   timestamps: { createdAt: 'created', updatedAt: 'updated' },
