@@ -55,9 +55,8 @@ export class UsersService {
     return await this.userModel.findOne({ email });
   }
 
-  async findOneByFileSystemId(fileSystemId: string) {
-    return (await this.userModel.findOne({ 'fileSystem._id': fileSystemId }))
-      .fileSystem;
+  async findOneFileSystemyByUserId(id: string) {
+    return (await this.userModel.findById(id)).fileSystem;
   }
 
   async findOne(id: string) {

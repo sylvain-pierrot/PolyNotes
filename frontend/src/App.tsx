@@ -2,7 +2,7 @@ import "./assets/styles/App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import "./App.css";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import store from "./store/index";
 import MainLayout from "./layouts/MainLayout/MainLayout";
 import Home from "./pages/Home/Home";
@@ -11,6 +11,8 @@ import Signup from "./pages/Signup/Signup";
 import Workspace from "./pages/Workspace/Workspace";
 import Page from "./pages/Page/Page";
 import NotFound from "./pages/NotFound/NotFound";
+import { getFileSystem } from "./boot/FileSystem";
+import { updateFileSystem } from "./store/slices/fileSystemSlice";
 
 const App: React.FC = () => {
   const router = createBrowserRouter([
@@ -40,6 +42,10 @@ const App: React.FC = () => {
         {
           path: "workspace",
           element: <Workspace />,
+          loader: async () => {
+            const tree = await getFileSystem();
+            return tree;
+          },
         },
         {
           path: "page/:id",
