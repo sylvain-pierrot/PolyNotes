@@ -1,16 +1,8 @@
 import { Avatar, Breadcrumb, List } from "antd";
-import {
-  FolderOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
+import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import "./FileExplorer.css";
-
-export interface Node {
-  title: string;
-  key: string;
-  children?: Node[];
-}
+import { Node } from "../../boot/FileSystem";
 
 interface IPropsFileExplorer {
   treeData: Node;

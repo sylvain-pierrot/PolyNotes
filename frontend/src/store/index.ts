@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import authSlice from "./slices/authSlice";
 import blocksSlice from "./slices/blocksSlice";
+import fileSystemSlice from "./slices/fileSystemSlice";
 import titleSlice from "./slices/titleSlice";
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     blocksReducer: blocksSlice,
     titleReducer: titleSlice,
     authReducer: authSlice,
+    fileSystemReducer: fileSystemSlice,
   },
 });
 

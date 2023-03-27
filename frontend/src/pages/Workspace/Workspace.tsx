@@ -2,7 +2,12 @@ import "./Workspace.css";
 import withAuth from "../../hocs/withAuth";
 import { Card, List } from "antd";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
-import { Node } from "../../components/FileExplorer/FileExplorer";
+import { Node } from "../../boot/FileSystem";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { useDispatch } from "react-redux";
+import { updateFileSystem } from "../../store/slices/fileSystemSlice";
+import { useLoaderData } from "react-router";
 
 const data = [
   {
@@ -25,56 +30,19 @@ const data = [
   },
 ];
 
-const treeData: Node = {
-  title: "parent 1",
-  key: "0-0",
-  children: [
-    {
-      title: "parent 1-0",
-      key: "0-0-0",
-      children: [
-        {
-          title: "leaf",
-          key: "0-0-0-0",
-        },
-        {
-          title: "leaf",
-          key: "0-0-0-1",
-        },
-        {
-          title: "leaf",
-          key: "0-0-0-2",
-        },
-      ],
-    },
-    {
-      title: "parent 1-1",
-      key: "0-0-1",
-      children: [
-        {
-          title: "leaf",
-          key: "0-0-1-0",
-        },
-      ],
-    },
-    {
-      title: "parent 1-2",
-      key: "0-0-2",
-      children: [
-        {
-          title: "leaf",
-          key: "0-0-2-0",
-        },
-        {
-          title: "leaf",
-          key: "0-0-2-1",
-        },
-      ],
-    },
-  ],
-};
-
 function Workspace() {
+  // Loader
+  const tree: any = useLoaderData();
+  console.log(tree);
+
+  // Store
+  const dispatch = useDispatch();
+  dispatch(updateFileSystem({ tree }));
+
+  const treeData: Node = useSelector(
+    (state: RootState) => state.fileSystemReducer.fileSystem
+  );
+
   return (
     <>
       <h1>Recent</h1>
