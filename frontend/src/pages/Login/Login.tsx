@@ -7,7 +7,6 @@ import { api } from "../../boot/axios";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import withAuth from "../../hocs/withAuth";
 import { useNavigate } from "react-router-dom";
-import { setTimeout } from "timers/promises";
 
 function Login() {
   const placement: NotificationPlacement = "topRight";

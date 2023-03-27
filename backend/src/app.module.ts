@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailsController } from './mails/mails.controller';
 import { MailsModule } from './mails/mails.module';
 import { UsersModule } from './users/users.module';
+import { FileSystemModule } from './file-system/file-system.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UsersModule } from './users/users.module';
     PagesModule,
     AuthModule,
     MailsModule,
+    FileSystemModule,
   ],
   controllers: [AppController, MailsController],
   providers: [AppService],

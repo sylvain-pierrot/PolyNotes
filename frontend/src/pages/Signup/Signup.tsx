@@ -6,10 +6,12 @@ import { IUser } from "../../boot/Auth";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { api } from "../../boot/axios";
 import withAuth from "../../hocs/withAuth";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const placement: NotificationPlacement = "topRight";
   const [notify, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
 
   const signupUser = async (user: IUser) => {
     try {
@@ -19,6 +21,7 @@ function Signup() {
         duration: 3,
         placement,
       });
+      navigate("/login");
       return response;
     } catch (error) {
       notify.info({
