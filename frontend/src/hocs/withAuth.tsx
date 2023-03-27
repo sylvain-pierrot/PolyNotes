@@ -6,7 +6,6 @@ const withAuth =
   (props: P) => {
     const isAuth = useOutletContext();
     const { pathname } = useLocation();
-    console.log("isAuth:", isAuth);
 
     if (!isAuth) {
       if (pathname === "/" || pathname === "/login" || pathname === "/signup") {

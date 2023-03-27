@@ -13,14 +13,16 @@ import Page from "./pages/Page/Page";
 import NotFound from "./pages/NotFound/NotFound";
 
 const App: React.FC = () => {
-  console.log();
-
   const router = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout />,
       loader: () => {
-        return { user: document.cookie };
+        const user = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("user="))
+          ?.split("=")[1];
+        return { user: user };
       },
       children: [
         {

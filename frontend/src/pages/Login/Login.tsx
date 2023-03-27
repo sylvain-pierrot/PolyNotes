@@ -35,8 +35,7 @@ function Login() {
   };
 
   const handleLogin = async (credentials: ICredentials) => {
-    const response = await loginUser(credentials);
-    console.log(response);
+    await loginUser(credentials);
   };
 
   return (
