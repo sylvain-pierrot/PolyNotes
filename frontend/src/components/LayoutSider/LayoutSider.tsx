@@ -39,59 +39,53 @@ const items: MenuItem[] = [
   getItem("Shared with Me", "sub2", <ShareAltOutlined />, []),
 ];
 
-const LayoutSider: React.FC<{ isAuthenticated: boolean }> = ({
-  isAuthenticated,
-}) => {
+const LayoutSider: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const data = ["Recent", "Started", "Trash"];
 
   return (
-    <>
-      {isAuthenticated && (
-        <Sider
-          width={250}
-          style={{ backgroundColor: "#fafafa" }}
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
+    <Sider
+      width={250}
+      style={{ backgroundColor: "#fafafa" }}
+      collapsible
+      collapsed={collapsed}
+      onCollapse={(value) => setCollapsed(value)}
+    >
+      <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
+        <Button
+          type="primary"
+          style={{ width: "100%" }}
+          icon={<PlusOutlined />}
         >
-          <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
-            <Button
-              type="primary"
-              style={{ width: "100%" }}
-              icon={<PlusOutlined />}
-            >
-              New note
-            </Button>
-          </div>
+          New note
+        </Button>
+      </div>
 
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{
-              borderRight: 0,
-              backgroundColor: "#fafafa",
-              padding: "0.8em",
-            }}
-            items={items}
-          />
-          <Divider style={{ margin: "12px 0" }} />
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        style={{
+          borderRight: 0,
+          backgroundColor: "#fafafa",
+          padding: "0.8em",
+        }}
+        items={items}
+      />
+      <Divider style={{ margin: "12px 0" }} />
 
-          <List
-            size="small"
-            split={false}
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item style={{ justifyContent: "center" }}>
-                <Button type="text">{item}</Button>
-              </List.Item>
-            )}
-          />
-        </Sider>
-      )}
-    </>
+      <List
+        size="small"
+        split={false}
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item style={{ justifyContent: "center" }}>
+            <Button type="text">{item}</Button>
+          </List.Item>
+        )}
+      />
+    </Sider>
   );
 };
 

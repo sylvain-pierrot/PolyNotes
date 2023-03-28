@@ -12,8 +12,6 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
 
   const navigate = useNavigate();
 
-  const navigateToLogin = () => navigate("/login");
-
   const onFinish = (values: any) => {
     form.resetFields();
     const user: IUser = {
@@ -22,6 +20,7 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
       password: values.password,
     };
     signup(user);
+    navigate("/login");
   };
 
   return (
@@ -108,15 +107,8 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
       </Form.Item>
 
       <Form.Item className="text-left">
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
           Register
-        </Button>
-        <Button
-          type="default"
-          className="margin-left"
-          onClick={navigateToLogin}
-        >
-          Log in
         </Button>
       </Form.Item>
     </Form>

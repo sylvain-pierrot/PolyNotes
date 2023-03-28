@@ -1,52 +1,31 @@
 import "./Login.css";
 import Title from "antd/es/typography/Title";
 import FormLogin from "../../components/FormLogin/FormLogin";
-import { notification, Row } from "antd";
-import { ICredentials } from "../../boot/Auth";
-import { api } from "../../boot/axios";
-import { NotificationPlacement } from "antd/es/notification/interface";
+import { Row } from "antd";
+import { ICredentials, loginUser } from "../../boot/Auth";
 import withAuth from "../../hocs/withAuth";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const placement: NotificationPlacement = "topRight";
-  const [notify, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
-  const loginUser = async (credentials: ICredentials) => {
+  const handleLogin = async (credentials: ICredentials) => {
     try {
-      const response = await api.post("/api/auth/login", credentials);
-      notify.info({
-        message: "Successful connection",
-        duration: 3,
-        placement,
-      });
+      await loginUser(credentials);
       navigate("/workspace");
-      return response;
     } catch (error) {
-      notify.info({
-        message: "Connection failed",
-        duration: 3,
-        placement,
-      });
       console.error(error);
+      // handle error here
     }
   };
 
-  const handleLogin = async (credentials: ICredentials) => {
-    await loginUser(credentials);
-  };
-
   return (
-    <>
-      {contextHolder}
-      <Row justify={"center"}>
-        <div className="card">
-          <Title>Login</Title>
-          <FormLogin login={handleLogin} />
-        </div>
-      </Row>
-    </>
+    <Row justify={"center"}>
+      <div className="card">
+        <Title>Login</Title>
+        <FormLogin login={handleLogin} />
+      </div>
+    </Row>
   );
 }
 

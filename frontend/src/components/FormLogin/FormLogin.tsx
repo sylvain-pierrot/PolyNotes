@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import "./FormLogin.css";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import { ICredentials } from "../../boot/Auth";
 
 interface IPropsFormLogin {
@@ -54,10 +53,9 @@ const FormLogin: React.FC<IPropsFormLogin> = ({ login }) => {
       </Form.Item>
 
       <Form.Item className="text-left">
-        <Button type="primary" htmlType="submit" className="login-form-button">
+        <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
           Log in
         </Button>
-        Or <Link to={"/signup"}>register now!</Link>
       </Form.Item>
     </Form>
   );

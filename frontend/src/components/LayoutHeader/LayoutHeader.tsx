@@ -8,14 +8,10 @@ import { api } from "../../boot/axios";
 import { useNavigate } from "react-router";
 
 interface IPropsLayoutHeader {
-  isAuthenticated: boolean;
   user: any;
 }
 
-const LayoutHeader: React.FC<IPropsLayoutHeader> = ({
-  isAuthenticated,
-  user,
-}) => {
+const LayoutHeader: React.FC<IPropsLayoutHeader> = ({ user }) => {
   const navigate = useNavigate();
   const logoutUser = async () => {
     try {
@@ -39,36 +35,24 @@ const LayoutHeader: React.FC<IPropsLayoutHeader> = ({
   );
 
   return (
-    <Header
-      className={isAuthenticated ? "flex-between border-bottom" : "flex-center"}
-    >
-      {isAuthenticated ? (
-        <>
-          <img src={Logo} alt="PolyBunny" className="logo" />
+    <Header className="flex-between border-bottom">
+      <img src={Logo} alt="PolyBunny" className="logo" />
 
-          <Search placeholder="Search" onSearch={onSearch} className="search" />
+      <Search placeholder="Search" onSearch={onSearch} className="search" />
 
-          <Popover content={content} trigger="click">
-            <Avatar
-              style={{
-                backgroundColor: "#eb2f96",
-                verticalAlign: "middle",
-                cursor: "pointer",
-              }}
-              size={"large"}
-              alt={"User"}
-            >
-              {user.charAt(0).toUpperCase()}
-            </Avatar>
-          </Popover>
-        </>
-      ) : (
-        <img
-          src={Logo2}
-          alt="polynotes-logo"
-          style={{ width: "55%", maxWidth: "300px", margin: "2em 0" }}
-        />
-      )}
+      <Popover content={content} trigger="click">
+        <Avatar
+          style={{
+            backgroundColor: "#eb2f96",
+            verticalAlign: "middle",
+            cursor: "pointer",
+          }}
+          size={"large"}
+          alt={"User"}
+        >
+          {user.charAt(0).toUpperCase()}
+        </Avatar>
+      </Popover>
     </Header>
   );
 };
