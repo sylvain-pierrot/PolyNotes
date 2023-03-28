@@ -1,53 +1,31 @@
 import "./Signup.css";
 import Title from "antd/es/typography/Title";
 import FormSignup from "../../components/FormSignup/FormSignup";
-import { notification, Row } from "antd";
-import { IUser } from "../../boot/Auth";
-import { NotificationPlacement } from "antd/es/notification/interface";
-import { api } from "../../boot/axios";
+import { Row } from "antd";
+import { IUser, signupUser } from "../../boot/Auth";
 import withAuth from "../../hocs/withAuth";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
-  const placement: NotificationPlacement = "topRight";
-  const [notify, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
-  const signupUser = async (user: IUser) => {
+  const handleSignup = async (user: IUser) => {
     try {
-      const response = await api.post("/api/users", user);
-      notify.info({
-        message: "Account created, check your mails",
-        duration: 3,
-        placement,
-      });
+      await signupUser(user);
       navigate("/login");
-      return response;
     } catch (error) {
-      notify.info({
-        message: "Account creation error",
-        duration: 3,
-        placement,
-      });
       console.error(error);
+      // handle error here
     }
   };
 
-  const handleSignup = (user: IUser) => {
-    const response = signupUser(user);
-    console.log(response);
-  };
-
   return (
-    <>
-      {contextHolder}
-      <Row justify={"center"}>
-        <div className="card">
-          <Title>Create an Account</Title>
-          <FormSignup signup={handleSignup} />
-        </div>
-      </Row>
-    </>
+    <Row justify={"center"}>
+      <div className="card">
+        <Title>Create an Account</Title>
+        <FormSignup signup={handleSignup} />
+      </div>
+    </Row>
   );
 }
 

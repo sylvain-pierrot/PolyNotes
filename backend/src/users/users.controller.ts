@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDocument } from './schemas/user.schema';
+// import { UpdateUserDto } from './dto/update-user.dto';
+// import { UserDocument } from './schemas/user.schema';
 import { UpdateFileSystemDto } from 'src/users/dto/update-file-system.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
@@ -23,17 +23,14 @@ import { JwtService } from '@nestjs/jwt';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
   ) {}
 
   // USER
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    // const fileSystem = await this.fileSystemService.create();
-    const user = await this.usersService.create(createUserDto);
-
-    return user;
+    return await this.usersService.create(createUserDto);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -82,6 +79,7 @@ export class UsersController {
     return await this.usersService.findOneFileSystemyByUserId(token.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('file-system')
   async updateFileSystemById(
     @Req() req: Request,

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform, Type } from 'class-transformer';
-import mongoose, { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import {
   FileSystem,
   FileSystemSchema,

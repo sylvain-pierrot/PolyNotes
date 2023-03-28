@@ -2,7 +2,6 @@ import "./Workspace.css";
 import withAuth from "../../hocs/withAuth";
 import { Card, List } from "antd";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
-import { Node } from "../../boot/FileSystem";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
@@ -29,7 +28,7 @@ const data = [
 
 function Workspace() {
   // Store
-  const treeData: Node = useSelector(
+  const treeData: Node | null = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
 
@@ -47,8 +46,7 @@ function Workspace() {
           </List.Item>
         )}
       />
-
-      <FileExplorer treeData={treeData} />
+      {treeData && <FileExplorer treeData={treeData} />}
     </>
   );
 }
