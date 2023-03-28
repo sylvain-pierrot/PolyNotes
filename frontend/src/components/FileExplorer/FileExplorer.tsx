@@ -3,12 +3,19 @@ import { FolderOutlined, FileOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import "./FileExplorer.css";
 import { Node } from "../../boot/FileSystem";
+import { useDispatch } from "react-redux";
+import { v4 as uuid } from "uuid";
+// import { updateFileSystem } from "../../store/slices/fileSystemSlice";
 
 interface IPropsFileExplorer {
   treeData: Node;
 }
 
 const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
+  // Store
+  const dispatch = useDispatch();
+
+  // State
   const [currentNode, setCurrentNode] = useState<Node>(treeData);
 
   const getNode = (rootNode: Node, key: string): Node | undefined => {
@@ -55,11 +62,32 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     return [];
   };
 
+  function addFileToTree(tree: Node, key: string, newNode: Node) {
+    if (tree.key === key) {
+      tree.children!.push(newNode);
+    } else if (tree.children) {
+      for (let i = 0; i < tree.children.length; i++) {
+        addFileToTree(tree.children[i], key, newNode);
+      }
+    }
+    return tree;
+  }
+
   const addFile = () => {
     const name = window.prompt("Name");
 
     if (name) {
       console.log(name);
+
+      // const file: Node = {
+      //   title: name,
+      //   key: uuid(),
+      // };
+      // const newTree = addFileToTree(treeData, currentNode.key, file);
+      // console.log(newTree);
+      console.log(treeData);
+
+      // dispatch(updateFileSystem({ tree: newTree }));
     }
   };
 

@@ -4,7 +4,7 @@ import mongoose, { Document, ObjectId } from 'mongoose';
 import {
   FileSystem,
   FileSystemSchema,
-} from 'src/file-system/schemas/file-system.schema';
+} from 'src/users/schemas/file-system.schema';
 
 export type UserDocument = User & Document;
 
