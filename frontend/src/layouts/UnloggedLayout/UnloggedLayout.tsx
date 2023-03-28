@@ -3,7 +3,7 @@ import { Button, Layout, Row } from "antd";
 import "./UnloggedLayout.css";
 import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
 import Logo from "../../assets/images/PolyBunny.png";
-import Logo2 from "../../assets/images/polynotes-logo.svg";
+// import Logo2 from "../../assets/images/polynotes-logo.svg";
 import { Header } from "antd/es/layout/layout";
 
 const { Content } = Layout;

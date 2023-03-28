@@ -1,5 +1,5 @@
-import { Avatar, Breadcrumb, List } from "antd";
-import { FolderOutlined, FileTextOutlined } from "@ant-design/icons";
+import { Avatar, Breadcrumb, Button, List, Row } from "antd";
+import { FolderOutlined, FileOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import "./FileExplorer.css";
 import { Node } from "../../boot/FileSystem";
@@ -55,59 +55,55 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     return [];
   };
 
-  //   const getParentNode = (rootNode: Node, key: string): Node | null => {
-  //     // If the root node matches the key, there is no parent
-  //     if (rootNode.key === key) {
-  //       return null;
-  //     }
+  const addFile = () => {
+    const name = window.prompt("Name");
 
-  //     // If the root node has children, search them for the key
-  //     if (rootNode.children) {
-  //       for (let child of rootNode.children) {
-  //         // If the child node matches the key, return the root node
-  //         if (child.key === key) {
-  //           return rootNode;
-  //         }
+    if (name) {
+      console.log(name);
+    }
+  };
 
-  //         // Otherwise, recursively search the child node's descendants for the key
-  //         const parentNode = getParentNode(child, key);
-  //         if (parentNode) {
-  //           return parentNode;
-  //         }
-  //       }
-  //     }
+  const addFolder = () => {
+    const name = window.prompt("Name");
 
-  //     // If the key is not found, return null
-  //     return null;
-  //   };
+    if (name) {
+      console.log(name);
+    }
+  };
 
   return (
     <List
       className="file-explorer"
       header={
-        <Breadcrumb
-          style={{
-            marginLeft: 24,
-          }}
-        >
-          {getNodesPath(treeData, currentNode.key).map((node) => (
-            <Breadcrumb.Item key={node.title}>
-              <div
-                className={
-                  currentNode.key === node.key ? "" : "breadcrumb-item"
-                }
-                onClick={() => {
-                  const newNode = getNode(treeData, node.key);
-                  if (newNode) {
-                    setCurrentNode(newNode);
+        <Row justify={"space-between"} align={"middle"}>
+          <Breadcrumb
+            style={{
+              marginLeft: 24,
+            }}
+          >
+            {getNodesPath(treeData, currentNode.key).map((node) => (
+              <Breadcrumb.Item key={node.title}>
+                <div
+                  className={
+                    currentNode.key === node.key ? "" : "breadcrumb-item"
                   }
-                }}
-              >
-                {node.title}
-              </div>
-            </Breadcrumb.Item>
-          ))}
-        </Breadcrumb>
+                  onClick={() => {
+                    const newNode = getNode(treeData, node.key);
+                    if (newNode) {
+                      setCurrentNode(newNode);
+                    }
+                  }}
+                >
+                  {node.title}
+                </div>
+              </Breadcrumb.Item>
+            ))}
+          </Breadcrumb>
+          <div>
+            <Button type="text" icon={<FolderOutlined />} onClick={addFolder} />
+            <Button type="text" icon={<FileOutlined />} onClick={addFile} />
+          </div>
+        </Row>
       }
       bordered
       dataSource={currentNode.children}
@@ -116,7 +112,7 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
           <List.Item.Meta
             avatar={
               <Avatar
-                icon={item.children ? <FolderOutlined /> : <FileTextOutlined />}
+                icon={item.children ? <FolderOutlined /> : <FileOutlined />}
                 style={{ backgroundColor: "#eb2f96", color: "#fff" }}
               />
             }
