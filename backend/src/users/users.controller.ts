@@ -14,8 +14,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDocument } from './schemas/user.schema';
-import { FileSystemService } from 'src/file-system/file-system.service';
-import { UpdateFileSystemDto } from 'src/file-system/dto/update-file-system.dto';
+import { UpdateFileSystemDto } from 'src/users/dto/update-file-system.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
@@ -24,7 +23,6 @@ import { JwtService } from '@nestjs/jwt';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly fileSystemService: FileSystemService,
     private jwtService: JwtService,
   ) {}
 
@@ -32,8 +30,8 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    const fileSystem = await this.fileSystemService.create();
-    const user = await this.usersService.create(createUserDto, fileSystem);
+    // const fileSystem = await this.fileSystemService.create();
+    const user = await this.usersService.create(createUserDto);
 
     return user;
   }

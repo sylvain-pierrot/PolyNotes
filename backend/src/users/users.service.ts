@@ -11,20 +11,19 @@ import { User, UserDocument } from './schemas/user.schema';
 import { hash } from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { MailsService } from 'src/mails/mails.service';
-import { FileSystem } from '../file-system/schemas/file-system.schema';
-import { UpdateFileSystemDto } from 'src/file-system/dto/update-file-system.dto';
+import { FileSystem, FileSystemDocument } from './schemas/file-system.schema';
+import { UpdateFileSystemDto } from 'src/users/dto/update-file-system.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(FileSystem.name)
+    private readonly fileSystemModel: Model<FileSystemDocument>,
     private readonly mailsService: MailsService,
   ) {}
 
-  async create(
-    createUserDto: CreateUserDto,
-    fileSystem: FileSystem,
-  ): Promise<UserDocument> {
+  async create(createUserDto: CreateUserDto): Promise<UserDocument> {
     const { email, password } = createUserDto;
     const user = await this.userModel.findOne({ email: email });
 
@@ -33,13 +32,12 @@ export class UsersService {
     }
 
     const nonce = uuid();
-    console.log('Create User :', fileSystem);
 
     const newUser = new this.userModel({
       ...createUserDto,
       password: await hash(password, 10),
       nonce: nonce,
-      fileSystem: fileSystem,
+      fileSystem: new this.fileSystemModel(),
     });
 
     await this.mailsService.sendEmailVerificationLink(email, nonce);
