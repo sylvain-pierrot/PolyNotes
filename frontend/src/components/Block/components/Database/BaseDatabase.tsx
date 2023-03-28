@@ -95,6 +95,17 @@ const BaseDatabase: React.FC = () => {
 
   // useEffect
   useEffect(() => {
+    const getContainerIndexAndItemIndex = (row: DataType) => {
+      for (const i in containers) {
+        for (const j in containers[i].items) {
+          if (row.key === containers[i].items[j].key) {
+            return { indexC: parseInt(i), indexI: parseInt(j) };
+          }
+        }
+      }
+      return -1;
+    };
+
     let newContainers = containers;
     for (const row of rows) {
       const e = getContainerIndexAndItemIndex(row);
@@ -122,16 +133,6 @@ const BaseDatabase: React.FC = () => {
     items: DataType[];
   }) => {
     setContainers([...containers, container]);
-  };
-  const getContainerIndexAndItemIndex = (row: DataType) => {
-    for (const i in containers) {
-      for (const j in containers[i].items) {
-        if (row.key === containers[i].items[j].key) {
-          return { indexC: parseInt(i), indexI: parseInt(j) };
-        }
-      }
-    }
-    return -1;
   };
 
   return (

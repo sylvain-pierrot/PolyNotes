@@ -2,8 +2,6 @@ import "./assets/styles/App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import "./App.css";
-import { Provider } from "react-redux";
-import store from "./store/index";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -13,8 +11,13 @@ import NotFound from "./pages/NotFound/NotFound";
 import { getFileSystem } from "./boot/FileSystem";
 import UnloggedLayout from "./layouts/UnloggedLayout/UnloggedLayout";
 import LoggedLayout from "./layouts/LoggedLayout/LoggedLayout";
+import { useDispatch } from "react-redux";
+import { updateFileSystem } from "./store/slices/fileSystemSlice";
 
 const App: React.FC = () => {
+  // Store
+  const dispatch = useDispatch();
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -61,7 +64,8 @@ const App: React.FC = () => {
           element: <Workspace />,
           loader: async () => {
             const tree = await getFileSystem();
-            return tree;
+            dispatch(updateFileSystem({ tree }));
+            return null;
           },
         },
         {
@@ -73,17 +77,15 @@ const App: React.FC = () => {
   ]);
 
   return (
-    <Provider store={store}>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: "#eb2f96",
-          },
-        }}
-      >
-        <RouterProvider router={router} />
-      </ConfigProvider>
-    </Provider>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#eb2f96",
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
   );
 };
 

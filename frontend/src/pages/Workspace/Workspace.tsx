@@ -5,9 +5,6 @@ import FileExplorer from "../../components/FileExplorer/FileExplorer";
 import { Node } from "../../boot/FileSystem";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useDispatch } from "react-redux";
-import { updateFileSystem } from "../../store/slices/fileSystemSlice";
-import { useLoaderData } from "react-router";
 
 const data = [
   {
@@ -31,14 +28,7 @@ const data = [
 ];
 
 function Workspace() {
-  // Loader
-  const tree: any = useLoaderData();
-  console.log(tree);
-
   // Store
-  const dispatch = useDispatch();
-  dispatch(updateFileSystem({ tree }));
-
   const treeData: Node = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
