@@ -1,23 +1,22 @@
 import React from "react";
 import { Layout } from "antd";
-import "./MainLayout.css";
+import "./LoggedLayout.css";
 import { Outlet, useLoaderData } from "react-router";
 import LayoutHeader from "../../components/LayoutHeader/LayoutHeader";
 import LayoutSider from "../../components/LayoutSider/LayoutSider";
 
 const { Content } = Layout;
 
-const MainLayout: React.FC = () => {
+const LoggedLayout: React.FC = () => {
   const loader: any = useLoaderData();
-
   const isAuthenticated = !!loader.user;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <LayoutHeader isAuthenticated={isAuthenticated} user={loader.user} />
+      <LayoutHeader user={loader.user} />
 
       <Layout>
-        <LayoutSider isAuthenticated={isAuthenticated} />
+        <LayoutSider />
 
         <Content
           style={{
@@ -35,4 +34,4 @@ const MainLayout: React.FC = () => {
   );
 };
 
-export default MainLayout;
+export default LoggedLayout;

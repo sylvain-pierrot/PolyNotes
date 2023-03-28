@@ -13,7 +13,8 @@
 .card {
   min-width: 320px;
   position: relative;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25); */
+  border: 1px solid #dadada;
   border-radius: 8px;
   font-size: 2em;
   text-align: center;
@@ -22,5 +23,5 @@
   margin-left: 1em;
   margin-right: 1em;
   margin-bottom: 2em;
-  padding: 0 0.5em;
+  padding: 0 0.8em;
 }

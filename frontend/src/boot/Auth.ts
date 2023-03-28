@@ -20,14 +20,14 @@ export interface ICredentials {
 //   }
 // };
 
-// export const loginUser = async (credentials: ICredentials) => {
-//   try {
-//     const response = await api.post("/api/auth/login", credentials);
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+export const loginUser = async (credentials: ICredentials) => {
+  try {
+    const response = await api.post("/api/auth/login", credentials);
+    return response;
+  } catch (error) {
+    throw new Error("Failed to login");
+  }
+};
 
 // export const logoutUser = async () => {
 //   try {
