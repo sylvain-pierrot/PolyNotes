@@ -1,11 +1,11 @@
 import { Avatar, Breadcrumb, Button, List, Row } from "antd";
-import { FolderOutlined, FileOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { FolderFilled, FileOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import "./FileExplorer.css";
 import { Node } from "../../boot/FileSystem";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
-// import { updateFileSystem } from "../../store/slices/fileSystemSlice";
+import { createNode } from "../../store/slices/fileSystemSlice";
 
 interface IPropsFileExplorer {
   treeData: Node;
@@ -15,9 +15,17 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
   // Store
   const dispatch = useDispatch();
 
-  // State
+  // Hooks
   const [currentNode, setCurrentNode] = useState<Node>(treeData);
 
+  useEffect(() => {
+    const refreshNode = getNode(treeData, currentNode.key);
+    if (refreshNode) {
+      setCurrentNode(refreshNode);
+    }
+  }, [treeData]);
+
+  // Functions
   const getNode = (rootNode: Node, key: string): Node | undefined => {
     // If the node's key matches the search key, return the node
     if (rootNode.key === key) {
@@ -62,32 +70,15 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     return [];
   };
 
-  function addFileToTree(tree: Node, key: string, newNode: Node) {
-    if (tree.key === key) {
-      tree.children!.push(newNode);
-    } else if (tree.children) {
-      for (let i = 0; i < tree.children.length; i++) {
-        addFileToTree(tree.children[i], key, newNode);
-      }
-    }
-    return tree;
-  }
-
   const addFile = () => {
     const name = window.prompt("Name");
 
     if (name) {
-      console.log(name);
-
-      // const file: Node = {
-      //   title: name,
-      //   key: uuid(),
-      // };
-      // const newTree = addFileToTree(treeData, currentNode.key, file);
-      // console.log(newTree);
-      console.log(treeData);
-
-      // dispatch(updateFileSystem({ tree: newTree }));
+      const file: Node = {
+        title: name,
+        key: uuid(),
+      };
+      dispatch(createNode({ newNode: file, key: currentNode.key }));
     }
   };
 
@@ -95,7 +86,12 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     const name = window.prompt("Name");
 
     if (name) {
-      console.log(name);
+      const folder: Node = {
+        title: name,
+        key: uuid(),
+        children: [],
+      };
+      dispatch(createNode({ newNode: folder, key: currentNode.key }));
     }
   };
 
@@ -128,7 +124,11 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
             ))}
           </Breadcrumb>
           <div>
-            <Button type="text" icon={<FolderOutlined />} onClick={addFolder} />
+            <Button
+              type="text"
+              icon={<FolderFilled style={{ color: "#54aeff" }} />}
+              onClick={addFolder}
+            />
             <Button type="text" icon={<FileOutlined />} onClick={addFile} />
           </div>
         </Row>
@@ -140,13 +140,21 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
           <List.Item.Meta
             avatar={
               <Avatar
-                icon={item.children ? <FolderOutlined /> : <FileOutlined />}
-                style={{ backgroundColor: "#eb2f96", color: "#fff" }}
+                icon={
+                  item.children ? (
+                    <FolderFilled style={{ color: "#54aeff" }} />
+                  ) : (
+                    <FileOutlined style={{ color: "#656d65" }} />
+                  )
+                }
+                style={{ backgroundColor: "transparent" }}
+                size={"large"}
               />
             }
             title={item.title}
+            style={{ alignItems: "center" }}
           />
-          <List.Item.Meta title={item.title} />
+          <List.Item.Meta title={item.children?.length.toString()} />
           <List.Item.Meta title={item.title} />
         </List.Item>
       )}

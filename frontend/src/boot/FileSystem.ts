@@ -15,14 +15,14 @@ export const getFileSystem = async () => {
   }
 };
 
-// export const loginUser = async (credentials: ICredentials) => {
-//   try {
-//     const response = await api.post("/api/auth/login", credentials);
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+export const patchFileSystem = async (nodeRoot: any) => {
+  try {
+    const response = await api.patch("/api/users/file-system", nodeRoot);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // export const logoutUser = async () => {
 //   try {

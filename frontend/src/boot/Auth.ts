@@ -11,14 +11,14 @@ export interface ICredentials {
   password: string;
 }
 
-// export const signupUser = async (user: IUser) => {
-//   try {
-//     const response = await api.post("/api/users", user);
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+export const signupUser = async (user: IUser) => {
+  try {
+    const response = await api.post("/api/users", user);
+    return response;
+  } catch (error) {
+    throw new Error("Failed to register");
+  }
+};
 
 export const loginUser = async (credentials: ICredentials) => {
   try {

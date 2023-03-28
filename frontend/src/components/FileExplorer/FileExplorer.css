@@ -2,7 +2,12 @@
   width: 100%;
   border-color: #f0f0f0;
 }
-
+.file-explorer .ant-list-item-meta-title {
+  margin: 0 !important;
+}
+.file-explorer .ant-list-item {
+  align-items: center;
+}
 .file-explorer .ant-list-item:hover {
   background-color: #eb2f9680;
   cursor: pointer;

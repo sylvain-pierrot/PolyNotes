@@ -3,5 +3,5 @@ import { Node } from '../types/interfaces';
 
 export class UpdateFileSystemDto {
   @IsNotEmpty()
-  readonly children: Node[];
+  readonly nodeRoot: Node;
 }

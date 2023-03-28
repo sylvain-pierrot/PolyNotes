@@ -66,14 +66,13 @@ export class UsersService {
   }
 
   async updateFileSystemById(
-    fileSystemId: string,
+    id: string,
     updateFileSystemDto: UpdateFileSystemDto,
   ) {
     return await this.userModel
-      .findOneAndUpdate(
-        { 'fileSystem._id': fileSystemId },
-        { $set: { 'fileSystem.children': updateFileSystemDto.children } },
-      )
+      .findByIdAndUpdate(id, {
+        $set: { fileSystem: updateFileSystemDto.nodeRoot },
+      })
       .exec();
   }
 
