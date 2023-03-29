@@ -36,7 +36,12 @@ const LayoutHeader: React.FC<IPropsLayoutHeader> = ({ user }) => {
 
   return (
     <Header className="flex-between border-bottom">
-      <img src={Logo} alt="PolyBunny" className="logo" />
+      <img
+        src={Logo}
+        alt="PolyBunny"
+        className="logo"
+        onClick={() => navigate("/workspace")}
+      />
 
       <Search placeholder="Search" onSearch={onSearch} className="search" />
 

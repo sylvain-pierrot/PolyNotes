@@ -7,7 +7,11 @@ import { useDispatch } from "react-redux";
 import Document from "@tiptap/extension-document";
 import { forwardRef, Ref, useImperativeHandle } from "react";
 import ListItem from "@tiptap/extension-list-item";
-import { destroyBlock, newBlock } from "../../../../store/slices/pageSlice";
+import {
+  destroyBlock,
+  newBlock,
+  updateContentBlockById,
+} from "../../../../store/slices/pageSlice";
 
 interface IPropsBulletListBlock {
   id: string;
@@ -64,6 +68,12 @@ const BulletListBlock = forwardRef(
           },
         }),
       ],
+      onUpdate({ editor }) {
+        if (!editor.isEmpty)
+          dispatch(
+            updateContentBlockById({ id: id, content: editor.getHTML() })
+          );
+      },
       autofocus: true,
     });
 
