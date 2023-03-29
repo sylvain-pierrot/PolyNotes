@@ -1,11 +1,8 @@
-import { IsArray, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreatePageDto {
   @IsString()
+  @IsNotEmpty()
   @MaxLength(50)
   readonly title: string;
-
-  @IsArray()
-  @IsOptional()
-  readonly blocks: string;
 }

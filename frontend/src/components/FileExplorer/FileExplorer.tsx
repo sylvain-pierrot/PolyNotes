@@ -6,6 +6,7 @@ import { Node } from "../../boot/FileSystem";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { createNode } from "../../store/slices/fileSystemSlice";
+import { createPage } from "../../boot/Pages";
 
 interface IPropsFileExplorer {
   treeData: Node;
@@ -70,15 +71,18 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     return [];
   };
 
-  const addFile = () => {
+  const addPage = async () => {
     const name = window.prompt("Name");
 
     if (name) {
-      const file: Node = {
+      const objectId = await createPage(name);
+
+      const newPage: Node = {
         title: name,
-        key: uuid(),
+        key: objectId,
       };
-      dispatch(createNode({ newNode: file, key: currentNode.key }));
+
+      dispatch(createNode({ newNode: newPage, key: currentNode.key }));
     }
   };
 
@@ -129,7 +133,7 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
               icon={<FolderFilled style={{ color: "#54aeff" }} />}
               onClick={addFolder}
             />
-            <Button type="text" icon={<FileOutlined />} onClick={addFile} />
+            <Button type="text" icon={<FileOutlined />} onClick={addPage} />
           </div>
         </Row>
       }

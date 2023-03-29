@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { Page, PageDocument } from './schemas/page.schema';
@@ -11,8 +11,17 @@ export class PagesService {
     @InjectModel(Page.name) private readonly pageModel: Model<PageDocument>,
   ) {}
 
-  async create(createPageDto: CreatePageDto) {
-    return await new this.pageModel(createPageDto).save();
+  async create(
+    createPageDto: CreatePageDto,
+    author: mongoose.Schema.Types.ObjectId,
+  ) {
+    const createdPage = new this.pageModel({
+      ...createPageDto,
+      author,
+    });
+    console.log(createdPage);
+
+    return await createdPage.save();
   }
 
   async findAll() {
