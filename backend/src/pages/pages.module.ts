@@ -3,9 +3,15 @@ import { PagesService } from './pages.service';
 import { PagesController } from './pages.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Page, PageSchema } from './schemas/page.schema';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtConfigService } from 'src/auth/config/JwtConfigService.config';
+import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 
 @Module({
   imports: [
+    JwtModule.registerAsync({
+      useClass: JwtConfigService,
+    }),
     MongooseModule.forFeature([
       {
         name: Page.name,
@@ -14,7 +20,7 @@ import { Page, PageSchema } from './schemas/page.schema';
     ]),
   ],
   controllers: [PagesController],
-  providers: [PagesService],
+  providers: [PagesService, JwtStrategy],
   exports: [PagesService],
 })
 export class PagesModule {}

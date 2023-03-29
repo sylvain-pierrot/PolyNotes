@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Type } from 'class-transformer';
+import mongoose, { Document } from 'mongoose';
+import { User } from 'src/users/schemas/user.schema';
 import { Block } from '../types/interfaces';
 
 export type PageDocument = Page & Document;
@@ -8,6 +10,10 @@ export type PageDocument = Page & Document;
   timestamps: { createdAt: 'created', updatedAt: 'updated' },
 })
 export class Page {
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Type(() => User)
+  author: User;
+
   @Prop({ required: true })
   title: string;
 
