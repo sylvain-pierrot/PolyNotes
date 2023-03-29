@@ -36,14 +36,22 @@ export class PagesController {
     return await this.pagesService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.pagesService.findOne(id);
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const token = this.jwtService.verify(req.cookies.token);
+    return await this.pagesService.findOne(id, token.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updatePageDto: UpdatePageDto) {
-    return await this.pagesService.update(id, updatePageDto);
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updatePageDto: UpdatePageDto,
+  ) {
+    const token = this.jwtService.verify(req.cookies.token);
+    return await this.pagesService.update(id, token.id, updatePageDto);
   }
 
   @Delete(':id')

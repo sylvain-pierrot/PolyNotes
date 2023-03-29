@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-export interface Page {
+export interface PageProperties {
   author: string;
   title: string | null;
   blocks: Block[];
@@ -21,7 +21,11 @@ export interface Block {
   type: BlockType;
 }
 
-const initialState: Page = { author: "string", title: null, blocks: [] };
+const initialState: PageProperties = {
+  author: "default",
+  title: "default",
+  blocks: [],
+};
 
 const pageSlice = createSlice({
   name: "pageSlice",
@@ -32,15 +36,17 @@ const pageSlice = createSlice({
     newBlock(state, action) {
       const { id, content } = action.payload;
       let index = 0;
-      if (id) {
-        index = state.page.blocks.findIndex((block) => block.id === id) + 1;
+      if (state.page) {
+        if (id) {
+          index = state.page.blocks.findIndex((block) => block.id === id) + 1;
+        }
+        const newBlock: Block = {
+          id: uuidv4(),
+          content: content ? content : null,
+          type: BlockType.BASIC,
+        };
+        state.page.blocks.splice(index, 0, newBlock);
       }
-      const newBlock: Block = {
-        id: uuidv4(),
-        content: content ? content : null,
-        type: BlockType.BASIC,
-      };
-      state.page.blocks.splice(index, 0, newBlock);
     },
     destroyBlock(state, action) {
       const { id } = action.payload;
@@ -57,11 +63,14 @@ const pageSlice = createSlice({
       if (index !== -1) {
         state.page.blocks[index].content = content;
       }
-      console.log(JSON.parse(JSON.stringify(state.page.blocks)));
     },
     updateTitle(state, action) {
       const { content } = action.payload;
       state.page.title = content;
+    },
+    updatePage(state, action) {
+      const { page } = action.payload;
+      state.page = page;
     },
   },
 });
@@ -72,6 +81,7 @@ export const {
   changeToTypeBlock,
   updateContentBlockById,
   updateTitle,
+  updatePage,
 } = pageSlice.actions;
 
 export default pageSlice.reducer;

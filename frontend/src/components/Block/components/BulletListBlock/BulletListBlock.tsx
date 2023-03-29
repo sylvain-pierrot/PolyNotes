@@ -4,10 +4,10 @@ import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
 // import StarterKit from "@tiptap/starter-kit";
 import Text from "@tiptap/extension-text";
 import { useDispatch } from "react-redux";
-import { destroyBlock, newBlock } from "../../../../store/slices/blocksSlice";
 import Document from "@tiptap/extension-document";
 import { forwardRef, Ref, useImperativeHandle } from "react";
 import ListItem from "@tiptap/extension-list-item";
+import { destroyBlock, newBlock } from "../../../../store/slices/pageSlice";
 
 interface IPropsBulletListBlock {
   id: string;

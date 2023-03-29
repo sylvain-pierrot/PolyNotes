@@ -28,12 +28,14 @@ export class PagesService {
     return await this.pageModel.find().exec();
   }
 
-  async findOne(id: string) {
-    return await this.pageModel.findById(id).exec();
+  async findOne(id: string, userId: string) {
+    return await this.pageModel.findOne({ _id: id, author: userId }).exec();
   }
 
-  async update(id: string, updatePageDto: UpdatePageDto) {
-    return await this.pageModel.findByIdAndUpdate(id, updatePageDto).exec();
+  async update(id: string, userId: string, updatePageDto: UpdatePageDto) {
+    return await this.pageModel
+      .findOneAndUpdate({ _id: id, author: userId }, updatePageDto)
+      .exec();
   }
 
   async remove(id: string) {

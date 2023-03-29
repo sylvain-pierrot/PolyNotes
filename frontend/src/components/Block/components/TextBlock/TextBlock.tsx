@@ -9,15 +9,9 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Heading from "@tiptap/extension-heading";
 import { Extension } from "@tiptap/core";
 import { useDispatch } from "react-redux";
-import {
-  BlockType,
-  changeToTypeBlock,
-  destroyBlock,
-  newBlock,
-  updateContent,
-} from "../../../../store/slices/blocksSlice";
 import RichEditor from "../RichEditor/RichEditor";
 import BlocksMenu from "../BlocksMenu/BlocksMenu";
+import { BlockType, changeToTypeBlock, destroyBlock, newBlock, updateContentBlockById } from "../../../../store/slices/pageSlice";
 
 interface IPropsTextBlock {
   id: string;
@@ -81,25 +75,25 @@ const TextBlock = forwardRef(
       autofocus: true,
       onUpdate({ editor }) {
         const content = editor.isEmpty ? "" : editor.getHTML();
-        dispatch(updateContent({ id: id, content: content }));
+        dispatch(updateContentBlockById({ id: id, content: content }));
       },
     });
 
     // Handles
     const goImg = () => {
-      dispatch(updateContent({ id: id, content: null }));
+      dispatch(updateContentBlockById({ id: id, content: null }));
       dispatch(changeToTypeBlock({ id, type: BlockType.IMAGE }));
     };
     const goDatabase = () => {
-      dispatch(updateContent({ id: id, content: null }));
+      dispatch(updateContentBlockById({ id: id, content: null }));
       dispatch(changeToTypeBlock({ id, type: BlockType.TABLE }));
     };
     const goBulletList = () => {
-      dispatch(updateContent({ id: id, content: null }));
+      dispatch(updateContentBlockById({ id: id, content: null }));
       dispatch(changeToTypeBlock({ id, type: BlockType.BULLET_LIST }));
     };
     const goOrderedList = () => {
-      dispatch(updateContent({ id: id, content: null }));
+      dispatch(updateContentBlockById({ id: id, content: null }));
       dispatch(changeToTypeBlock({ id, type: BlockType.ORDERED_LIST }));
     };
     useImperativeHandle(ref, () => editor, [editor]);
