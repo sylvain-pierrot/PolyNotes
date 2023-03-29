@@ -13,7 +13,7 @@ import UnloggedLayout from "./layouts/UnloggedLayout/UnloggedLayout";
 import LoggedLayout from "./layouts/LoggedLayout/LoggedLayout";
 import { useDispatch } from "react-redux";
 import { updateFileSystem } from "./store/slices/fileSystemSlice";
-import { getPage } from "./boot/Pages";
+import { getPageById } from "./boot/Pages";
 import { updatePage } from "./store/slices/pageSlice";
 
 const App: React.FC = () => {
@@ -73,7 +73,7 @@ const App: React.FC = () => {
         {
           path: "page/:id",
           loader: async ({ params }) => {
-            const pageBrut = await getPage(params.id!);
+            const pageBrut = await getPageById(params.id!);
             const currentPage = {
               title: pageBrut.title,
               blocks: pageBrut.blocks,
