@@ -11,10 +11,10 @@ import React, {
   useCallback,
   useImperativeHandle,
 } from "react";
-import { newBlock, updateContent } from "../../../../store/slices/blocksSlice";
 import { useDispatch } from "react-redux";
 import { Button } from "antd";
 import { FileImageOutlined } from "@ant-design/icons";
+import { newBlock, updateContentBlockById } from "../../../../store/slices/pageSlice";
 
 interface IPropsImageBlock {
   id: string;
@@ -52,7 +52,7 @@ const ImageBlock = forwardRef(
       editable: false,
       onUpdate({ editor }) {
         if (!editor.isEmpty)
-          dispatch(updateContent({ id: id, content: editor.getHTML() }));
+          dispatch(updateContentBlockById({ id: id, content: editor.getHTML() }));
       },
     });
 

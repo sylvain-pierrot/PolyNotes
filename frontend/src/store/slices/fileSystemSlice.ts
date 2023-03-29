@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Node, patchFileSystem } from "../../boot/FileSystem";
-import { createPage } from "../../boot/Pages";
 
 const initialState: Node | null = null;
 

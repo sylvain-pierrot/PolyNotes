@@ -7,18 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { createNode } from "../../store/slices/fileSystemSlice";
 import { createPage } from "../../boot/Pages";
+import { useNavigate } from "react-router";
 
 interface IPropsFileExplorer {
   treeData: Node;
 }
 
 const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
-  // Store
-  const dispatch = useDispatch();
-
   // Hooks
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [currentNode, setCurrentNode] = useState<Node>(treeData);
-
   useEffect(() => {
     const refreshNode = getNode(treeData, currentNode.key);
     if (refreshNode) {
@@ -99,6 +98,14 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     }
   };
 
+  const handleClickOnItem = (item: Node) => {
+    if (item.children) {
+      setCurrentNode(item);
+    } else {
+      navigate(`/page/${item.key}`);
+    }
+  };
+
   return (
     <List
       className="file-explorer"
@@ -140,7 +147,7 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
       bordered
       dataSource={currentNode.children}
       renderItem={(item) => (
-        <List.Item onClick={() => setCurrentNode(item)}>
+        <List.Item onClick={() => handleClickOnItem(item)}>
           <List.Item.Meta
             avatar={
               <Avatar

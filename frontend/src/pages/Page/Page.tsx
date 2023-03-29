@@ -1,29 +1,32 @@
 import "./Page.css";
 import withAuth from "../../hocs/withAuth";
 import PageComponent from "../../components/Page/Page";
-import { Block } from "../../store/slices/blocksSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useEffect, useState } from "react";
+import { PageProperties } from "../../store/slices/pageSlice";
+import { useEffect } from "react";
+import { updatePage } from "../../boot/Pages";
+import { useParams } from "react-router-dom";
 
 function Page() {
+  let params = useParams();
+
   // Store
-  const blocks: Block[] = useSelector(
-    (state: RootState) => state.blocksReducer.blocks
-  );
-  const title: string | null = useSelector(
-    (state: RootState) => state.titleReducer.title
+  const page: PageProperties | null = useSelector(
+    (state: RootState) => state.pageReducer.page
   );
 
-  // State
-  const [currentTitle, setCurrentTitle] = useState(title);
-
-  // Effect
+  // UseEffect
   useEffect(() => {
-    setCurrentTitle(title);
-  }, [title]);
+    const intervalID = setTimeout(async () => {
+      console.log(page, params);
+      await updatePage(params.id!, page.title!, page.blocks);
+    }, 3000);
 
-  return <PageComponent title={currentTitle} blocks={blocks} />;
+    return () => clearInterval(intervalID);
+  }, [page]);
+
+  return <>{page.author !== "default" && <PageComponent page={page} />}</>;
 }
 
 export default withAuth(Page);

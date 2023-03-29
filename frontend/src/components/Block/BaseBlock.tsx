@@ -2,12 +2,6 @@ import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import React, { useState } from "react";
 import "./BaseBlock.css";
-import {
-  Block,
-  BlockType,
-  destroyBlock,
-  newBlock,
-} from "../../store/slices/blocksSlice";
 import TextBlock from "./components/TextBlock/TextBlock";
 import { Editor } from "@tiptap/react";
 import { useDispatch } from "react-redux";
@@ -15,6 +9,12 @@ import ImageBlock from "./components/ImageBlock/ImageBlock";
 import BaseDatabase from "./components/Database/BaseDatabase";
 import BulletListBlock from "./components/BulletListBlock/BulletListBlock";
 import OrderedListBlock from "./components/OrderedListBlock/OrderedListBlock";
+import {
+  Block,
+  BlockType,
+  destroyBlock,
+  newBlock,
+} from "../../store/slices/pageSlice";
 
 interface IPropsBlock {
   block: Block;

@@ -1,16 +1,15 @@
 import "./Page.css";
 import React, { useRef } from "react";
 import BaseBlock from "../Block/BaseBlock";
-import { Block } from "../../store/slices/blocksSlice";
 import { Editor } from "@tiptap/react";
 import TitlePage from "../TitlePage/TitlePage";
+import { PageProperties } from "../../store/slices/pageSlice";
 
 interface IPropsPage {
-  title: string | null;
-  blocks: Block[];
+  page: PageProperties;
 }
 
-const Page: React.FC<IPropsPage> = ({ title, blocks }) => {
+const Page: React.FC<IPropsPage> = ({ page }) => {
   // Refs
   const refs = useRef<(Editor | null)[]>([]);
   const refTitle = useRef<Editor | null>(null);
@@ -30,11 +29,11 @@ const Page: React.FC<IPropsPage> = ({ title, blocks }) => {
 
   return (
     <>
-      <p className="title">{title ? title : "Untitled"}</p>
+      <p className="title">{page.title ? page.title : "Untitled"}</p>
 
       <div className="page">
         <TitlePage
-          content={title}
+          content={page.title}
           ref={(ref) => {
             refTitle.current = ref;
           }}
@@ -48,7 +47,7 @@ const Page: React.FC<IPropsPage> = ({ title, blocks }) => {
           }}
         />
         <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
-          {blocks.map((block, index) => (
+          {page.blocks.map((block, index) => (
             <BaseBlock
               key={block.id}
               block={block}
