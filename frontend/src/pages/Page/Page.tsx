@@ -19,9 +19,9 @@ function Page() {
   // UseEffect
   useEffect(() => {
     const intervalID = setTimeout(async () => {
-      console.log(page, params);
+      console.log(page);
       await updatePage(params.id!, page.title!, page.blocks);
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(intervalID);
   }, [page]);
