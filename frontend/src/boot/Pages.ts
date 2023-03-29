@@ -10,7 +10,7 @@ export const createPage = async (title: string) => {
   }
 };
 
-export const getPage = async (id: string) => {
+export const getPageById = async (id: string) => {
   try {
     const response = await api.get(`/api/pages/${id}`);
     return response.data;
@@ -19,7 +19,16 @@ export const getPage = async (id: string) => {
   }
 };
 
-export const updatePage = async (
+export const getAllPages = async () => {
+  try {
+    const response = await api.get(`/api/pages`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to get pages");
+  }
+};
+
+export const updatePageByid = async (
   id: string,
   title: string,
   blocks: Block[]
@@ -31,6 +40,6 @@ export const updatePage = async (
     });
     return response.data;
   } catch (error) {
-    throw new Error("Failed to get page");
+    throw new Error("Failed to update page");
   }
 };

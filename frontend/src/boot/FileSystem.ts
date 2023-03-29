@@ -11,7 +11,7 @@ export const getFileSystem = async () => {
     const response = await api.get("/api/users/file-system");
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw new Error("Failed to get file system");
   }
 };
 
@@ -20,15 +20,6 @@ export const patchFileSystem = async (nodeRoot: any) => {
     const response = await api.patch("/api/users/file-system", nodeRoot);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw new Error("Failed to update file system");
   }
 };
-
-// export const logoutUser = async () => {
-//   try {
-//     const response = await api.post("/api/auth/logout");
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };

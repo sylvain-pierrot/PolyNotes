@@ -4,6 +4,8 @@ import { Card, List } from "antd";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useEffect, useState } from "react";
+import { getAllPages } from "../../boot/Pages";
 
 const data = [
   {
@@ -32,20 +34,33 @@ function Workspace() {
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
 
+  const [recents, setRecents] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const pageList = await getAllPages();
+      setRecents(pageList);
+      console.log(pageList);
+    })();
+  }, [treeData]);
+
   return (
     <>
       <h1>Recent</h1>
 
-      <List
-        className="slider"
-        split={false}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
-            <Card title={item.title}></Card>
-          </List.Item>
-        )}
-      />
+      {recents && (
+        <List
+          className="slider"
+          split={false}
+          dataSource={recents}
+          renderItem={(item: any) => (
+            <List.Item>
+              <Card title={item.title}></Card>
+            </List.Item>
+          )}
+        />
+      )}
+
       {treeData && <FileExplorer treeData={treeData} />}
     </>
   );

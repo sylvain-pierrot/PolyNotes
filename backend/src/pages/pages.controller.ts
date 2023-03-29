@@ -31,9 +31,11 @@ export class PagesController {
     return newPage._id;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return await this.pagesService.findAll();
+  async findAll(@Req() req: Request) {
+    const token = this.jwtService.verify(req.cookies.token);
+    return await this.pagesService.findAll(token.id);
   }
 
   @UseGuards(JwtAuthGuard)
