@@ -20,7 +20,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+RUN yarn install & yarn run build
 
 EXPOSE 5000
 
