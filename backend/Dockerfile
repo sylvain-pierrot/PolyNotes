@@ -1,20 +1,31 @@
 FROM node:19-alpine as build
 
-# create app directory
 WORKDIR /app
 
-# copy package.json first to leverage Docker cache
 COPY . .
 
-# install dependencies
+RUN yarn install && yarn run build
+
+
+
+## DEV
+FROM node:19-alpine as dev
+
+WORKDIR /app
+
+COPY . .
+
 RUN yarn install
-
-
-FROM build as dev
 
 CMD [ "yarn", "run", "start:dev" ]
 
 
-FROM build as prod 
 
-CMD [ "yarn", "run", "start:prod" ]
+## PROD
+FROM node:19-alpine as prod 
+
+COPY --from=build /app/dist /app
+
+CMD [ "node", "app/main.js"]
+
+
