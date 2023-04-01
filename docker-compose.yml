@@ -14,8 +14,10 @@ services:
   backend:
     build:
       context: backend
-      target: prod
+      target: dev
     restart: always
+    env_file:
+      - backend/.env
     volumes:
       - ./backend/src:/app/src:ro
     ports:
@@ -25,15 +27,17 @@ services:
     depends_on:
       - mongo
 
-  # frontend:
-  #   build:
-  #     context: frontend
-  #     target: dev
-  #   restart: always
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./frontend/src:/app/src:ro
+  frontend:
+    build:
+      context: frontend
+      target: dev
+    restart: always
+    env_file:
+      - frontend/.env
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/app/src:ro
 
 networks:
   private:
