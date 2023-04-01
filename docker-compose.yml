@@ -3,7 +3,7 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: polynote
+      MONGO_INITDB_DATABASE: polynotes
     ports:
       - 27017:27017
     volumes:

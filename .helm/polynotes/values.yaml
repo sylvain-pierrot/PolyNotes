@@ -16,3 +16,12 @@ ingress:
 # status:
 #   loadBalancer:
 #     ingress: {{ toYaml .Values.ingress | nindent 4 }}
+
+mongodb:
+  auth:
+    usernames: 
+    - "admin"
+    databases:
+    - "polynotes"
+    existingSecret: "polynotes-sylvain-pwd" 
+    
