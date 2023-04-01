@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: sylvainpierrot/polynotes-frontend
   pullPolicy: Always
-  tag: db6c310
+  tag: 307946d
     
 resources:
   limits:
