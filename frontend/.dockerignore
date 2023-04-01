@@ -1,5 +1,4 @@
 .gitignore
 .git
-.env
 *.md
 node_modules
