@@ -29,7 +29,7 @@ CMD ["npm", "start"]
 
 # Run stage
 
-FROM nginx:stable-alpine AS runner
+FROM nginx:stable-alpine AS prod
 
 COPY --from=build /app/build /usr/share/nginx/html
 

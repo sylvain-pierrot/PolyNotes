@@ -14,34 +14,12 @@ project:
     name: default
     namespace: '*'
 
-
-# 
-repositories:
-- type: git
-  url: https://github.com/sylvain-pierrot/PolyNotes.git
-  username: sylvain-pierrot
-  # Replace password
-  password: password
-
-
-#- type: git
-#  url: https://github.gsissc.myatos.net/FR-MTP-TSSUDEST/dx_paca_mder
-#  sshPrivateKey: |
-#    -----BEGIN OPENSSH PRIVATE KEY-----
-#    ...
-#    -----END OPENSSH PRIVATE KEY-----
-
-
 bootstrap:
 
   # Name of the bootstrap: app of apps
   name: polynotes-bootstrap
-
   namespace: argocd
-
   repoURL: https://github.com/sylvain-pierrot/PolyNotes.git
-
   path: .argocd/apps
-
   server: https://kubernetes.default.svc
 
