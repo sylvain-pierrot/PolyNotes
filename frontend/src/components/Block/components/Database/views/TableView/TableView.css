@@ -1,0 +1,54 @@
+.table {
+  border-radius: 0 !important;
+}
+.btn-new-row {
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  width: 100%;
+  border-radius: 0 !important;
+  text-align: left;
+}
+.btn-new-col {
+  border: 1px solid #f0f0f0;
+  border-radius: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+.sider-new-col {
+  background: white;
+  border: 1px solid rgb(233, 233, 231);
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow: scroll;
+}
+
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-value-wrap {
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.editable-row .editable-cell-value-wrap:hover {
+  background-color: #eb2f9680;
+  border-radius: 3px;
+}
+.ant-table-tbody .ant-table-cell,
+.ant-table-thead .ant-table-cell {
+  padding: 0 !important;
+}
+
+.header-cell {
+  padding: 16px;
+}
+.header-cell button {
+  opacity: 0;
+}
+.header-cell:hover button {
+  opacity: 1;
+}

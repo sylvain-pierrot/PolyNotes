@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "antd/es/layout";
-import { Button, Menu, MenuProps } from "antd";
+import { Button, Divider, List, Menu, MenuProps } from "antd";
 import {
   FolderOutlined,
   ShareAltOutlined,
@@ -36,51 +36,56 @@ const items: MenuItem[] = [
     getItem("Option 8", "8"),
   ]),
 
-  getItem("Shared with Me", "sub2", <ShareAltOutlined />, [
-    getItem("Option 9", "9"),
-    getItem("Option 10", "10"),
-  ]),
+  getItem("Shared with Me", "sub2", <ShareAltOutlined />, []),
 ];
 
-const LayoutSider: React.FC<{ isAuthenticated: boolean }> = ({
-  isAuthenticated,
-}) => {
+const LayoutSider: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  return (
-    <>
-      {isAuthenticated && (
-        <Sider
-          width={250}
-          style={{ backgroundColor: "#fafafa" }}
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
-            <Button
-              type="primary"
-              style={{ width: "100%" }}
-              icon={<PlusOutlined />}
-            >
-              New note
-            </Button>
-          </div>
+  const data = ["Recent", "Started", "Trash"];
 
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{
-              borderRight: 0,
-              backgroundColor: "#fafafa",
-              padding: "0.8em",
-            }}
-            items={items}
-          />
-        </Sider>
-      )}
-    </>
+  return (
+    <Sider
+      width={250}
+      style={{ backgroundColor: "#fafafa" }}
+      collapsible
+      collapsed={collapsed}
+      onCollapse={(value) => setCollapsed(value)}
+    >
+      <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
+        <Button
+          type="primary"
+          style={{ width: "100%" }}
+          icon={<PlusOutlined />}
+        >
+          New note
+        </Button>
+      </div>
+
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        style={{
+          borderRight: 0,
+          backgroundColor: "#fafafa",
+          padding: "0.8em",
+        }}
+        items={items}
+      />
+      <Divider style={{ margin: "12px 0" }} />
+
+      <List
+        size="small"
+        split={false}
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item style={{ justifyContent: "center" }}>
+            <Button type="text">{item}</Button>
+          </List.Item>
+        )}
+      />
+    </Sider>
   );
 };
 

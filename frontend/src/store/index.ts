@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import blocksSlice from "./slices/blocksSlice";
-import titleSlice from "./slices/titleSlice";
+import authSlice from "./slices/authSlice";
+import fileSystemSlice from "./slices/fileSystemSlice";
+import pageSlice from "./slices/pageSlice";
 
 const store = configureStore({
   reducer: {
-    blocksReducer: blocksSlice,
-    titleReducer: titleSlice,
+    pageReducer: pageSlice,
+    authReducer: authSlice,
+    fileSystemReducer: fileSystemSlice,
   },
 });
 

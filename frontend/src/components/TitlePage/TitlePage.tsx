@@ -3,11 +3,10 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useDispatch } from "react-redux";
-import { newBlock } from "../../store/slices/blocksSlice";
 import "./TitlePage.css";
 import Document from "@tiptap/extension-document";
-import { updateContent } from "../../store/slices/titleSlice";
 import { forwardRef, Ref, useImperativeHandle } from "react";
+import { newBlock, updateTitle } from "../../store/slices/pageSlice";
 
 interface IPropsTitlePage {
   content: string | null;
@@ -24,7 +23,7 @@ const TitlePage = forwardRef(
       addKeyboardShortcuts() {
         return {
           Enter: () => {
-            handleEnter();
+            dispatch(newBlock({}));
             return true;
           },
         };
@@ -56,14 +55,11 @@ const TitlePage = forwardRef(
       enablePasteRules: false,
       autofocus: true,
       onUpdate({ editor }) {
-        dispatch(updateContent({ content: editor.getText() }));
+        dispatch(updateTitle({ content: editor.getText() }));
       },
     });
 
     // Handles
-    const handleEnter = () => {
-      dispatch(newBlock({}));
-    };
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
