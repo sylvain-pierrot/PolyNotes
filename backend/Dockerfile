@@ -7,6 +7,8 @@ COPY . .
 
 RUN yarn install
 
+EXPOSE 5000
+
 CMD [ "yarn", "run", "start:dev" ]
 
 
@@ -18,8 +20,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install && yarn run build
+RUN yarn install
 
-CMD [ "node", "dist/main"]
+EXPOSE 5000
 
-
+CMD [ "yarn", "run", "start:prod" ]
