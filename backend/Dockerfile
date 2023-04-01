@@ -1,13 +1,3 @@
-FROM node:19-alpine as build
-
-WORKDIR /app
-
-COPY . .
-
-RUN yarn install && yarn run build
-
-
-
 ## DEV
 FROM node:19-alpine as dev
 
@@ -26,14 +16,10 @@ FROM node:19-alpine as prod
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN yarn install
-
 COPY . .
 
-COPY --from=build /app/dist /app
+RUN yarn install && yarn run build
 
-CMD [ "node", "app/main"]
+CMD [ "node", "dist/main"]
 
 
