@@ -24,8 +24,16 @@ CMD [ "yarn", "run", "start:dev" ]
 ## PROD
 FROM node:19-alpine as prod 
 
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN yarn install
+
+COPY . .
+
 COPY --from=build /app/dist /app
 
-CMD [ "node", "app/main.js"]
+CMD [ "node", "app/main"]
 
 
