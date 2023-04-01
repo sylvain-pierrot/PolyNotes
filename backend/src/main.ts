@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    origin: 'http://localhost:3000',
+    origin: 'https://polynotes.cluster-2022-9.dopolytech.fr',
   });
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(5000);

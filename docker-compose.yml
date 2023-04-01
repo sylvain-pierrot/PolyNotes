@@ -16,6 +16,8 @@ services:
       context: backend
       target: dev
     restart: always
+    env_file:
+      - backend/.env
     volumes:
       - ./backend/src:/app/src:ro
     ports:
@@ -30,6 +32,8 @@ services:
       context: frontend
       target: dev
     restart: always
+    env_file:
+      - frontend/.env
     ports:
       - 3000:3000
     volumes:

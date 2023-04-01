@@ -13,3 +13,8 @@ applications:
   repoURL: https://github.com/sylvain-pierrot/PolyNotes.git
   chart: frontend/.helm/polynotes-frontend
   server: https://kubernetes.default.svc
+- name: polynotes-backend
+  namespace: sylvain
+  repoURL: https://github.com/sylvain-pierrot/PolyNotes.git
+  chart: backend/.helm/polynotes-backend
+  server: https://kubernetes.default.svc

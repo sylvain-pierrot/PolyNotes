@@ -1,13 +1,3 @@
-FROM node:19-alpine as build
-
-WORKDIR /app
-
-COPY . .
-
-RUN yarn install && yarn run build
-
-
-
 ## DEV
 FROM node:19-alpine as dev
 
@@ -17,6 +7,8 @@ COPY . .
 
 RUN yarn install
 
+EXPOSE 5000
+
 CMD [ "yarn", "run", "start:dev" ]
 
 
@@ -24,8 +16,12 @@ CMD [ "yarn", "run", "start:dev" ]
 ## PROD
 FROM node:19-alpine as prod 
 
-COPY --from=build /app/dist /app
+WORKDIR /app
 
-CMD [ "node", "app/main.js"]
+COPY . .
 
+RUN yarn install && yarn run build
 
+EXPOSE 5000
+
+CMD [ "yarn", "run", "start:prod" ]
