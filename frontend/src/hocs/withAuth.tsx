@@ -1,13 +1,16 @@
 import React from "react";
-import { Navigate, useLocation, useOutletContext } from "react-router-dom";
+import { Navigate, useLoaderData, useLocation } from "react-router-dom";
 
 const withAuth =
   <P extends object>(Component: React.ComponentType<P>) =>
   (props: P) => {
-    const isAuth = useOutletContext();
+    // const isAuth = useOutletContext();
     const { pathname } = useLocation();
+    const loader: any = useLoaderData();
+    const isAuthenticated = !!loader.user;
+    console.log(isAuthenticated);
 
-    if (!isAuth) {
+    if (!false) {
       if (pathname === "/" || pathname === "/login" || pathname === "/signup") {
         return <Component {...props} />;
       } else {

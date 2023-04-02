@@ -73,7 +73,9 @@ export class UsersController {
     @Param('nonce') nonce: string,
   ) {
     await this.usersService.valide(email, nonce);
-    const redirectUrl = `${this.configService.get<string>('BASE_URL')}/login`;
+    const redirectUrl = `${this.configService.get<string>(
+      'BASE_URL_APP',
+    )}/login`;
     return res.redirect(redirectUrl);
   }
 

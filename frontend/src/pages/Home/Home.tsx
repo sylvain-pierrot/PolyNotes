@@ -1,6 +1,5 @@
 import { Button, Row } from "antd";
 import { useNavigate } from "react-router";
-import withAuth from "../../hocs/withAuth";
 import "./Home.css";
 
 function Home() {
@@ -23,4 +22,4 @@ function Home() {
   );
 }
 
-export default withAuth(Home);
+export default Home;

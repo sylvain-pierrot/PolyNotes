@@ -3,7 +3,6 @@ import Title from "antd/es/typography/Title";
 import FormSignup from "../../components/FormSignup/FormSignup";
 import { Row } from "antd";
 import { IUser, signupUser } from "../../boot/Auth";
-import withAuth from "../../hocs/withAuth";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
@@ -12,7 +11,7 @@ function Signup() {
   const handleSignup = async (user: IUser) => {
     try {
       await signupUser(user);
-      navigate("/login");
+      navigate(`/verifyEmail/${user.email}`);
     } catch (error) {
       console.error(error);
       // handle error here
@@ -29,4 +28,4 @@ function Signup() {
   );
 }
 
-export default withAuth(Signup);
+export default Signup;

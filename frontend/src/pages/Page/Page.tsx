@@ -1,15 +1,16 @@
 import "./Page.css";
-import withAuth from "../../hocs/withAuth";
-import PageComponent from "../../components/Page/Page";
+import PageContent from "../../components/PageContent/PageContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { PageProperties } from "../../store/slices/pageSlice";
+import { PageProperties, updatePage } from "../../store/slices/pageSlice";
 import { useEffect } from "react";
-import { updatePageByid } from "../../boot/Pages";
+import { getPageById, updatePageByid } from "../../boot/Pages";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function Page() {
-  let params = useParams();
+  const params = useParams();
+  const dispatch = useDispatch();
 
   // Store
   const page: PageProperties | null = useSelector(
@@ -17,6 +18,19 @@ function Page() {
   );
 
   // UseEffect
+  useEffect(() => {
+    (async () => {
+      const pageBrut = await getPageById(params.id!);
+      const currentPage = {
+        title: pageBrut.title,
+        blocks: pageBrut.blocks,
+        author: pageBrut.author,
+      };
+
+      dispatch(updatePage({ page: currentPage }));
+    })();
+  }, []);
+
   useEffect(() => {
     const intervalID = setTimeout(async () => {
       console.log(page);
@@ -26,7 +40,7 @@ function Page() {
     return () => clearInterval(intervalID);
   }, [page]);
 
-  return <>{page.author !== "default" && <PageComponent page={page} />}</>;
+  return <>{page.author !== "default" && <PageContent page={page} />}</>;
 }
 
-export default withAuth(Page);
+export default Page;

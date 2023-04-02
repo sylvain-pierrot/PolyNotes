@@ -1,4 +1,4 @@
-import "./Page.css";
+import "./PageContent.css";
 import React, { useRef } from "react";
 import BaseBlock from "../Block/BaseBlock";
 import { Editor } from "@tiptap/react";
@@ -9,7 +9,7 @@ interface IPropsPage {
   page: PageProperties;
 }
 
-const Page: React.FC<IPropsPage> = ({ page }) => {
+const PageContent: React.FC<IPropsPage> = ({ page }) => {
   // Refs
   const refs = useRef<(Editor | null)[]>([]);
   const refTitle = useRef<Editor | null>(null);
@@ -61,4 +61,4 @@ const Page: React.FC<IPropsPage> = ({ page }) => {
   );
 };
 
-export default Page;
+export default PageContent;

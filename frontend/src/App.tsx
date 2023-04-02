@@ -1,5 +1,9 @@
 import "./assets/styles/App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import { ConfigProvider } from "antd";
 import "./App.css";
 import Home from "./pages/Home/Home";
@@ -12,9 +16,10 @@ import { getFileSystem } from "./boot/FileSystem";
 import UnloggedLayout from "./layouts/UnloggedLayout/UnloggedLayout";
 import LoggedLayout from "./layouts/LoggedLayout/LoggedLayout";
 import { useDispatch } from "react-redux";
-import { updateFileSystem } from "./store/slices/fileSystemSlice";
 import { getPageById } from "./boot/Pages";
 import { updatePage } from "./store/slices/pageSlice";
+import { autoLoginUser } from "./boot/Auth";
+import MailSend from "./pages/MailSend/MailSend";
 
 const App: React.FC = () => {
   // Store
@@ -24,12 +29,13 @@ const App: React.FC = () => {
     {
       path: "/",
       element: <UnloggedLayout />,
-      loader: () => {
-        const user = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("user="))
-          ?.split("=")[1];
-        return { user: user };
+      loader: async () => {
+        const autoLogin = await autoLoginUser();
+        if (autoLogin.error === undefined) {
+          return { user: autoLogin.user };
+        } else {
+          return { user: null };
+        }
       },
       children: [
         {
@@ -45,6 +51,10 @@ const App: React.FC = () => {
           element: <Signup />,
         },
         {
+          path: "verifyEmail/:email",
+          element: <MailSend />,
+        },
+        {
           path: "*",
           element: <NotFound />,
         },
@@ -53,36 +63,21 @@ const App: React.FC = () => {
     {
       path: "/",
       element: <LoggedLayout />,
-      loader: () => {
-        const user = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("user="))
-          ?.split("=")[1];
-        return { user: user };
+      loader: async () => {
+        const autoLogin = await autoLoginUser();
+        if (autoLogin.error === undefined) {
+          return { user: autoLogin.user };
+        } else {
+          return { user: null };
+        }
       },
       children: [
         {
           path: "workspace",
           element: <Workspace />,
-          loader: async () => {
-            const tree = await getFileSystem();
-            dispatch(updateFileSystem({ tree }));
-            return null;
-          },
         },
         {
           path: "page/:id",
-          loader: async ({ params }) => {
-            const pageBrut = await getPageById(params.id!);
-            const currentPage = {
-              title: pageBrut.title,
-              blocks: pageBrut.blocks,
-              author: pageBrut.author,
-            };
-
-            dispatch(updatePage({ page: currentPage }));
-            return null;
-          },
           element: <Page />,
         },
       ],

@@ -3,7 +3,6 @@ import Title from "antd/es/typography/Title";
 import FormLogin from "../../components/FormLogin/FormLogin";
 import { Row } from "antd";
 import { ICredentials, loginUser } from "../../boot/Auth";
-import withAuth from "../../hocs/withAuth";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -29,4 +28,4 @@ function Login() {
   );
 }
 
-export default withAuth(Login);
+export default Login;

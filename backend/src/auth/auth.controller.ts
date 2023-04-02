@@ -6,9 +6,11 @@ import {
   HttpStatus,
   UseGuards,
   Req,
+  Get,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
@@ -26,13 +28,8 @@ export class AuthController {
         secure: true,
         sameSite: 'strict',
       });
-      res.cookie('user', user.username, {
-        httpOnly: false,
-        secure: true,
-        sameSite: 'strict',
-      });
       res.send({
-        message: 'Successfully logged in 😊 👌',
+        message: 'Successfully logged in',
         user: {
           userId: user._id,
           email: user.email,
@@ -45,6 +42,20 @@ export class AuthController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('auto-login')
+  async autoLogin(@Req() request: any) {
+    const user: any = request.user;
+    return {
+      message: 'Successfully logged in',
+      user: {
+        email: user.email,
+        username: user.username,
+      },
+      status: HttpStatus.OK,
+    };
+  }
+
   @Post('logout')
   async logout(
     @Req() req: Request,
@@ -55,7 +66,6 @@ export class AuthController {
     }
 
     response.clearCookie('token');
-    response.clearCookie('user');
 
     return {
       message: 'Successfully logged out 😊 👌',

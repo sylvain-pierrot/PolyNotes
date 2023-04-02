@@ -1,6 +1,5 @@
 import { Button, Form, Input } from "antd";
 import "./FormSignup.css";
-import { useNavigate } from "react-router";
 import { IUser } from "../../boot/Auth";
 
 interface IpropsFormLogin {
@@ -10,8 +9,6 @@ interface IpropsFormLogin {
 const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
   const [form] = Form.useForm();
 
-  const navigate = useNavigate();
-
   const onFinish = (values: any) => {
     form.resetFields();
     const user: IUser = {
@@ -20,7 +17,6 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
       password: values.password,
     };
     signup(user);
-    navigate("/login");
   };
 
   return (
