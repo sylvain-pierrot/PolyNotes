@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 import { getAllPages } from "../../boot/Pages";
 import { updateFileSystem } from "../../store/slices/fileSystemSlice";
 import { getFileSystem } from "../../boot/FileSystem";
+import { useNavigate } from "react-router";
 
 function Workspace() {
   const dispatch = useDispatch();
-  // Store
+  const naviagte = useNavigate();
   const treeData: Node | null = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
@@ -41,7 +42,10 @@ function Workspace() {
           dataSource={recents}
           renderItem={(item: any) => (
             <List.Item>
-              <Card title={item.title}></Card>
+              <Card
+                title={item.title}
+                onClick={() => naviagte(`/page/${item._id}`)}
+              ></Card>
             </List.Item>
           )}
         />

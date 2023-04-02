@@ -7,6 +7,11 @@ import { useEffect } from "react";
 import { getPageById, updatePageByid } from "../../boot/Pages";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import {
+  updateFileSystem,
+  updateTitleNodeById,
+} from "../../store/slices/fileSystemSlice";
+import { getFileSystem } from "../../boot/FileSystem";
 
 function Page() {
   const params = useParams();
@@ -26,15 +31,16 @@ function Page() {
         blocks: pageBrut.blocks,
         author: pageBrut.author,
       };
-
+      const tree = await getFileSystem();
+      dispatch(updateFileSystem({ tree }));
       dispatch(updatePage({ page: currentPage }));
     })();
   }, []);
 
   useEffect(() => {
     const intervalID = setTimeout(async () => {
-      console.log(page);
       await updatePageByid(params.id!, page.title!, page.blocks);
+      dispatch(updateTitleNodeById({ key: params.id, newTitle: page.title }));
     }, 2000);
 
     return () => clearInterval(intervalID);

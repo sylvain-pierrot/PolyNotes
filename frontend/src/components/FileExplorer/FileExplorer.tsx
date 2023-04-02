@@ -166,7 +166,6 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
             style={{ alignItems: "center" }}
           />
           <List.Item.Meta title={item.children?.length.toString()} />
-          <List.Item.Meta title={item.title} />
         </List.Item>
       )}
     />
