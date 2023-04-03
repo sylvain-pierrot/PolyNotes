@@ -8,11 +8,15 @@ export interface PageProperties {
 }
 
 export enum BlockType {
-  BASIC = "text",
+  TEXT = "text",
   IMAGE = "img",
   TABLE = "table",
   BULLET_LIST = "bullet-list",
   ORDERED_LIST = "ordered-list",
+  HEADING_1 = "heading-1",
+  HEADING_2 = "heading-2",
+  HEADING_3 = "heading-3",
+
 }
 
 export interface Block {
@@ -43,7 +47,7 @@ const pageSlice = createSlice({
         const newBlock: Block = {
           id: uuidv4(),
           content: content ? content : null,
-          type: BlockType.BASIC,
+          type: BlockType.TEXT,
         };
         state.page.blocks.splice(index, 0, newBlock);
       }

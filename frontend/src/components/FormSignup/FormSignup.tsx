@@ -9,6 +9,7 @@ interface IpropsFormLogin {
 const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
   const [form] = Form.useForm();
 
+  // Handler for form submission
   const onFinish = (values: any) => {
     form.resetFields();
     const user: IUser = {

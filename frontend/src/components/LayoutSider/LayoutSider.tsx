@@ -1,55 +1,40 @@
 import React, { useEffect, useState } from "react";
 import Layout from "antd/es/layout";
-import { Button, Divider, List, Menu, MenuProps } from "antd";
-import {
-  FolderOutlined,
-  PlusOutlined,
-  FileOutlined,
-} from "@ant-design/icons";
+import { Button, Divider, List, Menu } from "antd";
+import { FolderOutlined, PlusOutlined, FileOutlined } from "@ant-design/icons";
 import "./LayoutSider.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { DataNode } from "antd/es/tree";
 import { Link } from "react-router-dom";
+import { getItem, MenuItem } from "../../utils/utils";
 
 const { Sider } = Layout;
-
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  type?: "group"
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as MenuItem;
-}
 
 const LayoutSider: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const data = ["Recent", "Started", "Trash"];
   const [treeData, setTreeData] = useState<DataNode[] | null>(null);
+
+  // Get the file system from the redux store
   const fileSystem: Node | null = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
 
+  // When the file system is loaded, set the treeData state
   useEffect(() => {
     if (fileSystem) {
       setTreeData(fileSystem);
     }
   }, [fileSystem]);
 
+  // Recursive function to create sub-menu items for the tree data
   const subItems = (childrenNodeRoot: any[]): MenuItem[] => {
     if (!childrenNodeRoot) return [];
+
     return childrenNodeRoot.map((node) => {
       if (node.children) {
+        // If the node has children, create a sub-menu item
         return getItem(
           node.title,
           node.key,
@@ -57,6 +42,7 @@ const LayoutSider: React.FC = () => {
           subItems(node.children)
         );
       } else {
+        // If the node has no children, create a link item
         return getItem(
           <Link to={`/page/${node.key}`}>{node.title}</Link>,
           node.key,
@@ -67,6 +53,7 @@ const LayoutSider: React.FC = () => {
     });
   };
 
+  // Create the top-level menu item for the workspace
   const items = (treeData: any): MenuItem => {
     const subMenu = subItems(treeData.children);
     return getItem("Workspace", "sub1", <FolderOutlined />, subMenu);

@@ -9,12 +9,13 @@ interface IPropsFormLogin {
 }
 
 const FormLogin: React.FC<IPropsFormLogin> = ({ login }) => {
+  // Handler for form submission
   const onFinish = async (values: any) => {
     const credentials: ICredentials = {
       email: values.email,
       password: values.password,
     };
-    await login(credentials);
+    login(credentials);
   };
 
   return (

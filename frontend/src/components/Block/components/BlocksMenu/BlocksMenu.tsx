@@ -9,21 +9,68 @@ import Database from "../../../../assets/images/database.png";
 import BulletList from "../../../../assets/images/bullet-list.png";
 import OrderedList from "../../../../assets/images/ordered-list.png";
 import "./BlocksMenu.css";
+import { BlockType } from "../../../../store/slices/pageSlice";
+import { Level } from "@tiptap/extension-heading";
+
+const blocksMenuItemsData = [
+  {
+    icon: TextImage,
+    title: "Text",
+    description: "Just start writing with plain text.",
+    type: BlockType.TEXT,
+  },
+  {
+    icon: Heading1Image,
+    title: "Heading 1",
+    description: "Big section heading.",
+    type: BlockType.HEADING_1,
+  },
+  {
+    icon: Heading2Image,
+    title: "Heading 2",
+    description: "Medium section heading.",
+    type: BlockType.HEADING_2,
+  },
+  {
+    icon: Heading3Image,
+    title: "Heading 3",
+    description: "Small section heading.",
+    type: BlockType.HEADING_3,
+  },
+  {
+    icon: BulletList,
+    title: "Bulleted list",
+    description: "Create a simple bulleted list.",
+    type: BlockType.BULLET_LIST,
+  },
+  {
+    icon: OrderedList,
+    title: "Numbered list",
+    description: "Create a list with numbering.",
+    type: BlockType.ORDERED_LIST,
+  },
+  {
+    icon: Image,
+    title: "Image",
+    description: "Embedded with a link.",
+    type: BlockType.IMAGE,
+  },
+  {
+    icon: Database,
+    title: "Database",
+    description: "Database with Kanban/Table views.",
+    type: BlockType.TABLE,
+  },
+];
 
 interface IPropsBlocksMenu {
   editor: Editor;
-  goImg: () => void;
-  goDatabase: () => void;
-  goBulletList: () => void;
-  goOrderedList: () => void;
+  updateContentAndChangeType: (newType: BlockType) => void;
 }
 
 const BlocksMenu: React.FC<IPropsBlocksMenu> = ({
   editor,
-  goImg,
-  goDatabase,
-  goBulletList,
-  goOrderedList,
+  updateContentAndChangeType,
 }) => {
   return (
     <FloatingMenu
@@ -40,93 +87,31 @@ const BlocksMenu: React.FC<IPropsBlocksMenu> = ({
       }}
     >
       <List className="floating-menu-list" split={false}>
-        <List.Item
-          onClick={() => {
-            editor.chain().focus().clearContent().run();
-          }}
-        >
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={TextImage} />}
-            title={"Text"}
-            description={"Just start writing with plain text."}
-          />
-        </List.Item>
-        <List.Item
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .clearContent()
-              .toggleHeading({ level: 1 })
-              .run()
-          }
-        >
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={Heading1Image} />}
-            title={"Heading 1"}
-            description={"Big section heading."}
-          />
-        </List.Item>
-        <List.Item
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .clearContent()
-              .toggleHeading({ level: 2 })
-              .run()
-          }
-        >
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={Heading2Image} />}
-            title={"Heading 2"}
-            description={"Medium section heading."}
-          />
-        </List.Item>
-        <List.Item
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .clearContent()
-              .toggleHeading({ level: 3 })
-              .run()
-          }
-        >
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={Heading3Image} />}
-            title={"Heading 3"}
-            description={"Small section heading."}
-          />
-        </List.Item>
-        <List.Item onClick={() => goBulletList()}>
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={BulletList} />}
-            title={"Bulleted list"}
-            description={"Create a simple bulleted list."}
-          />
-        </List.Item>
-        <List.Item onClick={() => goOrderedList()}>
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={OrderedList} />}
-            title={"Numbered list"}
-            description={"Create a list with numbering."}
-          />
-        </List.Item>
-        <List.Item onClick={() => goImg()}>
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={Image} />}
-            title={"Image"}
-            description={"Embeded with a link."}
-          />
-        </List.Item>
-        <List.Item onClick={() => goDatabase()}>
-          <List.Item.Meta
-            avatar={<Avatar shape="square" size={46} src={Database} />}
-            title={"Database"}
-            description={"Database with Kanban/Table views."}
-          />
-        </List.Item>
+        {blocksMenuItemsData.map(({ icon, title, description, type }) => (
+          <List.Item
+            key={type}
+            onClick={() => {
+              if (type.startsWith("heading")) {
+                const level = Number(type.slice(-1)) as Level;
+
+                editor
+                  .chain()
+                  .focus()
+                  .clearContent()
+                  .toggleHeading({ level })
+                  .run();
+              } else {
+                updateContentAndChangeType(type as BlockType);
+              }
+            }}
+          >
+            <List.Item.Meta
+              avatar={<Avatar shape="square" size={46} src={icon} />}
+              title={title}
+              description={description}
+            />
+          </List.Item>
+        ))}
       </List>
     </FloatingMenu>
   );
