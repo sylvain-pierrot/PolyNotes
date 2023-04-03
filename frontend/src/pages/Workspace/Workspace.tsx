@@ -1,35 +1,37 @@
 import "./Workspace.css";
 import { Card, List } from "antd";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { getAllPages } from "../../boot/Pages";
 import { useNavigate } from "react-router";
 
-function Workspace() {
+const Workspace = () => {
   const naviagte = useNavigate();
   const treeData: Node | null = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
-  const [recents, setRecents] = useState<any>(null);
+  const [recentPages, setRecentPages] = useState<any[]>([]);
 
+  // fetch list of recent pages and update state
   useEffect(() => {
-    (async () => {
-      const pageList = await getAllPages();
-      setRecents(pageList);
-    })();
-  }, [treeData]);
+    const fetchRecentPages = async () => {
+      const pageList = await getAllPages(); // function to fetch recent pages from server
+      setRecentPages(pageList); // update state with recent pages
+    };
+    fetchRecentPages();
+  }, [treeData]); // re-fetch recent pages whenever tree data changes
 
   return (
     <>
       <h1>Recent</h1>
 
-      {recents && (
+      {recentPages && (
         <List
           className="slider"
           split={false}
-          dataSource={recents}
+          dataSource={recentPages}
           renderItem={(item: any) => (
             <List.Item>
               <Card
@@ -44,6 +46,6 @@ function Workspace() {
       {treeData && <FileExplorer treeData={treeData} />}
     </>
   );
-}
+};
 
 export default Workspace;

@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTitleNodeById } from "../../store/slices/fileSystemSlice";
 
-function Page() {
+const Page = () => {
   const params = useParams();
   const dispatch = useDispatch();
 
@@ -18,31 +18,32 @@ function Page() {
     (state: RootState) => state.pageReducer.page
   );
 
-  // UseEffect
+  // Fetch page by ID and update store
   useEffect(() => {
-    (async () => {
+    const fetchPage = async () => {
       const pageBrut = await getPageById(params.id!);
       const currentPage = {
         title: pageBrut.title,
         blocks: pageBrut.blocks,
         author: pageBrut.author,
       };
-      // const tree = await getFileSystem();
-      // dispatch(updateFileSystem({ tree }));
       dispatch(updatePage({ page: currentPage }));
-    })();
-  }, []);
+    };
+    fetchPage();
+  }, [params.id, dispatch]);
 
+  // Update page and node title when page is updated
   useEffect(() => {
-    const intervalID = setTimeout(async () => {
+    const intervalID = setInterval(async () => {
       await updatePageByid(params.id!, page.title!, page.blocks);
       dispatch(updateTitleNodeById({ key: params.id, newTitle: page.title }));
     }, 2000);
 
     return () => clearInterval(intervalID);
-  }, [page]);
+  }, [page, params.id, dispatch]);
 
-  return <>{page.author !== "default" && <PageContent page={page} />}</>;
-}
+  // Render page content if author is not default
+  return <>{page?.author !== "default" && <PageContent page={page} />}</>;
+};
 
 export default Page;

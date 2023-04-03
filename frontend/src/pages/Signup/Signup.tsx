@@ -5,7 +5,7 @@ import { Row } from "antd";
 import { IUser, signupUser } from "../../boot/Auth";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
+const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignup = async (user: IUser) => {
@@ -26,6 +26,6 @@ function Signup() {
       </div>
     </Row>
   );
-}
+};
 
 export default Signup;

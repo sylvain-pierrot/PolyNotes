@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useDispatch } from "react-redux";
 import "./TitlePage.css";
 import Document from "@tiptap/extension-document";
-import { forwardRef, Ref, useImperativeHandle } from "react";
+import { forwardRef, Ref, useEffect, useImperativeHandle } from "react";
 import { newBlock, updateTitle } from "../../store/slices/pageSlice";
 
 interface IPropsTitlePage {
@@ -17,6 +17,10 @@ const TitlePage = forwardRef(
   ({ content, handleArrows }: IPropsTitlePage, ref: Ref<Editor | null>) => {
     // Store
     const dispatch = useDispatch();
+
+    useEffect(() => {
+      editor?.commands.setContent(content);
+    }, [content]);
 
     // Extension
     const TitlePageExtension = Extension.create({

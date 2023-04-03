@@ -3,15 +3,11 @@ import Layout from "antd/es/layout";
 import { Button, Divider, List, Menu, MenuProps } from "antd";
 import {
   FolderOutlined,
-  ShareAltOutlined,
   PlusOutlined,
   FileOutlined,
 } from "@ant-design/icons";
 import "./LayoutSider.css";
-import DirectoryTree, { DirectoryTreeProps } from "antd/es/tree/DirectoryTree";
-import { updateFileSystem } from "../../store/slices/fileSystemSlice";
-import { getFileSystem } from "../../boot/FileSystem";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { DataNode } from "antd/es/tree";
 import { Link } from "react-router-dom";

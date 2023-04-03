@@ -3,7 +3,7 @@ import { FolderFilled, FileOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import "./FileExplorer.css";
 import { Node } from "../../boot/FileSystem";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { createNode } from "../../store/slices/fileSystemSlice";
 import { createPage } from "../../boot/Pages";
