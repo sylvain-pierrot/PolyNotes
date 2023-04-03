@@ -3,7 +3,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useDispatch } from "react-redux";
-import "./TitlePage.css";
+import "./PageTitle.css";
 import Document from "@tiptap/extension-document";
 import { forwardRef, Ref, useEffect, useImperativeHandle } from "react";
 import { newBlock, updateTitle } from "../../store/slices/pageSlice";
@@ -13,7 +13,7 @@ interface IPropsTitlePage {
   handleArrows: (event: any) => void;
 }
 
-const TitlePage = forwardRef(
+const PageTitle = forwardRef(
   // Props and Ref
   ({ content, handleArrows }: IPropsTitlePage, ref: Ref<Editor | null>) => {
     // Store
@@ -86,4 +86,4 @@ const TitlePage = forwardRef(
   }
 );
 
-export default TitlePage;
+export default PageTitle;

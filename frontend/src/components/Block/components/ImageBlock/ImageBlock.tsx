@@ -14,7 +14,10 @@ import React, {
 import { useDispatch } from "react-redux";
 import { Button } from "antd";
 import { FileImageOutlined } from "@ant-design/icons";
-import { newBlock, updateContentBlockById } from "../../../../store/slices/pageSlice";
+import {
+  newBlock,
+  updateContentBlockById,
+} from "../../../../store/slices/pageSlice";
 
 interface IPropsImageBlock {
   id: string;
@@ -26,22 +29,19 @@ const ImageBlock = forwardRef(
     // Store
     const dispatch = useDispatch();
 
-    // Extension
-    const ShortcutExtension = Extension.create({
-      addKeyboardShortcuts() {
-        return {
-          Enter: () => {
-            dispatch(newBlock({ id }));
-            return true;
-          },
-        };
-      },
-    });
-
     // Editor
     const editor = useEditor({
       extensions: [
-        ShortcutExtension,
+        Extension.create({
+          addKeyboardShortcuts() {
+            return {
+              Enter: () => {
+                dispatch(newBlock({ id }));
+                return true;
+              },
+            };
+          },
+        }),
         Document,
         Paragraph,
         Text,
@@ -52,7 +52,9 @@ const ImageBlock = forwardRef(
       editable: false,
       onUpdate({ editor }) {
         if (!editor.isEmpty)
-          dispatch(updateContentBlockById({ id: id, content: editor.getHTML() }));
+          dispatch(
+            updateContentBlockById({ id: id, content: editor.getHTML() })
+          );
       },
     });
 
@@ -73,7 +75,7 @@ const ImageBlock = forwardRef(
 
     return (
       <div className={"image-block"}>
-        {editor && editor.isEmpty && (
+        {editor.isEmpty && (
           <Button
             onClick={addImage}
             className="btn-image-block"

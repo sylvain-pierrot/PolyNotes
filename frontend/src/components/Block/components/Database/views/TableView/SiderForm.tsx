@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Row, Select } from "antd";
 import Sider from "antd/es/layout/Sider";
-import { Property } from "../../BaseDatabase";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { Property } from "../../../../../../utils/utils";
 
 interface IPropsSiderForm {
   columns: { name: string; property: Property }[];

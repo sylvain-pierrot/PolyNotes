@@ -2,7 +2,7 @@ import "./PageContent.css";
 import React, { useRef } from "react";
 import BaseBlock from "../Block/BaseBlock";
 import { Editor } from "@tiptap/react";
-import TitlePage from "../TitlePage/TitlePage";
+import TitlePage from "../PageTitle/PageTitle";
 import { PageProperties } from "../../store/slices/pageSlice";
 
 interface IPropsPage {

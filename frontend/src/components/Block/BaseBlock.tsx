@@ -7,14 +7,13 @@ import { Editor } from "@tiptap/react";
 import { useDispatch } from "react-redux";
 import ImageBlock from "./components/ImageBlock/ImageBlock";
 import BaseDatabase from "./components/Database/BaseDatabase";
-import BulletListBlock from "./components/BulletListBlock/BulletListBlock";
-import OrderedListBlock from "./components/OrderedListBlock/OrderedListBlock";
 import {
   Block,
   BlockType,
   destroyBlock,
   newBlock,
 } from "../../store/slices/pageSlice";
+import ListBlock from "./components/ListBlock/ListBlock";
 
 interface IPropsBlock {
   block: Block;
@@ -91,8 +90,9 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
           />
         )}
         {block.type === BlockType.TABLE && <BaseDatabase />}
-        {block.type === BlockType.BULLET_LIST && (
-          <BulletListBlock
+        {(block.type === BlockType.BULLET_LIST ||
+          block.type === BlockType.ORDERED_LIST) && (
+          <ListBlock
             id={block.id}
             content={block.content}
             ref={(ref) => {
@@ -101,18 +101,7 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
             }}
             handleArrows={handleArrows}
             onDestroy={() => handleFocus(-1)}
-          />
-        )}
-        {block.type === BlockType.ORDERED_LIST && (
-          <OrderedListBlock
-            id={block.id}
-            content={block.content}
-            ref={(ref) => {
-              goRef(ref);
-              setRef(ref);
-            }}
-            handleArrows={handleArrows}
-            onDestroy={() => handleFocus(-1)}
+            listType={block.type}
           />
         )}
       </div>

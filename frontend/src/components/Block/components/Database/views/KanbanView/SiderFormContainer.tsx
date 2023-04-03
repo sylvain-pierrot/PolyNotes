@@ -1,8 +1,8 @@
 import { Button, Col, Form, Input, Row } from "antd";
 import Sider from "antd/es/layout/Sider";
-import { DataType } from "../../BaseDatabase";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
+import { DataType } from "../../../../../../utils/utils";
 
 interface IPropsSiderForm {
   containers: {

@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import { DataType } from "../../BaseDatabase";
+import { DataType } from "../../../../../../utils/utils";
 
 interface IPropsItem {
   item: DataType;

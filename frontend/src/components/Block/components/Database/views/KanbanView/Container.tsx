@@ -5,7 +5,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableItem from "./SortableItem";
-import { DataType } from "../../BaseDatabase";
+import { DataType } from "../../../../../../utils/utils";
 
 const containerStyle = {
   background: "#dadada",

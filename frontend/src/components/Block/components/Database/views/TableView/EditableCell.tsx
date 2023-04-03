@@ -14,12 +14,12 @@ import {
   TimePicker,
 } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Property, DataType } from "../../BaseDatabase";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { EditableContext } from "./TableView";
+import { DataType, Property } from "../../../../../../utils/utils";
 
 dayjs.extend(customParseFormat);
 
