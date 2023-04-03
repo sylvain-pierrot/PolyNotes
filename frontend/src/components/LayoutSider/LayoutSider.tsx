@@ -21,7 +21,6 @@ const { Sider } = Layout;
 
 const LayoutSider: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const data = ["Recent", "Started", "Trash"];
   const [treeData, setTreeData] = useState<DataNode[] | null>(null);
 
   // Get the file system from the redux store

@@ -3,15 +3,18 @@ import PageContent from "../../components/PageContent/PageContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { PageProperties, updatePage } from "../../store/slices/pageSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getPageById, updatePageByid } from "../../boot/Pages";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTitleNodeById } from "../../store/slices/fileSystemSlice";
+import { LoadingOutlined, LockOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 const Page = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const [isRegistered, setIsRegistered] = useState(true);
 
   // Store
   const page: PageProperties | null = useSelector(
@@ -34,16 +37,29 @@ const Page = () => {
 
   // Update page and node title when page is updated
   useEffect(() => {
+    setIsRegistered(false);
     const intervalID = setInterval(async () => {
       await updatePageByid(params.id!, page.title!, page.blocks);
       dispatch(updateTitleNodeById({ key: params.id, newTitle: page.title }));
-    }, 2000);
+      setIsRegistered(true);
+    }, 1500);
 
     return () => clearInterval(intervalID);
   }, [page, params.id, dispatch]);
 
   // Render page content if author is not default
-  return <>{page?.author !== "default" && <PageContent page={page} />}</>;
+  return (
+    <>
+      {!isRegistered && (
+        <Spin indicator={<LoadingOutlined spin />} className="register-spin" />
+      )}
+      {isRegistered && (
+        <Spin indicator={<LockOutlined />} className="register-spin" />
+      )}
+
+      {page?.author !== "default" && <PageContent page={page} />}
+    </>
+  );
 };
 
 export default Page;
