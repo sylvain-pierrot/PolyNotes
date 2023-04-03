@@ -5,24 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { getAllPages } from "../../boot/Pages";
-import { updateFileSystem } from "../../store/slices/fileSystemSlice";
-import { getFileSystem } from "../../boot/FileSystem";
 import { useNavigate } from "react-router";
 
 function Workspace() {
-  const dispatch = useDispatch();
   const naviagte = useNavigate();
   const treeData: Node | null = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
   const [recents, setRecents] = useState<any>(null);
-
-  useEffect(() => {
-    (async () => {
-      const tree = await getFileSystem();
-      dispatch(updateFileSystem({ tree }));
-    })();
-  }, []);
 
   useEffect(() => {
     (async () => {

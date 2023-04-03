@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout } from "antd";
 import "./LoggedLayout.css";
 import {
@@ -11,6 +11,9 @@ import {
 import LayoutHeader from "../../components/LayoutHeader/LayoutHeader";
 import LayoutSider from "../../components/LayoutSider/LayoutSider";
 import { logoutUser } from "../../boot/Auth";
+import { useDispatch } from "react-redux";
+import { getFileSystem } from "../../boot/FileSystem";
+import { updateFileSystem } from "../../store/slices/fileSystemSlice";
 
 const { Content } = Layout;
 
@@ -18,9 +21,7 @@ const LoggedLayout: React.FC = () => {
   const loader: any = useLoaderData();
   const isAuthenticated = !!loader.user;
   const { pathname } = useLocation();
-
   const navigate = useNavigate();
-
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -30,6 +31,14 @@ const LoggedLayout: React.FC = () => {
       // handle error here
     }
   };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const tree = await getFileSystem();
+      dispatch(updateFileSystem({ tree }));
+    })();
+  }, []);
 
   if (
     !isAuthenticated &&
