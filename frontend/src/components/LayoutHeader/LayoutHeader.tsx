@@ -2,9 +2,8 @@ import React from "react";
 import { Header } from "antd/es/layout/layout";
 import { Input, Avatar, Popover, Button } from "antd";
 import Logo from "../../assets/images/PolyBunny.png";
-// import Logo2 from "../../assets/images/polynotes-logo.svg";
-import "./LayoutHeader.css";
 import { useNavigate } from "react-router";
+import "./LayoutHeader.css";
 
 interface IPropsLayoutHeader {
   user: any;
