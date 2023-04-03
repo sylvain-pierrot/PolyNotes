@@ -19,9 +19,25 @@ const Workspace = () => {
     const fetchRecentPages = async () => {
       const pageList = await getAllPages(); // function to fetch recent pages from server
       setRecentPages(pageList); // update state with recent pages
+      console.log(pageList);
     };
     fetchRecentPages();
   }, [treeData]); // re-fetch recent pages whenever tree data changes
+
+  // Format Date
+  function formatDate(date: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false,
+      timeZone: "UTC",
+    };
+    return new Date(date).toLocaleString("en-US", options);
+  }
 
   return (
     <>
@@ -37,7 +53,17 @@ const Workspace = () => {
               <Card
                 title={item.title}
                 onClick={() => naviagte(`/page/${item._id}`)}
-              ></Card>
+              >
+                <p
+                  style={{
+                    color: "#999",
+                    fontSize: "14px",
+                    marginTop: "8px",
+                  }}
+                >
+                  {formatDate(item.updated)}
+                </p>
+              </Card>
             </List.Item>
           )}
         />

@@ -14,8 +14,8 @@ import { logoutUser } from "../../boot/Auth";
 import { useDispatch } from "react-redux";
 import { getFileSystem } from "../../boot/FileSystem";
 import { updateFileSystem } from "../../store/slices/fileSystemSlice";
+import LayoutHeader from "../../components/LayoutHeader/LayoutHeader";
 import LayoutSider from "../../components/LayoutSider/LayoutSider";
-import LayoutHeader from "./components/LayoutHeader/LayoutHeader";
 
 const { Content } = Layout;
 

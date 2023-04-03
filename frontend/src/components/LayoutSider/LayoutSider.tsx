@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Layout from "antd/es/layout";
-import { Button, Divider, List, Menu } from "antd";
-import { FolderOutlined, PlusOutlined, FileOutlined } from "@ant-design/icons";
+import { Button, Divider, Menu } from "antd";
+import {
+  FolderOutlined,
+  PlusOutlined,
+  FileOutlined,
+  ShareAltOutlined,
+  FieldTimeOutlined,
+  StarOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import "./LayoutSider.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -87,21 +95,29 @@ const LayoutSider: React.FC = () => {
             backgroundColor: "#fafafa",
             padding: "0.8em",
           }}
-          items={[items(treeData)]}
+          items={[
+            items(treeData),
+            getItem("Shared with Me", "sub2", <ShareAltOutlined />, []),
+          ]}
         />
       )}
 
       <Divider style={{ margin: "12px 0" }} />
 
-      <List
-        size="small"
-        split={false}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item style={{ justifyContent: "center" }}>
-            <Button type="text">{item}</Button>
-          </List.Item>
-        )}
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        style={{
+          borderRight: 0,
+          backgroundColor: "#fafafa",
+          padding: "0.8em",
+        }}
+        items={[
+          getItem("Recent", "sub1", <FieldTimeOutlined />, undefined),
+          getItem("Stared", "sub2", <StarOutlined />, undefined),
+          getItem("Trash", "sub3", <DeleteOutlined />, undefined),
+        ]}
       />
     </Sider>
   );
