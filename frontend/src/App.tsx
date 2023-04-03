@@ -8,17 +8,16 @@ import Signup from "./pages/Signup/Signup";
 import Workspace from "./pages/Workspace/Workspace";
 import Page from "./pages/Page/Page";
 import NotFound from "./pages/NotFound/NotFound";
-import UnloggedLayout from "./layouts/UnloggedLayout/UnloggedLayout";
-import LoggedLayout from "./layouts/LoggedLayout/LoggedLayout";
 import { autoLoginUser } from "./boot/Auth";
 import MailSend from "./pages/MailSend/MailSend";
+import MainLayout from "./layouts/MainLayout/MainLayout";
 
 const App: React.FC = () => {
   // Store
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <UnloggedLayout />,
+      element: <MainLayout />,
       loader: async () => {
         const autoLogin = await autoLoginUser();
         return { user: autoLogin.error === undefined ? autoLogin.user : null };
@@ -44,16 +43,6 @@ const App: React.FC = () => {
           path: "*",
           element: <NotFound />,
         },
-      ],
-    },
-    {
-      path: "/",
-      element: <LoggedLayout />,
-      loader: async () => {
-        const autoLogin = await autoLoginUser();
-        return { user: autoLogin.error === undefined ? autoLogin.user : null };
-      },
-      children: [
         {
           path: "workspace",
           element: <Workspace />,

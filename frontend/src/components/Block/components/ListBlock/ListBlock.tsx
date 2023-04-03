@@ -85,7 +85,6 @@ const ListBlock = forwardRef(
     return (
       <EditorContent
         editor={editor}
-        className="page-title"
         onKeyDown={(event) => {
           handleArrows(event);
         }}

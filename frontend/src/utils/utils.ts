@@ -39,7 +39,7 @@ export function getDefaultColumnValue(property: Property): any {
     case Property.TIME:
       return dayjs("00:00:00", "HH:mm:ss");
     case Property.TEXT:
-      return "";
+      return "DEFAULT";
     case Property.CHECKBOX:
       return false;
     default:
