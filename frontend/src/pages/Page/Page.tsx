@@ -8,7 +8,7 @@ import { getPageById, updatePageByid } from "../../boot/Pages";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTitleNodeById } from "../../store/slices/fileSystemSlice";
-import { LoadingOutlined, LockOutlined } from "@ant-design/icons";
+import { LoadingOutlined, SaveOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
 const Page = () => {
@@ -51,10 +51,10 @@ const Page = () => {
   return (
     <>
       {!isRegistered && (
-        <Spin indicator={<LoadingOutlined spin />} className="register-spin" />
+        <Spin indicator={<LoadingOutlined spin />} className="save-indicator" />
       )}
       {isRegistered && (
-        <Spin indicator={<LockOutlined />} className="register-spin" />
+        <Spin indicator={<SaveOutlined />} className="save-indicator" />
       )}
 
       {page?.author !== "default" && <PageContent page={page} />}

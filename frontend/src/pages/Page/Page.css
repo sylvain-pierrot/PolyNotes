@@ -1,6 +1,6 @@
-.register-spin {
+.save-indicator {
   font-size: 24;
   position: absolute;
   top: 1em;
-  right: 2em;
+  left: 2em;
 }

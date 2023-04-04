@@ -13,16 +13,29 @@ const Workspace = () => {
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
   const [recentPages, setRecentPages] = useState<any[]>([]);
+  const [pageSize, setPageSize] = useState(4);
+
+  // Trigger PageSize
+  useEffect(() => {
+    const handleResize = () => {
+      const isSmallScreen = window.innerWidth < 900; // md breakpoint is 768px
+      setPageSize(isSmallScreen ? 2 : 5);
+    };
+    handleResize(); // set initial page size based on window size
+    window.addEventListener("resize", handleResize); // update page size when window size changes
+    return () => {
+      window.removeEventListener("resize", handleResize); // cleanup
+    };
+  }, []);
 
   // fetch list of recent pages and update state
   useEffect(() => {
     const fetchRecentPages = async () => {
-      const pageList = await getAllPages(); // function to fetch recent pages from server
-      setRecentPages(pageList); // update state with recent pages
-      console.log(pageList);
+      const pageList = await getAllPages();
+      setRecentPages(pageList);
     };
     fetchRecentPages();
-  }, [treeData]); // re-fetch recent pages whenever tree data changes
+  }, [treeData]);
 
   // Format Date
   function formatDate(date: string): string {
@@ -45,8 +58,17 @@ const Workspace = () => {
 
       {recentPages && (
         <List
+          pagination={{
+            position: "bottom",
+            align: "center",
+            // defaultPageSize: 4,
+            pageSize: pageSize,
+            // responsive: true,
+            simple: true,
+          }}
           className="slider"
           split={false}
+          grid={{ gutter: 16, column: pageSize }}
           dataSource={recentPages}
           renderItem={(item: any) => (
             <List.Item>
@@ -73,5 +95,4 @@ const Workspace = () => {
     </>
   );
 };
-
 export default Workspace;
