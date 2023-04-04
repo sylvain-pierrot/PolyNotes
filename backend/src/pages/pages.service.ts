@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { CreatePageDto } from './dto/create-page.dto';
+import { UpdateAccessPageDto } from './dto/update-access-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { Page, PageDocument } from './schemas/page.schema';
 
@@ -39,6 +40,16 @@ export class PagesService {
   async update(id: string, userId: string, updatePageDto: UpdatePageDto) {
     return await this.pageModel
       .findOneAndUpdate({ _id: id, author: userId }, updatePageDto)
+      .exec();
+  }
+
+  async updateAccess(
+    id: string,
+    userId: string,
+    updateAccessPageDto: UpdateAccessPageDto,
+  ) {
+    return await this.pageModel
+      .findOneAndUpdate({ _id: id, author: userId }, updateAccessPageDto)
       .exec();
   }
 

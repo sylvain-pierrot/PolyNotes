@@ -77,7 +77,7 @@ const PageTitle = forwardRef(
       <EditorContent
         editor={editor}
         className="page-title"
-        // Handle arrow keys
+        spellCheck={false}
         onKeyDown={(event) => {
           handleArrows(event);
         }}

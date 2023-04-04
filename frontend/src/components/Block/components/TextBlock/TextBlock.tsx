@@ -107,6 +107,7 @@ const TextBlock = forwardRef(
         )}
         <EditorContent
           editor={editor}
+          spellCheck={false}
           onKeyDown={(event) => {
             handleArrows?.(event);
           }}

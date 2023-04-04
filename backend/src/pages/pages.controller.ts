@@ -15,6 +15,7 @@ import { UpdatePageDto } from './dto/update-page.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
+import { UpdateAccessPageDto } from './dto/update-access-page.dto';
 
 @Controller('pages')
 export class PagesController {
@@ -54,6 +55,17 @@ export class PagesController {
   ) {
     const token = this.jwtService.verify(req.cookies.token);
     return await this.pagesService.update(id, token.id, updatePageDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('access/:id')
+  async updateAccess(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateAccessPageDto: UpdateAccessPageDto,
+  ) {
+    const userId = req.user['id'];
+    return await this.pagesService.updateAccess(id, userId, updateAccessPageDto);
   }
 
   @Delete(':id')

@@ -19,6 +19,12 @@ export class Page {
 
   @Prop({ required: true, default: [] })
   blocks: Block[];
+
+  @Prop({ required: true, default: 'private' })
+  access: string;
+
+  @Prop({ required: false, default: null })
+  roleAccess: string;
 }
 
 export const PageSchema = SchemaFactory.createForClass(Page);

@@ -1,10 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
+import { updateAccessPageByid } from "../../boot/Pages";
+
+export enum Access {
+  PUBLIC = "public",
+  PRIVATE = "private",
+}
+
+export enum RoleAccess {
+  Editor = "editor",
+  Viewer = "viewer",
+}
 
 export interface PageProperties {
   author: string;
   title: string | null;
   blocks: Block[];
+  access: Access;
+  roleAccess: RoleAccess | null;
 }
 
 export enum BlockType {
@@ -16,7 +29,6 @@ export enum BlockType {
   HEADING_1 = "heading-1",
   HEADING_2 = "heading-2",
   HEADING_3 = "heading-3",
-
 }
 
 export interface Block {
@@ -29,6 +41,8 @@ const initialState: PageProperties = {
   author: "default",
   title: "default",
   blocks: [],
+  access: Access.PRIVATE,
+  roleAccess: null,
 };
 
 const pageSlice = createSlice({
@@ -76,6 +90,12 @@ const pageSlice = createSlice({
       const { page } = action.payload;
       state.page = page;
     },
+    updatePageAccess(state, action) {
+      const { pageId, access, roleAccess } = action.payload;
+      state.page.access = access;
+      state.page.roleAccess = roleAccess;
+      updateAccessPageByid(pageId, access, roleAccess);
+    },
   },
 });
 
@@ -86,6 +106,7 @@ export const {
   updateContentBlockById,
   updateTitle,
   updatePage,
+  updatePageAccess,
 } = pageSlice.actions;
 
 export default pageSlice.reducer;

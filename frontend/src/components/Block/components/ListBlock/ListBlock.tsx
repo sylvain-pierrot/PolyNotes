@@ -100,6 +100,7 @@ const ListBlock = forwardRef(
     return (
       <EditorContent
         editor={editor}
+        spellCheck={false}
         onKeyDown={(event) => {
           handleArrows(event);
         }}

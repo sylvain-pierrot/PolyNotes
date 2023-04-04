@@ -2,7 +2,11 @@ import "./Page.css";
 import PageContent from "../../components/PageContent/PageContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { PageProperties, updatePage } from "../../store/slices/pageSlice";
+import {
+  PageProperties,
+  updatePage,
+  updatePageAccess,
+} from "../../store/slices/pageSlice";
 import { useEffect, useState } from "react";
 import { getPageById, updatePageByid } from "../../boot/Pages";
 import { useParams } from "react-router-dom";
@@ -10,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { updateTitleNodeById } from "../../store/slices/fileSystemSlice";
 import { LoadingOutlined, SaveOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
+import SharingPage from "../../components/SharingContent/SharingPage";
 
 const Page = () => {
   const params = useParams();
@@ -29,6 +34,8 @@ const Page = () => {
         title: pageBrut.title,
         blocks: pageBrut.blocks,
         author: pageBrut.author,
+        access: pageBrut.access,
+        roleAccess: pageBrut.roleAccess,
       };
       dispatch(updatePage({ page: currentPage }));
     };
@@ -47,14 +54,27 @@ const Page = () => {
     return () => clearInterval(intervalID);
   }, [page, params.id, dispatch]);
 
+  const handleUpdateAccessPage = async (values: any) => {
+    const access = values.access;
+    const roleAccess = access === "public" ? values.roleAccess : null;
+    const pageId = params.id!;
+    dispatch(updatePageAccess({ pageId, access, roleAccess }));
+  };
+
   // Render page content if author is not default
   return (
     <>
-      {!isRegistered && (
-        <Spin indicator={<LoadingOutlined spin />} className="save-indicator" />
-      )}
-      {isRegistered && (
-        <Spin indicator={<SaveOutlined />} className="save-indicator" />
+      <Spin
+        indicator={!isRegistered ? <LoadingOutlined /> : <SaveOutlined />}
+        className="save-indicator"
+      />
+
+      {page?.author !== "default" && (
+        <SharingPage
+          access={page.access}
+          roleAccess={page.roleAccess}
+          handleUpdateAccessPage={handleUpdateAccessPage}
+        />
       )}
 
       {page?.author !== "default" && <PageContent page={page} />}
