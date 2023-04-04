@@ -3,9 +3,9 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useDispatch } from "react-redux";
-import "./TitlePage.css";
+import "./PageTitle.css";
 import Document from "@tiptap/extension-document";
-import { forwardRef, Ref, useImperativeHandle } from "react";
+import { forwardRef, Ref, useEffect, useImperativeHandle } from "react";
 import { newBlock, updateTitle } from "../../store/slices/pageSlice";
 
 interface IPropsTitlePage {
@@ -13,7 +13,8 @@ interface IPropsTitlePage {
   handleArrows: (event: any) => void;
 }
 
-const TitlePage = forwardRef(
+const PageTitle = forwardRef(
+  // Props and Ref
   ({ content, handleArrows }: IPropsTitlePage, ref: Ref<Editor | null>) => {
     // Store
     const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const TitlePage = forwardRef(
     // Extension
     const TitlePageExtension = Extension.create({
       addKeyboardShortcuts() {
+        // Add Enter key shortcut to create new block
         return {
           Enter: () => {
             dispatch(newBlock({}));
@@ -30,11 +32,12 @@ const TitlePage = forwardRef(
       },
     });
 
+    // Custom Document type
     const CustomDocument = Document.extend({
       content: "heading block*",
     });
 
-    // Editor
+    // Editor setup with extensions and options
     const editor = useEditor({
       content: content,
       extensions: [
@@ -55,17 +58,26 @@ const TitlePage = forwardRef(
       enablePasteRules: false,
       autofocus: true,
       onUpdate({ editor }) {
+        // Update store with new title content
         dispatch(updateTitle({ content: editor.getText() }));
       },
     });
 
-    // Handles
+    // UseEffect for setting initial content
+    useEffect(() => {
+      if (editor?.commands) {
+        editor.commands.setContent(content);
+      }
+    }, [content, editor?.commands]);
+
+    // UseImperativeHandle to forward ref to parent component
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
       <EditorContent
         editor={editor}
         className="page-title"
+        // Handle arrow keys
         onKeyDown={(event) => {
           handleArrows(event);
         }}
@@ -74,4 +86,4 @@ const TitlePage = forwardRef(
   }
 );
 
-export default TitlePage;
+export default PageTitle;

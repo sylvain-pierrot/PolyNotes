@@ -1,28 +1,30 @@
 import OrderedList from "@tiptap/extension-ordered-list";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
-// import StarterKit from "@tiptap/starter-kit";
 import Text from "@tiptap/extension-text";
 import { useDispatch } from "react-redux";
 import Document from "@tiptap/extension-document";
 import { forwardRef, Ref, useImperativeHandle } from "react";
 import ListItem from "@tiptap/extension-list-item";
 import {
+  BlockType,
   destroyBlock,
   newBlock,
   updateContentBlockById,
 } from "../../../../store/slices/pageSlice";
+import BulletList from "@tiptap/extension-bullet-list";
 
-interface IPropsOrderedListBlock {
+interface IPropsListBlock {
   id: string;
   content: string | null;
   onDestroy: () => void;
   handleArrows: (event: any) => void;
+  listType: BlockType.BULLET_LIST | BlockType.ORDERED_LIST;
 }
 
-const OrderedListBlock = forwardRef(
+const ListBlock = forwardRef(
   (
-    { id, content, onDestroy, handleArrows }: IPropsOrderedListBlock,
+    { id, content, onDestroy, handleArrows, listType }: IPropsListBlock,
     ref: Ref<Editor | null>
   ) => {
     // Store
@@ -33,11 +35,26 @@ const OrderedListBlock = forwardRef(
       addKeyboardShortcuts() {
         return {
           Enter: ({ editor }) => {
-            if (editor.isEmpty) {
-              console.log(editor.getHTML());
+            const lastNode = editor.state.doc.lastChild?.lastChild;
+            let shouldDispatchNewBlock = false;
+
+            if (lastNode) {
+              const isLastNodeEmpty = !lastNode.textContent.trim();
+
+              if (isLastNodeEmpty) {
+                editor.commands.deleteCurrentNode();
+              }
+
+              shouldDispatchNewBlock = editor.isEmpty || isLastNodeEmpty;
+            } else {
+              shouldDispatchNewBlock = editor.isEmpty;
+            }
+
+            if (shouldDispatchNewBlock) {
               dispatch(newBlock({ id }));
               return true;
             }
+
             return false;
           },
           Backspace: ({ editor }) => {
@@ -61,7 +78,7 @@ const OrderedListBlock = forwardRef(
           content: "text*",
         }),
         Text,
-        OrderedList,
+        listType === BlockType.BULLET_LIST ? BulletList : OrderedList,
         Placeholder.configure({
           placeholder: () => {
             return "List...";
@@ -83,7 +100,6 @@ const OrderedListBlock = forwardRef(
     return (
       <EditorContent
         editor={editor}
-        className="page-title"
         onKeyDown={(event) => {
           handleArrows(event);
         }}
@@ -92,4 +108,4 @@ const OrderedListBlock = forwardRef(
   }
 );
 
-export default OrderedListBlock;
+export default ListBlock;

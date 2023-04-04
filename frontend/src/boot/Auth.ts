@@ -29,11 +29,28 @@ export const loginUser = async (credentials: ICredentials) => {
   }
 };
 
-// export const logoutUser = async () => {
-//   try {
-//     const response = await api.post("/api/auth/logout");
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+export const autoLoginUser = async () => {
+  try {
+    const response = await api.get("/api/auth/auto-login");
+    return {
+      user: response.data.user,
+      message: response.data.message,
+      error: undefined,
+      status: response.status,
+    };
+  } catch (error) {
+    return {
+      message: undefined,
+      error: error,
+    };
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const response = await api.post("/api/auth/logout");
+    return response;
+  } catch (error) {
+    throw new Error("Failed to logout");
+  }
+};

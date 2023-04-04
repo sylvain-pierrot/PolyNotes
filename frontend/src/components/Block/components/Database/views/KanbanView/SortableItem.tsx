@@ -2,7 +2,7 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Item from "./Item";
-import { DataType } from "../../BaseDatabase";
+import { DataType } from "../../../../../../utils/utils";
 
 interface IPropsSortableItem {
   item: DataType;

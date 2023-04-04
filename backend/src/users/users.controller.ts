@@ -9,6 +9,7 @@ import {
   Redirect,
   UseGuards,
   Req,
+  Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,14 +17,16 @@ import { CreateUserDto } from './dto/create-user.dto';
 // import { UserDocument } from './schemas/user.schema';
 import { UpdateFileSystemDto } from 'src/users/dto/update-file-system.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   // USER
@@ -64,9 +67,16 @@ export class UsersController {
   // EMAIL
 
   @Get('verify/:email/:nonce')
-  @Redirect('http://localhost:3000', 302)
-  async verify(@Param('email') email: string, @Param('nonce') nonce: string) {
-    return await this.usersService.valide(email, nonce);
+  async verify(
+    @Res() res: Response,
+    @Param('email') email: string,
+    @Param('nonce') nonce: string,
+  ) {
+    await this.usersService.valide(email, nonce);
+    const redirectUrl = `${this.configService.get<string>(
+      'BASE_URL_APP',
+    )}/login`;
+    return res.redirect(redirectUrl);
   }
 
   // FILE SYSTEM

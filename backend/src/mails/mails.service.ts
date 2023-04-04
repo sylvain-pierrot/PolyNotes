@@ -10,7 +10,7 @@ export class MailsService {
   ) {}
 
   async sendEmailVerificationLink(email: string, nonce: string) {
-    const baseUrl = this.configService.get<string>('BASE_URL');
+    const baseUrl = this.configService.get<string>('BASE_URL_API');
 
     const verificationLink = `${baseUrl}/api/users/verify/${email}/${nonce}`;
 

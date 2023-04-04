@@ -1,3 +1,7 @@
 .ant-menu-submenu-title {
   padding-left: 16px !important;
 }
+.logo {
+  width: 5em;
+  cursor: pointer;
+}

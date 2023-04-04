@@ -1,5 +1,5 @@
 enum BlockType {
-  BASIC = 'text',
+  TEXT = 'text',
   IMAGE = 'img',
   TABLE = 'table',
   BULLET_LIST = 'bullet-list',

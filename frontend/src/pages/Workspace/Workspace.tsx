@@ -1,61 +1,69 @@
 import "./Workspace.css";
-import withAuth from "../../hocs/withAuth";
 import { Card, List } from "antd";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { getAllPages } from "../../boot/Pages";
+import { useNavigate } from "react-router";
 
-const data = [
-  {
-    title: "Title 1",
-  },
-  {
-    title: "Title 2",
-  },
-  {
-    title: "Title 3",
-  },
-  {
-    title: "Title 4",
-  },
-  {
-    title: "Title 5",
-  },
-  {
-    title: "Title 6",
-  },
-];
-
-function Workspace() {
-  // Store
+const Workspace = () => {
+  const naviagte = useNavigate();
   const treeData: Node | null = useSelector(
     (state: RootState) => state.fileSystemReducer.fileSystem
   );
+  const [recentPages, setRecentPages] = useState<any[]>([]);
 
-  const [recents, setRecents] = useState<any>(null);
-
+  // fetch list of recent pages and update state
   useEffect(() => {
-    (async () => {
-      const pageList = await getAllPages();
-      setRecents(pageList);
+    const fetchRecentPages = async () => {
+      const pageList = await getAllPages(); // function to fetch recent pages from server
+      setRecentPages(pageList); // update state with recent pages
       console.log(pageList);
-    })();
-  }, [treeData]);
+    };
+    fetchRecentPages();
+  }, [treeData]); // re-fetch recent pages whenever tree data changes
+
+  // Format Date
+  function formatDate(date: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false,
+      timeZone: "UTC",
+    };
+    return new Date(date).toLocaleString("en-US", options);
+  }
 
   return (
     <>
       <h1>Recent</h1>
 
-      {recents && (
+      {recentPages && (
         <List
           className="slider"
           split={false}
-          dataSource={recents}
+          dataSource={recentPages}
           renderItem={(item: any) => (
             <List.Item>
-              <Card title={item.title}></Card>
+              <Card
+                title={item.title}
+                onClick={() => naviagte(`/page/${item._id}`)}
+              >
+                <p
+                  style={{
+                    color: "#999",
+                    fontSize: "14px",
+                    marginTop: "8px",
+                  }}
+                >
+                  {formatDate(item.updated)}
+                </p>
+              </Card>
             </List.Item>
           )}
         />
@@ -64,6 +72,6 @@ function Workspace() {
       {treeData && <FileExplorer treeData={treeData} />}
     </>
   );
-}
+};
 
-export default withAuth(Workspace);
+export default Workspace;

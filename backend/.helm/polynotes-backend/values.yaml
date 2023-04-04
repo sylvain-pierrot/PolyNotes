@@ -26,8 +26,10 @@ env:
   value: "sylvain.pierrot@etu.umontpellier.fr"
 - name: EXPIRESIN
   value: "5h"
-- name: BASE_URL
-  value: "http://localhost:5000"
+- name: BASE_URL_API
+  value: "https://polynotes.cluster-2022-9.dopolytech.fr"
+- name: BASE_URL_APP
+  value: "https://polynotes.cluster-2022-9.dopolytech.fr"
 - name: MONGODB_URL
   valueFrom:
     secretKeyRef:

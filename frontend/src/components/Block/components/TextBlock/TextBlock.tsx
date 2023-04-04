@@ -11,7 +11,13 @@ import { Extension } from "@tiptap/core";
 import { useDispatch } from "react-redux";
 import RichEditor from "../RichEditor/RichEditor";
 import BlocksMenu from "../BlocksMenu/BlocksMenu";
-import { BlockType, changeToTypeBlock, destroyBlock, newBlock, updateContentBlockById } from "../../../../store/slices/pageSlice";
+import {
+  BlockType,
+  changeToTypeBlock,
+  destroyBlock,
+  newBlock,
+  updateContentBlockById,
+} from "../../../../store/slices/pageSlice";
 
 interface IPropsTextBlock {
   id: string;
@@ -28,31 +34,31 @@ const TextBlock = forwardRef(
     // Store
     const dispatch = useDispatch();
 
-    // Extension
-    const TextBlockExtension = Extension.create({
-      addKeyboardShortcuts() {
-        return {
-          Enter: () => {
-            dispatch(newBlock({ id }));
-            return true;
-          },
-          Backspace: ({ editor }) => {
-            if (editor.isEmpty) {
-              onDestroy();
-              dispatch(destroyBlock({ id }));
-            }
-            return false;
-          },
-        };
-      },
-    });
-
     // Editor
     const editor = useEditor({
       content: content,
       extensions: [
-        TextBlockExtension,
+        Extension.create({
+          addKeyboardShortcuts() {
+            return {
+              Enter: () => {
+                // Dispatch a new block action when "Enter" is pressed
+                dispatch(newBlock({ id }));
+                return true;
+              },
+              Backspace: ({ editor }) => {
+                if (editor.isEmpty) {
+                  // Call onDestroy and dispatch destroy block action when editor is empty and "Backspace" is pressed
+                  onDestroy();
+                  dispatch(destroyBlock({ id }));
+                }
+                return false;
+              },
+            };
+          },
+        }),
         StarterKit.configure({
+          // Disable undo/redo, bullet list, list item, and ordered list
           history: false,
           bulletList: false,
           listItem: false,
@@ -62,6 +68,7 @@ const TextBlock = forwardRef(
         Underline,
         Placeholder.configure({
           placeholder: ({ node }) => {
+            // Set placeholder for heading and normal text blocks
             if (node.type.name === "heading") {
               return `Heading ${node.attrs.level}`;
             }
@@ -74,28 +81,19 @@ const TextBlock = forwardRef(
       ],
       autofocus: true,
       onUpdate({ editor }) {
+        // Dispatch an action to update the content when the editor content changes
         const content = editor.isEmpty ? "" : editor.getHTML();
         dispatch(updateContentBlockById({ id: id, content: content }));
       },
     });
 
-    // Handles
-    const goImg = () => {
-      dispatch(updateContentBlockById({ id: id, content: null }));
-      dispatch(changeToTypeBlock({ id, type: BlockType.IMAGE }));
+    // Handle function to update content and change block type
+    const updateContentAndChangeType = (newType: BlockType) => {
+      dispatch(updateContentBlockById({ id, content: null }));
+      dispatch(changeToTypeBlock({ id, type: newType }));
     };
-    const goDatabase = () => {
-      dispatch(updateContentBlockById({ id: id, content: null }));
-      dispatch(changeToTypeBlock({ id, type: BlockType.TABLE }));
-    };
-    const goBulletList = () => {
-      dispatch(updateContentBlockById({ id: id, content: null }));
-      dispatch(changeToTypeBlock({ id, type: BlockType.BULLET_LIST }));
-    };
-    const goOrderedList = () => {
-      dispatch(updateContentBlockById({ id: id, content: null }));
-      dispatch(changeToTypeBlock({ id, type: BlockType.ORDERED_LIST }));
-    };
+
+    // Expose the editor instance to the parent component using ref
     useImperativeHandle(ref, () => editor, [editor]);
 
     return (
@@ -104,10 +102,7 @@ const TextBlock = forwardRef(
         {editor && (
           <BlocksMenu
             editor={editor}
-            goImg={goImg}
-            goDatabase={goDatabase}
-            goBulletList={goBulletList}
-            goOrderedList={goOrderedList}
+            updateContentAndChangeType={updateContentAndChangeType}
           />
         )}
         <EditorContent

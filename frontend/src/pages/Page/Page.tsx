@@ -1,32 +1,65 @@
 import "./Page.css";
-import withAuth from "../../hocs/withAuth";
-import PageComponent from "../../components/Page/Page";
+import PageContent from "../../components/PageContent/PageContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { PageProperties } from "../../store/slices/pageSlice";
-import { useEffect } from "react";
-import { updatePageByid } from "../../boot/Pages";
+import { PageProperties, updatePage } from "../../store/slices/pageSlice";
+import { useEffect, useState } from "react";
+import { getPageById, updatePageByid } from "../../boot/Pages";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateTitleNodeById } from "../../store/slices/fileSystemSlice";
+import { LoadingOutlined, LockOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
-function Page() {
-  let params = useParams();
+const Page = () => {
+  const params = useParams();
+  const dispatch = useDispatch();
+  const [isRegistered, setIsRegistered] = useState(true);
 
   // Store
   const page: PageProperties | null = useSelector(
     (state: RootState) => state.pageReducer.page
   );
 
-  // UseEffect
+  // Fetch page by ID and update store
   useEffect(() => {
-    const intervalID = setTimeout(async () => {
-      console.log(page);
+    const fetchPage = async () => {
+      const pageBrut = await getPageById(params.id!);
+      const currentPage = {
+        title: pageBrut.title,
+        blocks: pageBrut.blocks,
+        author: pageBrut.author,
+      };
+      dispatch(updatePage({ page: currentPage }));
+    };
+    fetchPage();
+  }, [params.id, dispatch]);
+
+  // Update page and node title when page is updated
+  useEffect(() => {
+    setIsRegistered(false);
+    const intervalID = setInterval(async () => {
       await updatePageByid(params.id!, page.title!, page.blocks);
-    }, 2000);
+      dispatch(updateTitleNodeById({ key: params.id, newTitle: page.title }));
+      setIsRegistered(true);
+    }, 1500);
 
     return () => clearInterval(intervalID);
-  }, [page]);
+  }, [page, params.id, dispatch]);
 
-  return <>{page.author !== "default" && <PageComponent page={page} />}</>;
-}
+  // Render page content if author is not default
+  return (
+    <>
+      {!isRegistered && (
+        <Spin indicator={<LoadingOutlined spin />} className="register-spin" />
+      )}
+      {isRegistered && (
+        <Spin indicator={<LockOutlined />} className="register-spin" />
+      )}
 
-export default withAuth(Page);
+      {page?.author !== "default" && <PageContent page={page} />}
+    </>
+  );
+};
+
+export default Page;

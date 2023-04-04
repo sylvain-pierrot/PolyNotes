@@ -1,9 +1,9 @@
 import { Avatar, Breadcrumb, Button, List, Row } from "antd";
 import { FolderFilled, FileOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./FileExplorer.css";
 import { Node } from "../../boot/FileSystem";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { createNode } from "../../store/slices/fileSystemSlice";
 import { createPage } from "../../boot/Pages";
@@ -18,34 +18,38 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [currentNode, setCurrentNode] = useState<Node>(treeData);
+  const getNode = useCallback(
+    (rootNode: Node, key: string): Node | undefined => {
+      // If the node's key matches the search key, return the node
+      if (rootNode.key === key) {
+        return rootNode;
+      }
+
+      // If the node has children, recursively search them for the key
+      if (rootNode.children) {
+        for (let child of rootNode.children) {
+          const childNode = getNode(child, key);
+          if (childNode) {
+            return childNode;
+          }
+        }
+      }
+
+      // If the node has no children and its key does not match the search key, return undefined
+      return undefined;
+    },
+    []
+  );
+
+  // Refresh the current node when the treeData changes
   useEffect(() => {
     const refreshNode = getNode(treeData, currentNode.key);
     if (refreshNode) {
       setCurrentNode(refreshNode);
     }
-  }, [treeData]);
+  }, [treeData, currentNode.key, getNode]);
 
-  // Functions
-  const getNode = (rootNode: Node, key: string): Node | undefined => {
-    // If the node's key matches the search key, return the node
-    if (rootNode.key === key) {
-      return rootNode;
-    }
-
-    // If the node has children, recursively search them for the key
-    if (rootNode.children) {
-      for (let child of rootNode.children) {
-        const childNode = getNode(child, key);
-        if (childNode) {
-          return childNode;
-        }
-      }
-    }
-
-    // If the node has no children and its key does not match the search key, return undefined
-    return undefined;
-  };
-
+  // recursively searches for a node's path and returns an array of objects with their key and title properties
   const getNodesPath = (
     rootNode: Node,
     key: string
@@ -70,6 +74,7 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     return [];
   };
 
+  // prompts the user for a name, creates a new page with the name, and dispatches an action to add the new page as a child of the current node
   const addPage = async () => {
     const name = window.prompt("Name");
 
@@ -85,6 +90,7 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
     }
   };
 
+  // prompts the user for a name, creates a new folder with the name and an empty children array, and dispatches an action to add the new folder as a child of the current node
   const addFolder = () => {
     const name = window.prompt("Name");
 
@@ -166,7 +172,6 @@ const FileExplorer: React.FC<IPropsFileExplorer> = ({ treeData }) => {
             style={{ alignItems: "center" }}
           />
           <List.Item.Meta title={item.children?.length.toString()} />
-          <List.Item.Meta title={item.title} />
         </List.Item>
       )}
     />

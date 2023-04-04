@@ -1,28 +1,34 @@
-import "./Page.css";
+import "./PageContent.css";
 import React, { useRef } from "react";
 import BaseBlock from "../Block/BaseBlock";
 import { Editor } from "@tiptap/react";
-import TitlePage from "../TitlePage/TitlePage";
+import TitlePage from "../PageTitle/PageTitle";
 import { PageProperties } from "../../store/slices/pageSlice";
 
 interface IPropsPage {
   page: PageProperties;
 }
 
-const Page: React.FC<IPropsPage> = ({ page }) => {
-  // Refs
+const PageContent: React.FC<IPropsPage> = React.memo(({ page }) => {
+  // Refs for storing references to the Editor instances
   const refs = useRef<(Editor | null)[]>([]);
   const refTitle = useRef<Editor | null>(null);
-  // Handles
+
+  // Handle function for handling arrow key presses and shifting focus between the editors
   const handleFocus = (index: number, shift: number) => {
     let newIndex = index + shift;
+
+    // If the new index is valid, check if the Editor at that index is editable
     if (newIndex >= 0) {
       if (!refs.current[newIndex]?.isEditable) {
+        // If the Editor is not editable, shift focus to the next editable Editor
         refs.current[newIndex + shift]?.chain().focus().run();
       } else {
+        // Otherwise, shift focus to the Editor at the new index
         refs.current[newIndex]?.chain().focus().run();
       }
     } else if (newIndex === -1) {
+      // If the new index is -1, shift focus to the title Editor
       refTitle.current?.chain().focus().run();
     }
   };
@@ -59,6 +65,6 @@ const Page: React.FC<IPropsPage> = ({ page }) => {
       </div>
     </>
   );
-};
+});
 
-export default Page;
+export default PageContent;

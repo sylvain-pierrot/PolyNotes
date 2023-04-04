@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Col, FormInstance, Row, Table } from "antd";
-import { Property, DataType, getDefaultColumnValue } from "../../BaseDatabase";
 import "./TableView.css";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import SiderForm from "./SiderForm";
@@ -8,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ColumnType } from "antd/es/table";
 import EditableCell from "./EditableCell";
 import EditableRow from "./EditableTable";
+import { DataType, getDefaultColumnValue, Property } from "../../../../../../utils/utils";
 
 export const EditableContext = React.createContext<FormInstance<any> | null>(
   null

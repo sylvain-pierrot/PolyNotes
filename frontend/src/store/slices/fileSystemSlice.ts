@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { Node, patchFileSystem } from "../../boot/FileSystem";
 
 const initialState: Node | null = null;
@@ -30,6 +30,23 @@ const fileSystemSlice = createSlice({
       const { tree } = action.payload;
       state.fileSystem = tree;
     },
+    updateTitleNodeById(state, action) {
+      const { newTitle, key } = action.payload;
+      const node = getNode(state.fileSystem!, key);
+      if (node) {
+        node.title = newTitle;
+      }
+
+      if (state.fileSystem) {
+        const nodeRoot = {
+          nodeRoot: current(state.fileSystem),
+        };
+
+        // API
+        patchFileSystem(nodeRoot);
+      }
+      return state;
+    },
     createNode(state, action) {
       const { newNode, key } = action.payload;
 
@@ -41,7 +58,7 @@ const fileSystemSlice = createSlice({
 
       if (state.fileSystem) {
         const nodeRoot = {
-          nodeRoot: JSON.parse(JSON.stringify(state.fileSystem)),
+          nodeRoot: current(state.fileSystem),
         };
 
         // API
@@ -53,6 +70,7 @@ const fileSystemSlice = createSlice({
   },
 });
 
-export const { updateFileSystem, createNode } = fileSystemSlice.actions;
+export const { updateFileSystem, createNode, updateTitleNodeById } =
+  fileSystemSlice.actions;
 
 export default fileSystemSlice.reducer;

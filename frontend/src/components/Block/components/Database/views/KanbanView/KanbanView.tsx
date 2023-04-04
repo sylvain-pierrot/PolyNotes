@@ -17,11 +17,11 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import Container from "./Container";
 import Item from "./Item";
-import { DataType } from "../../BaseDatabase";
 import "./KanbanView.css";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import SiderFormContainer from "./SiderFormContainer";
+import { DataType } from "../../../../../../utils/utils";
 
 interface IPropsKanbanView {
   containers: {
