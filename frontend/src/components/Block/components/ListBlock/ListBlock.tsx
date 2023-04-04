@@ -35,11 +35,26 @@ const ListBlock = forwardRef(
       addKeyboardShortcuts() {
         return {
           Enter: ({ editor }) => {
-            if (editor.isEmpty) {
-              console.log(editor.getHTML());
+            const lastNode = editor.state.doc.lastChild?.lastChild;
+            let shouldDispatchNewBlock = false;
+
+            if (lastNode) {
+              const isLastNodeEmpty = !lastNode.textContent.trim();
+
+              if (isLastNodeEmpty) {
+                editor.commands.deleteCurrentNode();
+              }
+
+              shouldDispatchNewBlock = editor.isEmpty || isLastNodeEmpty;
+            } else {
+              shouldDispatchNewBlock = editor.isEmpty;
+            }
+
+            if (shouldDispatchNewBlock) {
               dispatch(newBlock({ id }));
               return true;
             }
+
             return false;
           },
           Backspace: ({ editor }) => {

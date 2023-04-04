@@ -89,7 +89,7 @@ const TextBlock = forwardRef(
 
     // Handle function to update content and change block type
     const updateContentAndChangeType = (newType: BlockType) => {
-      dispatch(updateContentBlockById({ id: id, content: null }));
+      dispatch(updateContentBlockById({ id, content: null }));
       dispatch(changeToTypeBlock({ id, type: newType }));
     };
 
