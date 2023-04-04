@@ -27,18 +27,23 @@ const SharingPage: React.FC<IPropsSharingContent> = memo(
 
     return (
       <div className="sharing-content">
-        <div style={{ display: "flex", alignItems: "center", marginRight: 16 }}>
-          <TextArea
-            value={window.location.href}
-            bordered={true}
-            disabled
-            autoSize={{ minRows: 1, maxRows: 1 }}
-            style={{ marginRight: 4 }}
-          ></TextArea>
-          <Button onClick={handleCopyClick} disabled={copied}>
-            {copied ? "Copied!" : "Copy"}
-          </Button>
-        </div>
+        {access === Access.PUBLIC && (
+          <div
+            style={{ display: "flex", alignItems: "center", marginRight: 16 }}
+          >
+            <TextArea
+              value={window.location.href}
+              bordered={true}
+              disabled
+              autoSize={{ minRows: 1, maxRows: 1 }}
+              style={{ marginRight: 4 }}
+            ></TextArea>
+            <Button onClick={handleCopyClick} disabled={copied}>
+              {copied ? "Copied!" : "Copy"}
+            </Button>
+          </div>
+        )}
+
         <Button
           type="primary"
           onClick={() => {

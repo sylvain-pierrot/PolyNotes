@@ -38,7 +38,12 @@ const ModalForm: React.FC<CollectionCreateFormProps> = ({
       title="Sharing"
       okText="Save"
       cancelText="Cancel"
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+        setIsPublic(access === Access.PUBLIC);
+        setComponentDisabled(true);
+      }}
       onOk={() => {
         form
           .validateFields()
