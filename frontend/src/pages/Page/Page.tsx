@@ -71,7 +71,7 @@ const Page = () => {
 
       return () => clearTimeout(timeoutID);
     }
-  }, [page, params.id, dispatch, updatePageByid]);
+  }, [page, params.id, dispatch]);
 
   const handleUpdateAccessPage = async (values: any) => {
     const access = values.access;
