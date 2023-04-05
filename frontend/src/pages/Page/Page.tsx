@@ -83,10 +83,12 @@ const Page = () => {
   // Render page content if author is not default
   return (
     <>
-      <Spin
-        indicator={!isRegistered ? <LoadingOutlined /> : <SaveOutlined />}
-        className="save-indicator"
-      />
+      {(page?.owner || page?.access === Access.PUBLIC) && (
+        <Spin
+          indicator={!isRegistered ? <LoadingOutlined /> : <SaveOutlined />}
+          className="save-indicator"
+        />
+      )}
 
       {page?.owner && (
         <SharingPage

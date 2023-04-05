@@ -55,11 +55,14 @@ const MainLayout: React.FC = () => {
 
   // Determine if the user is authenticated and redirect accordingly
   const shouldRedirectToWorkspace =
-    isAuthenticated && ["/", "/login", "/signup"].includes(pathname);
+    isAuthenticated &&
+    (["/", "/login", "/signup"].includes(pathname) ||
+      pathname.startsWith("/verifyEmail"));
   const shouldRedirectToHomepage =
     !isAuthenticated &&
-    !["/", "/login", "/signup"].includes(pathname) &&
-    !pathname.startsWith("/page/");
+    (!["/", "/login", "/signup"].includes(pathname) ||
+      !pathname.startsWith("/page/") ||
+      !pathname.startsWith("/verifyEmail"));
 
   if (shouldRedirectToWorkspace) {
     return <Navigate replace to="/workspace" />;
