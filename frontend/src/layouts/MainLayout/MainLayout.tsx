@@ -59,10 +59,7 @@ const MainLayout: React.FC = () => {
     (["/", "/login", "/signup"].includes(pathname) ||
       pathname.startsWith("/verifyEmail"));
   const shouldRedirectToHomepage =
-    !isAuthenticated &&
-    (!["/", "/login", "/signup"].includes(pathname) ||
-      !pathname.startsWith("/page/") ||
-      !pathname.startsWith("/verifyEmail"));
+    !isAuthenticated && ["/workspace"].includes(pathname);
 
   if (shouldRedirectToWorkspace) {
     return <Navigate replace to="/workspace" />;
