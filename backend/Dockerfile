@@ -41,6 +41,9 @@ RUN yarn install --production --frozen-lockfile
 
 COPY --from=build /app/dist /app/dist
 
+# PolyBunny.png
+COPY /app/src/assets/PolyBunny.png /app/src/assets  
+
 EXPOSE 5000
 
 CMD [ "node", "dist/main.js" ]

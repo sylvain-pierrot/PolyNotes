@@ -54,7 +54,7 @@ const PageContent: React.FC<IPropsPage> = ({ page, editable }) => {
           }}
           editable={editable}
         />
-        <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
+        <div>
           {page.blocks.map((block, index) => (
             <BaseBlock
               key={block.id}
