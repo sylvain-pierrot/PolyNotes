@@ -8,6 +8,7 @@ import Image from "../../../../assets/images/image.png";
 import Database from "../../../../assets/images/database.png";
 import BulletList from "../../../../assets/images/bullet-list.png";
 import OrderedList from "../../../../assets/images/ordered-list.png";
+import ToDoList from "../../../../assets/images/to-do-list.png";
 import "./BlocksMenu.css";
 import { BlockType } from "../../../../store/slices/pageSlice";
 import { Level } from "@tiptap/extension-heading";
@@ -48,6 +49,12 @@ const blocksMenuItemsData = [
     title: "Numbered list",
     description: "Create a list with numbering.",
     type: BlockType.ORDERED_LIST,
+  },
+  {
+    icon: ToDoList,
+    title: "To-do list",
+    description: "Track tasks with a to-do list.",
+    type: BlockType.TO_DO_LIST,
   },
   {
     icon: Image,

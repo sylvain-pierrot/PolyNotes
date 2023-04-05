@@ -43,3 +43,19 @@ export const updatePageByid = async (
     throw new Error("Failed to update page");
   }
 };
+
+export const updateAccessPageByid = async (
+  id: string,
+  access: string,
+  roleAccess: string | null
+) => {
+  try {
+    const response = await api.patch(`/api/pages/access/${id}`, {
+      access,
+      roleAccess,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to update access page");
+  }
+};

@@ -22,13 +22,14 @@ import {
 interface IPropsTextBlock {
   id: string;
   content: string | null;
+  editable: boolean;
   onDestroy: () => void;
   handleArrows?: (event: any) => void;
 }
 
 const TextBlock = forwardRef(
   (
-    { id, content, onDestroy, handleArrows }: IPropsTextBlock,
+    { id, content, editable, onDestroy, handleArrows }: IPropsTextBlock,
     ref: Ref<Editor | null>
   ) => {
     // Store
@@ -36,6 +37,7 @@ const TextBlock = forwardRef(
 
     // Editor
     const editor = useEditor({
+      editable: editable,
       content: content,
       extensions: [
         Extension.create({
@@ -98,8 +100,8 @@ const TextBlock = forwardRef(
 
     return (
       <div className={"text-block"}>
-        {editor && <RichEditor editor={editor} />}
-        {editor && (
+        {editor && editable && <RichEditor editor={editor} />}
+        {editor && editable && (
           <BlocksMenu
             editor={editor}
             updateContentAndChangeType={updateContentAndChangeType}
@@ -107,6 +109,7 @@ const TextBlock = forwardRef(
         )}
         <EditorContent
           editor={editor}
+          spellCheck={false}
           onKeyDown={(event) => {
             handleArrows?.(event);
           }}

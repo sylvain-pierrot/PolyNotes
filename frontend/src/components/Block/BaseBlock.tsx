@@ -17,12 +17,13 @@ import ListBlock from "./components/ListBlock/ListBlock";
 
 interface IPropsBlock {
   block: Block;
+  editable: boolean;
   goRef: (ref: Editor | null) => void;
   handleFocus: (shift: number) => void;
 }
 
 const BaseBlock: React.FC<IPropsBlock> = React.memo(
-  ({ block, goRef, handleFocus }) => {
+  ({ block, editable, goRef, handleFocus }) => {
     // States
     const [ref, setRef] = useState<Editor | null>(null);
 
@@ -44,28 +45,30 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
 
     return (
       <div className="Block">
-        <div className="actions-block">
-          <Button
-            type="text"
-            icon={<DeleteOutlined />}
-            size="small"
-            style={{ color: "#adb5bd" }}
-            onClick={handleDestroyBlock}
-          />
-          <Button
-            type="text"
-            icon={<PlusOutlined />}
-            size="small"
-            style={{ color: "#adb5bd" }}
-            onClick={() => {
-              if (ref?.isEmpty && block.type === "text") {
-                ref?.chain().focus().setContent("/").run();
-              } else {
-                memoizedDispatch(newBlock({ id: block.id, content: "/" }));
-              }
-            }}
-          />
-        </div>
+        {editable && (
+          <div className="actions-block">
+            <Button
+              type="text"
+              icon={<DeleteOutlined />}
+              size="small"
+              style={{ color: "#adb5bd" }}
+              onClick={handleDestroyBlock}
+            />
+            <Button
+              type="text"
+              icon={<PlusOutlined />}
+              size="small"
+              style={{ color: "#adb5bd" }}
+              onClick={() => {
+                if (ref?.isEmpty && block.type === "text") {
+                  ref?.chain().focus().setContent("/").run();
+                } else {
+                  memoizedDispatch(newBlock({ id: block.id, content: "/" }));
+                }
+              }}
+            />
+          </div>
+        )}
 
         {block.type === BlockType.TEXT && (
           <TextBlock
@@ -77,6 +80,7 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
             }}
             handleArrows={handleArrows}
             onDestroy={() => handleFocus(-1)}
+            editable={editable}
           />
         )}
         {block.type === BlockType.IMAGE && (
@@ -91,7 +95,8 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
         )}
         {block.type === BlockType.TABLE && <BaseDatabase />}
         {(block.type === BlockType.BULLET_LIST ||
-          block.type === BlockType.ORDERED_LIST) && (
+          block.type === BlockType.ORDERED_LIST ||
+          block.type === BlockType.TO_DO_LIST) && (
           <ListBlock
             id={block.id}
             content={block.content}
@@ -102,6 +107,7 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
             handleArrows={handleArrows}
             onDestroy={() => handleFocus(-1)}
             listType={block.type}
+            editable={editable}
           />
         )}
       </div>

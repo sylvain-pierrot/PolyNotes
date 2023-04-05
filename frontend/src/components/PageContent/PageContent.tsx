@@ -7,9 +7,10 @@ import { PageProperties } from "../../store/slices/pageSlice";
 
 interface IPropsPage {
   page: PageProperties;
+  editable: boolean;
 }
 
-const PageContent: React.FC<IPropsPage> = React.memo(({ page }) => {
+const PageContent: React.FC<IPropsPage> = ({ page, editable }) => {
   // Refs for storing references to the Editor instances
   const refs = useRef<(Editor | null)[]>([]);
   const refTitle = useRef<Editor | null>(null);
@@ -51,6 +52,7 @@ const PageContent: React.FC<IPropsPage> = React.memo(({ page }) => {
               handleFocus(0, 0);
             }
           }}
+          editable={editable}
         />
         <div style={{ maxWidth: "100%", minWidth: 0, width: "900px" }}>
           {page.blocks.map((block, index) => (
@@ -59,12 +61,13 @@ const PageContent: React.FC<IPropsPage> = React.memo(({ page }) => {
               block={block}
               goRef={(ref) => (refs.current[index] = ref)}
               handleFocus={(shift) => handleFocus(index, shift)}
+              editable={editable}
             />
           ))}
         </div>
       </div>
     </>
   );
-});
+};
 
 export default PageContent;
