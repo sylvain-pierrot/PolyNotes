@@ -11,10 +11,10 @@ function Login() {
   const handleLogin = async (credentials: ICredentials) => {
     try {
       await loginUser(credentials);
-      navigate("/workspace");
     } catch (error) {
-      console.error(error);
-      // handle error here
+      throw new Error("Failed to login");
+    } finally {
+      navigate("/workspace");
     }
   };
 
