@@ -16,6 +16,7 @@ export interface PageProperties {
   author: string;
   title: string | null;
   blocks: Block[];
+  owner: boolean;
   access: Access;
   roleAccess: RoleAccess | null;
 }
@@ -42,6 +43,7 @@ const initialState: PageProperties = {
   author: "default",
   title: "default",
   blocks: [],
+  owner: false,
   access: Access.PRIVATE,
   roleAccess: null,
 };

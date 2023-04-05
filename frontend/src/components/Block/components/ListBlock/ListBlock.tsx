@@ -23,6 +23,7 @@ interface IPropsListBlock {
   content: string | null;
   onDestroy: () => void;
   handleArrows: (event: any) => void;
+  editable: boolean;
   listType:
     | BlockType.BULLET_LIST
     | BlockType.ORDERED_LIST
@@ -31,7 +32,14 @@ interface IPropsListBlock {
 
 const ListBlock = forwardRef(
   (
-    { id, content, onDestroy, handleArrows, listType }: IPropsListBlock,
+    {
+      id,
+      content,
+      onDestroy,
+      handleArrows,
+      listType,
+      editable,
+    }: IPropsListBlock,
     ref: Ref<Editor | null>
   ) => {
     // Store
@@ -99,6 +107,7 @@ const ListBlock = forwardRef(
     };
 
     const editor = useEditor({
+      editable: editable,
       content: content
         ? content
         : listType === BlockType.TO_DO_LIST

@@ -3,7 +3,9 @@ import PageContent from "../../components/PageContent/PageContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
+  Access,
   PageProperties,
+  RoleAccess,
   updatePage,
   updatePageAccess,
 } from "../../store/slices/pageSlice";
@@ -31,12 +33,14 @@ const Page = () => {
     const fetchPage = async () => {
       const pageBrut = await getPageById(params.id!);
       const currentPage = {
-        title: pageBrut.title,
-        blocks: pageBrut.blocks,
-        author: pageBrut.author,
-        access: pageBrut.access,
-        roleAccess: pageBrut.roleAccess,
+        title: pageBrut.page.title,
+        blocks: pageBrut.page.blocks,
+        author: pageBrut.page.author,
+        owner: pageBrut.owner,
+        access: pageBrut.page.access,
+        roleAccess: pageBrut.page.roleAccess,
       };
+
       dispatch(updatePage({ page: currentPage }));
     };
     fetchPage();
@@ -44,15 +48,30 @@ const Page = () => {
 
   // Update page and node title when page is updated
   useEffect(() => {
-    setIsRegistered(false);
-    const intervalID = setInterval(async () => {
-      await updatePageByid(params.id!, page.title!, page.blocks);
-      dispatch(updateTitleNodeById({ key: params.id, newTitle: page.title }));
-      setIsRegistered(true);
-    }, 1500);
+    if (
+      (page && page.owner) ||
+      (page.access === Access.PUBLIC && page.roleAccess === RoleAccess.Editor)
+    ) {
+      setIsRegistered(false);
 
-    return () => clearInterval(intervalID);
-  }, [page, params.id, dispatch]);
+      const updatePage = async () => {
+        try {
+          await updatePageByid(params.id!, page.title!, page.blocks);
+          dispatch(
+            updateTitleNodeById({ key: params.id, newTitle: page.title })
+          );
+        } catch (error) {
+          // handle error
+        } finally {
+          setIsRegistered(true);
+        }
+      };
+
+      const timeoutID = setTimeout(updatePage, 1500);
+
+      return () => clearTimeout(timeoutID);
+    }
+  }, [page, params.id, dispatch, updatePageByid]);
 
   const handleUpdateAccessPage = async (values: any) => {
     const access = values.access;
@@ -69,7 +88,7 @@ const Page = () => {
         className="save-indicator"
       />
 
-      {page?.author !== "default" && (
+      {page?.owner && (
         <SharingPage
           access={page.access}
           roleAccess={page.roleAccess}
@@ -77,7 +96,16 @@ const Page = () => {
         />
       )}
 
-      {page?.author !== "default" && <PageContent page={page} />}
+      {(page?.owner || page?.access === Access.PUBLIC) && (
+        <PageContent
+          page={page}
+          editable={
+            (page && page.owner) ||
+            (page.access === Access.PUBLIC &&
+              page.roleAccess === RoleAccess.Editor)
+          }
+        />
+      )}
     </>
   );
 };

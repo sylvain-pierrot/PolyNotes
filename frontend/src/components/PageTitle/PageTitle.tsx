@@ -10,12 +10,16 @@ import { newBlock, updateTitle } from "../../store/slices/pageSlice";
 
 interface IPropsTitlePage {
   content: string | null;
+  editable: boolean;
   handleArrows: (event: any) => void;
 }
 
 const PageTitle = forwardRef(
   // Props and Ref
-  ({ content, handleArrows }: IPropsTitlePage, ref: Ref<Editor | null>) => {
+  (
+    { content, editable, handleArrows }: IPropsTitlePage,
+    ref: Ref<Editor | null>
+  ) => {
     // Store
     const dispatch = useDispatch();
 
@@ -39,6 +43,7 @@ const PageTitle = forwardRef(
 
     // Editor setup with extensions and options
     const editor = useEditor({
+      editable: editable,
       content: content,
       extensions: [
         TitlePageExtension,
@@ -59,16 +64,10 @@ const PageTitle = forwardRef(
       autofocus: true,
       onUpdate({ editor }) {
         // Update store with new title content
-        dispatch(updateTitle({ content: editor.getText() }));
+        const content = editor.isEmpty ? "" : editor.getText();
+        dispatch(updateTitle({ content: content }));
       },
     });
-
-    // UseEffect for setting initial content
-    useEffect(() => {
-      if (editor?.commands) {
-        editor.commands.setContent(content);
-      }
-    }, [content, editor?.commands]);
 
     // UseImperativeHandle to forward ref to parent component
     useImperativeHandle(ref, () => editor, [editor]);

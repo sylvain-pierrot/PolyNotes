@@ -5,12 +5,7 @@ import Image from "@tiptap/extension-image";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
-import React, {
-  forwardRef,
-  Ref,
-  useCallback,
-  useImperativeHandle,
-} from "react";
+import { forwardRef, Ref, useCallback, useImperativeHandle } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from "antd";
 import { FileImageOutlined } from "@ant-design/icons";

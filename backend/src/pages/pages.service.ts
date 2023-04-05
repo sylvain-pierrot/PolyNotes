@@ -20,7 +20,6 @@ export class PagesService {
       ...createPageDto,
       author,
     });
-    console.log(createdPage);
 
     return await createdPage.save();
   }
@@ -33,14 +32,15 @@ export class PagesService {
       .exec();
   }
 
-  async findOne(id: string, userId: string) {
-    return await this.pageModel.findOne({ _id: id, author: userId }).exec();
+  // async findOne(id: string, userId: string) {
+  //   return await this.pageModel.findOne({ _id: id, author: userId }).exec();
+  // }
+  async findOne(id: string) {
+    return await this.pageModel.findById(id).exec();
   }
 
-  async update(id: string, userId: string, updatePageDto: UpdatePageDto) {
-    return await this.pageModel
-      .findOneAndUpdate({ _id: id, author: userId }, updatePageDto)
-      .exec();
+  async update(id: string, updatePageDto: UpdatePageDto) {
+    return await this.pageModel.findByIdAndUpdate(id, updatePageDto).exec();
   }
 
   async updateAccess(
