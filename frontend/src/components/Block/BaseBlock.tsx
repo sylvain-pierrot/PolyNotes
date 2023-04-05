@@ -91,7 +91,8 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
         )}
         {block.type === BlockType.TABLE && <BaseDatabase />}
         {(block.type === BlockType.BULLET_LIST ||
-          block.type === BlockType.ORDERED_LIST) && (
+          block.type === BlockType.ORDERED_LIST ||
+          block.type === BlockType.TO_DO_LIST) && (
           <ListBlock
             id={block.id}
             content={block.content}

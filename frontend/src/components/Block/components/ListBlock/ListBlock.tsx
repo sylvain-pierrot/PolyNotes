@@ -1,5 +1,8 @@
 import OrderedList from "@tiptap/extension-ordered-list";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
 import Placeholder from "@tiptap/extension-placeholder";
+import Paragraph from "@tiptap/extension-paragraph";
 import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
 import Text from "@tiptap/extension-text";
 import { useDispatch } from "react-redux";
@@ -13,13 +16,17 @@ import {
   updateContentBlockById,
 } from "../../../../store/slices/pageSlice";
 import BulletList from "@tiptap/extension-bullet-list";
+import "./ListBlock.css";
 
 interface IPropsListBlock {
   id: string;
   content: string | null;
   onDestroy: () => void;
   handleArrows: (event: any) => void;
-  listType: BlockType.BULLET_LIST | BlockType.ORDERED_LIST;
+  listType:
+    | BlockType.BULLET_LIST
+    | BlockType.ORDERED_LIST
+    | BlockType.TO_DO_LIST;
 }
 
 const ListBlock = forwardRef(
@@ -69,16 +76,39 @@ const ListBlock = forwardRef(
     });
 
     // Editor
-    const editor = useEditor({
-      content: content,
-      extensions: [
-        Document,
-        ListBlockExtension,
+    const listExtensions = {
+      [BlockType.BULLET_LIST]: [
+        BulletList,
         ListItem.extend({
           content: "text*",
         }),
+      ],
+      [BlockType.ORDERED_LIST]: [
+        OrderedList,
+        ListItem.extend({
+          content: "text*",
+        }),
+      ],
+      [BlockType.TO_DO_LIST]: [
+        TaskList,
+        TaskItem.extend({
+          content: "text*",
+        }),
+        Paragraph,
+      ],
+    };
+
+    const editor = useEditor({
+      content: content
+        ? content
+        : listType === BlockType.TO_DO_LIST
+        ? " <ul data-type='taskList'></ul>"
+        : null,
+      extensions: [
+        Document,
+        ListBlockExtension,
         Text,
-        listType === BlockType.BULLET_LIST ? BulletList : OrderedList,
+        ...listExtensions[listType],
         Placeholder.configure({
           placeholder: () => {
             return "List...";
