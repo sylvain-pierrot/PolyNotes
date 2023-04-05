@@ -102,7 +102,7 @@ const ListBlock = forwardRef(
       content: content
         ? content
         : listType === BlockType.TO_DO_LIST
-        ? " <ul data-type='taskList'></ul>"
+        ? "<ul data-type='taskList'></ul>"
         : null,
       extensions: [
         Document,

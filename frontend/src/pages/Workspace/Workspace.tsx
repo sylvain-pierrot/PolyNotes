@@ -73,15 +73,17 @@ const Workspace = () => {
           renderItem={(item: any) => (
             <List.Item>
               <Card
-                title={item.title}
                 onClick={() => naviagte(`/page/${item._id}`)}
+                className="recent-page"
               >
+                <h2 style={{ marginTop: 16 }}>{item.title}</h2>
+                <div className="margin"></div>
                 <p
-                  style={{
-                    color: "#999",
-                    fontSize: "14px",
-                    marginTop: "8px",
-                  }}
+                // style={{
+                //   color: "#999",
+                //   fontSize: "14px",
+                //   marginTop: "8px",
+                // }}
                 >
                   {formatDate(item.updated)}
                 </p>
