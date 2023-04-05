@@ -42,7 +42,7 @@ RUN yarn install --production --frozen-lockfile
 COPY --from=build /app/dist /app/dist
 
 # PolyBunny.png
-COPY ./assets/PolyBunny.png /app/src/assets  
+COPY ./src/assets/PolyBunny.png /app/src/assets  
 
 EXPOSE 5000
 
