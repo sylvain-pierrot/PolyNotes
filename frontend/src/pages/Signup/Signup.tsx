@@ -11,10 +11,10 @@ const Signup = () => {
   const handleSignup = async (user: IUser) => {
     try {
       await signupUser(user);
-      navigate(`/verifyEmail/${user.email}`);
     } catch (error) {
-      console.error(error);
-      // handle error here
+      throw new Error("Failed to signup");
+    } finally {
+      navigate(`/verifyEmail/${user.email}`);
     }
   };
 

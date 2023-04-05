@@ -32,10 +32,10 @@ const MainLayout: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      navigate("/");
     } catch (error) {
-      console.error(error);
-      // Handle error here
+      throw new Error("Failed to logout");
+    } finally {
+      navigate("/");
     }
   };
 
