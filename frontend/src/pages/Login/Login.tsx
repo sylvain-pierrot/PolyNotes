@@ -9,11 +9,14 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (credentials: ICredentials) => {
+    let login: any;
     try {
-      await loginUser(credentials);
+      login = await loginUser(credentials);
     } catch (error) {
       throw new Error("Failed to login");
     } finally {
+      localStorage.setItem("token", login.data.user.token);
+      localStorage.setItem("username", login.data.user.username);
       navigate("/workspace");
     }
   };

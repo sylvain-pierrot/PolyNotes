@@ -86,8 +86,9 @@ export class UsersService {
     // Check if user exists
     if (user && user.nonce === nonce) {
       await this.userModel.updateOne({ email: user.email }, { nonce: null });
-    } else {
-      throw new NotFoundException('Email could not be verified');
     }
+    // else {
+    //   throw new NotFoundException('Email could not be verified');
+    // }
   }
 }

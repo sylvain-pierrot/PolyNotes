@@ -8,7 +8,6 @@ import Signup from "./pages/Signup/Signup";
 import Workspace from "./pages/Workspace/Workspace";
 import Page from "./pages/Page/Page";
 import NotFound from "./pages/NotFound/NotFound";
-import { autoLoginUser } from "./boot/Auth";
 import MailSend from "./pages/MailSend/MailSend";
 import MainLayout from "./layouts/MainLayout/MainLayout";
 
@@ -18,10 +17,6 @@ const App: React.FC = () => {
     {
       path: "/",
       element: <MainLayout />,
-      loader: async () => {
-        const autoLogin = await autoLoginUser();
-        return { user: autoLogin.error === undefined ? autoLogin.user : null };
-      },
       children: [
         {
           index: true,
