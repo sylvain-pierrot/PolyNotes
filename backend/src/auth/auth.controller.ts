@@ -34,6 +34,7 @@ export class AuthController {
           userId: user._id,
           email: user.email,
           username: user.username,
+          token: user.access_token,
         },
       });
     } catch (error) {

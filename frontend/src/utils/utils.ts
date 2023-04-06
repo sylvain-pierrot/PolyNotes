@@ -1,5 +1,6 @@
 import { MenuProps } from "antd";
 import dayjs from "dayjs";
+import decode from "jwt-decode";
 
 export type MenuItem = Required<MenuProps>["items"][number];
 
@@ -77,3 +78,26 @@ export const getContainerIndexAndItemIndex = (
   return null;
 };
 
+export function isLoggedIn() {
+  let authToken = localStorage.getItem("token");
+  return authToken && !isTokenExpired(authToken);
+}
+
+function isTokenExpired(token: string): boolean {
+  let expirationDate = getTokenExpirationDate(token);
+  if (expirationDate !== null) {
+    return expirationDate < new Date();
+  }
+  return true;
+}
+
+function getTokenExpirationDate(encodedToken: string): Date | null {
+  let token: any = decode(encodedToken);
+  if (!token.exp) {
+    return null;
+  }
+  let date = new Date(0);
+  date.setUTCSeconds(token.exp);
+
+  return date;
+}
