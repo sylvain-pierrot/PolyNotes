@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import "./FormSignup.css";
 import { IUser } from "../../boot/Auth";
 
@@ -101,6 +101,41 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
         ]}
       >
         <Input />
+      </Form.Item>
+
+      <Form.Item
+        name="age"
+        valuePropName="checked"
+        rules={[
+          {
+            validator: (_, value) =>
+              value
+                ? Promise.resolve()
+                : Promise.reject(new Error("Should accept agreement")),
+          },
+        ]}
+        style={{ margin: 0 }}
+      >
+        <Checkbox className="float-left">
+          Please verify you are over <strong>13 years old</strong> to sign up.
+        </Checkbox>
+      </Form.Item>
+
+      <Form.Item
+        name="agreement"
+        valuePropName="checked"
+        rules={[
+          {
+            validator: (_, value) =>
+              value
+                ? Promise.resolve()
+                : Promise.reject(new Error("Should accept agreement")),
+          },
+        ]}
+      >
+        <Checkbox className="float-left">
+          I have read the <a href="">agreement</a>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item className="text-left">

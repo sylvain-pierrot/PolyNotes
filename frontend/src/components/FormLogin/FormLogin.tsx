@@ -47,10 +47,6 @@ const FormLogin: React.FC<IPropsFormLogin> = ({ login }) => {
         <Form.Item name="remember" valuePropName="checked" noStyle>
           <Checkbox className="float-left">Remember me</Checkbox>
         </Form.Item>
-
-        <a className="float-right" href="/">
-          Forgot password
-        </a>
       </Form.Item>
 
       <Form.Item className="text-left">
