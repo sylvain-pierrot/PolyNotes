@@ -17,6 +17,7 @@ import { updateTitleNodeById } from "../../store/slices/fileSystemSlice";
 import { LoadingOutlined, SaveOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import SharingPage from "../../components/SharingContent/SharingPage";
+import PrivatPageImg from "../../assets/images/Private-page.svg";
 
 const Page = () => {
   const params = useParams();
@@ -83,6 +84,9 @@ const Page = () => {
   // Render page content if author is not default
   return (
     <>
+      {!page?.owner && page?.access === Access.PRIVATE && (
+        <img width={500} src={PrivatPageImg} alt="private-page" />
+      )}
       {(page?.owner || page?.access === Access.PUBLIC) && (
         <Spin
           indicator={!isRegistered ? <LoadingOutlined /> : <SaveOutlined />}

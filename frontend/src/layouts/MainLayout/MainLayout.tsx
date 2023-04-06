@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Layout, Row } from "antd";
+import { Button, Layout, notification, Row } from "antd";
 import "./MainLayout.css";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import Logo from "../../assets/images/PolyBunny.png";
@@ -18,16 +18,23 @@ const MainLayout: React.FC = () => {
   // Retrieve current location and navigation function
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = () => {
+    api.error({
+      message: "Failed to logout",
+      placement: "topRight",
+    });
+  };
 
   // Define function for logging out
   const handleLogout = async () => {
     try {
       await logoutUser();
-    } catch (error) {
-      throw new Error("Failed to logout");
-    } finally {
       localStorage.clear();
       navigate("/");
+    } catch (error) {
+      openNotification();
     }
   };
 
@@ -61,65 +68,69 @@ const MainLayout: React.FC = () => {
   }
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      {isLoggedIn() && <LayoutHeader logoutUser={handleLogout} />}
-      {!isLoggedIn() && (
-        <Header className="flex-between border-bottom">
-          <img
-            src={Logo}
-            alt="PolyBunny"
-            className="logo"
-            onClick={() => navigate("/")}
-          />
+    <>
+      {contextHolder}
 
-          <Row align={"middle"}>
-            {pathname === "/signup" && (
-              <>
-                <p>You already have an account?</p>
-                <Button
-                  type={"primary"}
-                  style={{ marginLeft: 8 }}
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </Button>
-              </>
-            )}
-            {pathname === "/login" && (
-              <>
-                <p>You don't have an account?</p>
-                <Button
-                  type={"primary"}
-                  onClick={() => navigate("/signup")}
-                  style={{ marginLeft: 8 }}
-                >
-                  START
-                </Button>
-              </>
-            )}
-          </Row>
-        </Header>
-      )}
+      <Layout style={{ minHeight: "100vh" }}>
+        {isLoggedIn() && <LayoutHeader logoutUser={handleLogout} />}
+        {!isLoggedIn() && (
+          <Header className="flex-between border-bottom">
+            <img
+              src={Logo}
+              alt="PolyBunny"
+              className="logo"
+              onClick={() => navigate("/")}
+            />
 
-      <Layout>
-        {isLoggedIn() && <LayoutSider />}
+            <Row align={"middle"}>
+              {pathname === "/signup" && (
+                <>
+                  <p>You already have an account?</p>
+                  <Button
+                    type={"primary"}
+                    style={{ marginLeft: 8 }}
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </Button>
+                </>
+              )}
+              {pathname === "/login" && (
+                <>
+                  <p>You don't have an account?</p>
+                  <Button
+                    type={"primary"}
+                    onClick={() => navigate("/signup")}
+                    style={{ marginLeft: 8 }}
+                  >
+                    START
+                  </Button>
+                </>
+              )}
+            </Row>
+          </Header>
+        )}
 
-        <Content
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-            background: "#ffffff",
-            position: "relative",
-            display: !isLoggedIn() ? "flex" : "initial",
-            justifyContent: !isLoggedIn() ? "center" : "initial",
-            alignItems: !isLoggedIn() ? "center" : "initial",
-          }}
-        >
-          <Outlet />
-        </Content>
+        <Layout>
+          {isLoggedIn() && <LayoutSider />}
+
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+              background: "#ffffff",
+              position: "relative",
+              display: !isLoggedIn() ? "flex" : "initial",
+              justifyContent: !isLoggedIn() ? "center" : "initial",
+              alignItems: !isLoggedIn() ? "center" : "initial",
+            }}
+          >
+            <Outlet />
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   );
 };
 
