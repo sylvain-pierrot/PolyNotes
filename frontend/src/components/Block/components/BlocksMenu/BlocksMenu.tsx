@@ -9,6 +9,7 @@ import Database from "../../../../assets/images/database.png";
 import BulletList from "../../../../assets/images/bullet-list.png";
 import OrderedList from "../../../../assets/images/ordered-list.png";
 import ToDoList from "../../../../assets/images/to-do-list.png";
+import SubPage from "../../../../assets/images/sub-page.png";
 import "./BlocksMenu.css";
 import { BlockType } from "../../../../store/slices/pageSlice";
 import { Level } from "@tiptap/extension-heading";
@@ -67,6 +68,12 @@ const blocksMenuItemsData = [
     title: "Database",
     description: "Database with Kanban/Table views.",
     type: BlockType.TABLE,
+  },
+  {
+    icon: SubPage,
+    title: "Link to page",
+    description: "Link to an existing page.",
+    type: BlockType.SUB_PAGE,
   },
 ];
 

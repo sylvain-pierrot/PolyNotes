@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { updateAccessPageByid } from "../../boot/Pages";
+import { Property } from "../../utils/utils";
 
 export enum Access {
   PUBLIC = "public",
@@ -31,11 +32,12 @@ export enum BlockType {
   HEADING_1 = "heading-1",
   HEADING_2 = "heading-2",
   HEADING_3 = "heading-3",
+  SUB_PAGE = "sub-page",
 }
 
 export interface Block {
   id: string;
-  content: string | null;
+  content: any | null;
   type: BlockType;
 }
 
@@ -77,12 +79,19 @@ const pageSlice = createSlice({
       const { id, type } = action.payload;
       const index = state.page.blocks.findIndex((block) => block.id === id);
       state.page.blocks[index].type = type;
+      if (type === BlockType.TABLE) {
+        state.page.blocks[index].content = {
+          rows: [],
+          columns: [{ name: "name", property: Property.TEXT }],
+          containers: [{ id: uuidv4(), title: "Default", items: [] }],
+        };
+      }
     },
     updateContentBlockById(state, action) {
       const { id, content } = action.payload;
       const index = state.page.blocks.findIndex((block) => block.id === id);
       if (index !== -1) {
-        state.page.blocks[index].content = content;
+        state.page.blocks[index].content = JSON.parse(JSON.stringify(content));
       }
     },
     updateTitle(state, action) {

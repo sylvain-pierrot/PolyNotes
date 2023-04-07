@@ -1,0 +1,13 @@
+.sub-page a {
+  width: 100%;
+  display: block;
+  text-align: left;
+  border-radius: 3px;
+  background: #f2f1ee;
+  color: #2f6beb;
+  padding: 0.5em 1em;
+}
+
+.sub-page a:hover {
+  color: #eb2f96;
+}

@@ -13,6 +13,8 @@ import {
   getDefaultColumnValue,
   Property,
 } from "../../../../utils/utils";
+import { useDispatch } from "react-redux";
+import { updateContentBlockById } from "../../../../store/slices/pageSlice";
 
 // Views selectable
 const views = [
@@ -26,16 +28,26 @@ const views = [
   },
 ];
 
-const BaseDatabase: React.FC = () => {
+interface IPropsDataBase {
+  id: string;
+  content: any | null;
+}
+
+const BaseDatabase: React.FC<IPropsDataBase> = ({ id, content }) => {
   // Declare and initialize state variables
-  const [rows, setRows] = useState<DataType[]>([]);
-  const [columns, setColumns] = useState<Column[]>([
-    { name: "name", property: Property.TEXT },
-  ]);
-  const [containers, setContainers] = useState<Container[]>([
-    { id: uuidv4(), title: "Default", items: rows },
-  ]);
+  const [rows, setRows] = useState<DataType[]>(
+    JSON.parse(JSON.stringify(content.rows))
+  );
+  const [columns, setColumns] = useState<Column[]>(
+    JSON.parse(JSON.stringify(content.columns))
+  );
+  const [containers, setContainers] = useState<Container[]>(
+    JSON.parse(JSON.stringify(content.containers))
+  );
   const [viewSelected, setViewSelected] = useState(views[0]);
+
+  // Dispatch
+  const dispatch = useDispatch();
 
   // Update the containers state whenever the rows or columns state changes
   useEffect(() => {
@@ -52,7 +64,15 @@ const BaseDatabase: React.FC = () => {
       });
       return newContainers;
     });
-  }, [rows, columns]);
+
+    const newContent = {
+      rows: rows,
+      columns: columns,
+      containers: containers,
+    };
+
+    dispatch(updateContentBlockById({ id: id, content: newContent }));
+  }, [rows, columns, dispatch, updateContentBlockById]);
 
   // Add a new column to the table
   const newColumn = useCallback((column: Column) => {

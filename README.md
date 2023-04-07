@@ -6,20 +6,14 @@
 
 ## Features
 
-1. **Notes and Wikis**: Allows you to create and organize notes, documentation, and wikis in a flexible,
-customizable format.
-2. **Tasks and Project Management**: Lets you create and manage tasks, to-do lists, and projects in a
-way that works best for you.
-3. **Databases**: Enables you to create and manage databases to store and organize information such
-as contacts, products, or expenses.
+1. **Notes and Wikis**: Allows you to create and organize notes, documentation, and wikis in a flexible, customizable format.
+2. **Tasks and Project Management**: Lets you create and manage tasks, to-do lists, and projects in a way that works best for you.
+3. **Databases**: Enables you to create and manage databases to store and organize information such as contacts, products, or expenses.
 4. **Calendars**: Lets you keep track of events, deadlines, and schedules using a calendar view.
-5. **Embeds**: Allows you to embed content from other sources, such as Google Maps, YouTube, or
-Trello.
+5. **Embeds**: Allows you to embed content from other sources, such as Google Maps, YouTube, or Trello.
 6. **Collaboration**: Lets you collaborate with others in real-time on shared pages and databases.
-7. **Mobile apps**: Offers mobile apps for iOS and Android so you can access your PolyNotes workspace
-from anywhere.
-8. **Integrations**: Integrates with other tools, such as Google Drive, Slack, and Zapier, to make your
-work even more efficient.
+7. **Mobile apps**: Offers mobile apps for iOS and Android so you can access your PolyNotes workspace from anywhere.
+8. **Integrations**: Integrates with other tools, such as Google Drive, Slack, and Zapier, to make your work even more efficient.
 
 ## Built With
 
@@ -62,8 +56,54 @@ work even more efficient.
     </a>
 </p>
 
-## Run locally
+---
+
+<h1 align="center">Deployment</h1>
+
+## Requirements
+
+To use this repo, you will need the following:
+
+Infrastructure:
+
+- **Docker Hub** account
+- A **Kubernetes** cluster
+- **ArgoCD** and **Letsencrypt** installed on cluster
+- Infrastructure managed by **Terraform** (or an equivalent tool). Note that installing without versioning is possible but deprecated.
+
+Tools:
+- Helm
+- Docker compose
+
+## Development
+
+To run the project locally, navigate to the root directory and run the following command:
 
 ```sh
 docker compose up
 ```
+
+## Production: _Cluster Bootstrapping_
+
+The production deployment is managed by ArgoCD, which is handled by helm.
+
+### App of Apps Pattern
+
+![ArgoCD Bootstrap](./images/argocd-bootstrap.png)
+
+To deploy PolyNotes **in production**, use the helm chart located at `.argocd/bootstrap`. This will create the following resources:
+
+- _polynotes-sylvain_ (ArgoCD Project)
+- _polynotes-bootstrap_ (ArgoCD Application)
+
+The `polynotes-bootstrap` application fetches the chart located at `.argocd/apps` and creates the resources listed below:
+
+- _polynotes_ (ArgoCD Application)
+- _polynotes-frontend_ (ArgoCD Application)
+- _polynotes-backend_ (ArgoCD Application)
+
+Finally, in ArgoCD, you can see the deployed PolyNotes:
+
+![ArgoCD PolyNotes](./images/argocd-polynotes.png)
+
+

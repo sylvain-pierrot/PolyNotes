@@ -79,9 +79,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const handleRender = (render: any) => {
     switch (property) {
       case Property.TIME:
-        return (render as Dayjs).format("HH:mm:ss");
+        return dayjs(render as Dayjs).format("HH:mm:ss");
       case Property.DATE:
-        return (render as Dayjs).format("DD/MM/YYYY");
+        return dayjs(render as Dayjs).format("DD/MM/YYYY");
       default:
         return render;
     }
@@ -129,7 +129,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
                 ref={inputRef as any}
                 onChange={save}
                 onBlur={save}
-                format={"DD/MM/YYYY "}
+                format={"DD/MM/YYYY"}
               />
             );
           case Property.SINGLE_SELECT:

@@ -14,6 +14,7 @@ import {
   newBlock,
 } from "../../store/slices/pageSlice";
 import ListBlock from "./components/ListBlock/ListBlock";
+import SubPageBlock from "./components/SubPageBlock/SubPageBlock";
 
 interface IPropsBlock {
   block: Block;
@@ -93,7 +94,9 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
             }}
           />
         )}
-        {block.type === BlockType.TABLE && <BaseDatabase />}
+        {block.type === BlockType.TABLE && (
+          <BaseDatabase id={block.id} content={block.content} />
+        )}
         {(block.type === BlockType.BULLET_LIST ||
           block.type === BlockType.ORDERED_LIST ||
           block.type === BlockType.TO_DO_LIST) && (
@@ -108,6 +111,16 @@ const BaseBlock: React.FC<IPropsBlock> = React.memo(
             onDestroy={() => handleFocus(-1)}
             listType={block.type}
             editable={editable}
+          />
+        )}
+        {block.type === BlockType.SUB_PAGE && (
+          <SubPageBlock
+            id={block.id}
+            content={block.content}
+            ref={(ref) => {
+              goRef(ref);
+              setRef(ref);
+            }}
           />
         )}
       </div>

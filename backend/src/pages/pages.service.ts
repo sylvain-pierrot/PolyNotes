@@ -28,7 +28,6 @@ export class PagesService {
     return await this.pageModel
       .find({ author: userId })
       .sort({ updated: -1 })
-      .limit(10)
       .exec();
   }
 
