@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import TableView from "./views/TableView/TableView";
 import { EllipsisOutlined } from "@ant-design/icons";
 import "./BaseDatabase.css";
-import { v4 as uuidv4 } from "uuid";
 import KanbanView from "./views/KanbanView/KanbanView";
 import {
   Column,
@@ -11,7 +10,6 @@ import {
   DataType,
   getContainerIndexAndItemIndex,
   getDefaultColumnValue,
-  Property,
 } from "../../../../utils/utils";
 import { useDispatch } from "react-redux";
 import { updateContentBlockById } from "../../../../store/slices/pageSlice";
@@ -64,7 +62,9 @@ const BaseDatabase: React.FC<IPropsDataBase> = ({ id, content }) => {
       });
       return newContainers;
     });
+  }, [rows, columns]);
 
+  useEffect(() => {
     const newContent = {
       rows: rows,
       columns: columns,
@@ -72,7 +72,7 @@ const BaseDatabase: React.FC<IPropsDataBase> = ({ id, content }) => {
     };
 
     dispatch(updateContentBlockById({ id: id, content: newContent }));
-  }, [rows, columns, dispatch, updateContentBlockById]);
+  }, [rows, columns, containers, dispatch, id]);
 
   // Add a new column to the table
   const newColumn = useCallback((column: Column) => {

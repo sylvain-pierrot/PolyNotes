@@ -134,7 +134,7 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
         ]}
       >
         <Checkbox className="float-left">
-          I have read the <a href="">agreement</a>
+          I have read the <a href={window.location.href}>agreement</a>
         </Checkbox>
       </Form.Item>
 
