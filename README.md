@@ -22,6 +22,8 @@
   - [Production environment](#production-environment)
     - [CI/CD](#cicd)
     - [Cluster Bootstrapping : App of Apps Pattern](#cluster-bootstrapping--app-of-apps-pattern)
+    - [Secrets](#secrets)
+    - [Result](#result)
 - [:page\_with\_curl: License](#page_with_curl-license)
 
 ## Requirements
@@ -207,6 +209,34 @@ The `polynotes-bootstrap` application fetches the chart located at `.argocd/apps
 - _polynotes_ (ArgoCD Application)
 - _polynotes-frontend_ (ArgoCD Application)
 - _polynotes-backend_ (ArgoCD Application)
+
+#### Secrets
+
+In production, credentials are managed using Terraform. 
+
+```terraform
+resource "kubernetes_secret" "polynotes-sylvain" {
+  metadata {
+    name      = "polynotes-sylvain-pwd"
+    namespace = "sylvain"
+    labels = {
+      managed-by = "terraform"
+    }
+  }
+
+  data = {
+    "mongodb-root-password" = ## MongoDb root password
+    "mongodb-passwords"     = ## MongoDb root password
+    "mongodb-url" = "mongodb://admin:<mongo-password>@polynotes-mongodb.sylvain.svc.cluster.local:27017/polynotes?authMechanism=DEFAULT&authSource=polynotes"
+    "mailer-password" =  ## mailer password
+    "secret-key" = ## jwt secret
+  }
+
+  type = "Opaque"
+}
+```
+
+#### Result
 
 Finally, in ArgoCD, you can see the deployed PolyNotes:
 
