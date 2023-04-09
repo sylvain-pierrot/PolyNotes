@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import "./FormSignup.css";
 import { IUser } from "../../boot/Auth";
+import { Link } from "react-router-dom";
 
 interface IpropsFormLogin {
   signup: (user: IUser) => void;
@@ -134,7 +135,7 @@ const FormSignup: React.FC<IpropsFormLogin> = ({ signup }) => {
         ]}
       >
         <Checkbox className="float-left">
-          I have read the <a href={window.location.href}>agreement</a>
+          I have read the <Link to="/terms">agreement</Link>
         </Checkbox>
       </Form.Item>
 

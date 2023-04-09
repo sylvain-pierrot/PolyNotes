@@ -84,17 +84,18 @@ const Page = () => {
   // Render page content if author is not default
   return (
     <>
-      {!page?.owner && page?.access === Access.PRIVATE && (
+      {!page && <Spin indicator={<LoadingOutlined />} />}
+      {!page.owner && page.access === Access.PRIVATE && (
         <img width={500} src={PrivatPageImg} alt="private-page" />
       )}
-      {(page?.owner || page?.access === Access.PUBLIC) && (
+      {(page.owner || page.access === Access.PUBLIC) && (
         <Spin
           indicator={!isRegistered ? <LoadingOutlined /> : <SaveOutlined />}
           className="save-indicator"
         />
       )}
 
-      {page?.owner && (
+      {page.owner && (
         <SharingPage
           access={page.access}
           roleAccess={page.roleAccess}
@@ -102,7 +103,7 @@ const Page = () => {
         />
       )}
 
-      {(page?.owner || page?.access === Access.PUBLIC) && (
+      {(page.owner || page.access === Access.PUBLIC) && (
         <PageContent
           page={page}
           editable={

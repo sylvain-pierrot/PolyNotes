@@ -10,6 +10,7 @@ import Page from "./pages/Page/Page";
 import NotFound from "./pages/NotFound/NotFound";
 import MailSend from "./pages/MailSend/MailSend";
 import MainLayout from "./layouts/MainLayout/MainLayout";
+import TermesAndConditions from "./pages/TermesAndConditions/TermesAndConditions";
 
 const App: React.FC = () => {
   // Store
@@ -41,6 +42,10 @@ const App: React.FC = () => {
         {
           path: "workspace",
           element: <Workspace />,
+        },
+        {
+          path: "terms",
+          element: <TermesAndConditions />,
         },
         {
           path: "page/:id",

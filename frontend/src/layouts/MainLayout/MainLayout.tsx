@@ -121,9 +121,18 @@ const MainLayout: React.FC = () => {
               minHeight: 280,
               background: "#ffffff",
               position: "relative",
-              display: !isLoggedIn() ? "flex" : "initial",
-              justifyContent: !isLoggedIn() ? "center" : "initial",
-              alignItems: !isLoggedIn() ? "center" : "initial",
+              display:
+                !isLoggedIn() && ["/login", "/signup", "/"].includes(pathname)
+                  ? "flex"
+                  : "initial",
+              justifyContent:
+                !isLoggedIn() && ["/login", "/signup", "/"].includes(pathname)
+                  ? "center"
+                  : "initial",
+              alignItems:
+                !isLoggedIn() && ["/login", "/signup", "/"].includes(pathname)
+                  ? "center"
+                  : "initial",
             }}
           >
             <Outlet />

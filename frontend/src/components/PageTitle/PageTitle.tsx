@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useDispatch } from "react-redux";
 import "./PageTitle.css";
 import Document from "@tiptap/extension-document";
-import { forwardRef, Ref, useImperativeHandle } from "react";
+import { forwardRef, Ref, useEffect, useImperativeHandle } from "react";
 import { newBlock, updateTitle } from "../../store/slices/pageSlice";
 
 interface IPropsTitlePage {
@@ -68,6 +68,13 @@ const PageTitle = forwardRef(
         dispatch(updateTitle({ content: content }));
       },
     });
+
+    // UseEffect
+    useEffect(() => {
+      if (editor) {
+        editor.commands.setContent(content);
+      }
+    }, [editor, content]);
 
     // UseImperativeHandle to forward ref to parent component
     useImperativeHandle(ref, () => editor, [editor]);

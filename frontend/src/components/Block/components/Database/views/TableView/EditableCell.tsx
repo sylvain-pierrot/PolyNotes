@@ -62,7 +62,19 @@ const EditableCell: React.FC<EditableCellProps> = ({
   // Handles
   const toggleEdit = () => {
     setEditing(!editing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+
+    switch (property) {
+      case Property.TIME:
+        return form.setFieldsValue({
+          [dataIndex]: dayjs(record[dataIndex] as Dayjs),
+        });
+      case Property.DATE:
+        return form.setFieldsValue({
+          [dataIndex]: dayjs(record[dataIndex] as Dayjs),
+        });
+      default:
+        return form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+    }
   };
 
   const save = async () => {
@@ -191,7 +203,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
             );
           case Property.TIME:
             return (
-              <TimePicker ref={inputRef as any} onChange={save} onBlur={save} />
+              <TimePicker
+                ref={inputRef as any}
+                onChange={save}
+                onBlur={save}
+                format={"HH:mm:ss"}
+              />
             );
         }
       })()}

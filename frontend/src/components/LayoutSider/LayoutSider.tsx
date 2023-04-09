@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Layout from "antd/es/layout";
-import { Button, Divider, Menu } from "antd";
+import { Divider, Menu } from "antd";
 import {
   FolderOutlined,
-  PlusOutlined,
   FileOutlined,
   ShareAltOutlined,
   FieldTimeOutlined,
@@ -74,15 +73,16 @@ const LayoutSider: React.FC = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
+      {/* <div style={{ padding: "0.8em", marginTop: "0.8em" }}>
         <Button
           type="primary"
           style={{ width: "100%" }}
           icon={<PlusOutlined />}
+          disabled={true}
         >
           New note
         </Button>
-      </div>
+      </div> */}
 
       {treeData && (
         <Menu
