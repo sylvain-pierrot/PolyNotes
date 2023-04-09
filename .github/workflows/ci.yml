@@ -40,7 +40,7 @@ jobs:
         run: |
           git_hash=${{ steps.commit.outputs.short }}
           version=$(cat frontend/.helm/polynotes-frontend/values.yaml | grep tag: | awk '{print $2}')
-          sed -i "s|$version|${git_hash}|" frontend/.helm/polynotes-frontend/values.yaml 
+          sed -i "s|$version|\"${git_hash}\"|" frontend/.helm/polynotes-frontend/values.yaml
 
       ## BACKEND
       - name: Build and push backend
@@ -55,7 +55,7 @@ jobs:
         run: |
           git_hash=${{ steps.commit.outputs.short }}
           version=$(cat backend/.helm/polynotes-backend/values.yaml | grep tag: | awk '{print $2}')
-          sed -i "s|$version|${git_hash}|" backend/.helm/polynotes-backend/values.yaml 
+          sed -i "s|$version|\"${git_hash}\"|" backend/.helm/polynotes-backend/values.yaml 
 
       ## COMMIT CHANGE
       - name: Commit and push changes

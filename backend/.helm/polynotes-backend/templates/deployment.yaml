@@ -20,7 +20,7 @@ spec:
       containers:
       - name: {{ .Values.name }}
         resources: {{ toYaml .Values.resources | nindent 10 }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | print }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - name: http
